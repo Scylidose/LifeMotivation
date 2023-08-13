@@ -37,12 +37,7 @@ dist/
 package-lock.json
 yarn.lock
 
-# Ignore compiled CSS and JavaScript files
-*.css
-*.js
-
 # Ignore build output from frontend build tools
-/public/
 /build/
 
 # Ignore user-specific files
