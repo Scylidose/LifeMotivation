@@ -1,26 +1,57 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const db = require('../config/dbconfig');
 
-// Create Schema
-const UserSchema = new Schema({
-    username: {
-        type: String,
-        required: true
-    },
-    courriel: {
-        type: String,
-        required: true
-    },
-    actions: [
-        {
-            type: Schema.Types.ObjectId, 
-            ref: 'Action'
+class User {
+  constructor(id, username, courriel, password) {
+    this.id = id;
+    this.username = username;
+    this.courriel = courriel;
+    this.password = password;
+  }
+
+  static findOrCreate(username, courriel, password) {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT * FROM users WHERE username = ?', [username], (err, row) => {
+        if (err) {
+          reject(err);
+        } else if (!row) {
+          db.run('INSERT INTO users (username, courriel, password) VALUES (?, ?, ?)', [username, courriel, password], function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(new User(this.lastID, username, courriel, password));
+            }
+          });
+        } else {
+          resolve(new User(row.id, row.username, row.courriel, row.password));
         }
-    ],
-    password: {
-        type: String,
-        required: true
-    }
-});
+      });
+    });
+  }
 
-mongoose.model('User', UserSchema, 'users');
+  // Get all actions associated with a user
+  async getActions() {
+    return new Promise((resolve, reject) => {
+      db.all('SELECT * FROM actions WHERE author = ?', [this.id], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          const actions = rows.map(row => new Action(
+            row.id,
+            row.title,
+            row.description,
+            row.author,
+            row.isGood,
+            row.importance,
+            row.frequency,
+            row.difficulty,
+            row.consistencyStreak,
+            row.intendedDuration
+          ));
+          resolve(actions);
+        }
+      });
+    });
+  }
+}
+
+module.exports = User;

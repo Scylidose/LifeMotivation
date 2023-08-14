@@ -1,0 +1,25 @@
+{
+  "name": "abitmotivation",
+  "version": "1.0.0",
+  "description": "Web app for tracking positive habits, leveling up through experience points, and achieving personal growth milestones. Built to promote well-being and habit-building.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/nodejs/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scylidose/aBitMotivation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Scylidose/aBitMotivation/issues"
+  },
+  "homepage": "https://github.com/Scylidose/aBitMotivation#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6"
+  }
+}
