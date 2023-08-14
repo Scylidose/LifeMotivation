@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>aBitMotivation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="root">
+    <button id="create-action-button">Create New Action</button>
+
+    <form id="action-form" style="display: none;">
+      <label for="title">Title:</label>
+      <input type="text" id="title" required><br>
+
+      <label for="description">Description:</label>
+      <input type="text" id="description" required><br>
+
+      <label for="importance">Importance:</label>
+      <input type="range" id="importance" min="1" max="5" value="1"><br>
+
+      <label for="frequency">Frequency:</label>
+      <input type="range" id="frequency" min="1" max="5" value="1"><br>
+
+      <label for="difficulty">Difficulty:</label>
+      <input type="range" id="difficulty" min="1" max="5" value="1"><br>
+
+      <label for="intendedDuration">Intended Duration (minutes)</label>
+      <input type="number" id="intended-duration" min="1" max="1440"><br>
+    
+      <button type="submit">Create</button>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
