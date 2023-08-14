@@ -11,16 +11,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    bits: [
+    actions: [
         {
             type: Schema.Types.ObjectId, 
-            ref: 'Bit'
-        }
-    ],
-    unbits: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Unbit'
+            ref: 'Action'
         }
     ],
     password: {
