@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { createNewAction } from './services/api';
+import { createNewAction } from '../services/api';
+import '../styles/form.css';
+import DotSlider from './DotSlider';
 
 class ActionForm extends Component {
     constructor(props) {
@@ -55,7 +57,7 @@ class ActionForm extends Component {
         console.log(newAction);
 
         try {
-            const createdAction = await createNewAction(newActionData);
+            const createdAction = await createNewAction(newAction);
             console.log('Action created:', createdAction);
         } catch (error) {
             console.error('Error creating action:', error);
@@ -73,9 +75,12 @@ class ActionForm extends Component {
         });
     };
 
-
     render() {
         const { isFormVisible } = this.state;
+
+        const importanceLabelValues = ['Meh, No Big Deal', '', '', '', 'Seriously Crucial'];
+        const frequencyLabelValues = ['Once in a Blue Moon', '', '', '', 'All the Time'];
+        const difficultyLabelValues = ['A Breeze', '', '', '', 'Quite a Challenge'];
 
         return (
             <div>
@@ -84,7 +89,7 @@ class ActionForm extends Component {
                 </button>
 
                 {isFormVisible && (
-                    <form id="action-form" style={{ display: 'none' }}>
+                    <form id="action-form">
                         <label htmlFor="title">Title:</label>
                         <input
                             type="text"
@@ -93,7 +98,7 @@ class ActionForm extends Component {
                             value={this.state.title}
                             onChange={this.handleInputChange}
                             required
-                        />
+                        /><br />
 
                         <label htmlFor="description">Description:</label>
                         <input
@@ -103,40 +108,15 @@ class ActionForm extends Component {
                             value={this.state.description}
                             onChange={this.handleInputChange}
                             required
-                        />
-
+                        /><br />
                         <label htmlFor="importance">Importance:</label>
-                        <input
-                            type="range"
-                            id="importance"
-                            name="importance"
-                            min="1"
-                            max="5"
-                            value={this.state.importance}
-                            onChange={this.handleInputChange}
-                        />
+                        <DotSlider name="importance" type="importance" onChange={this.handleInputChange} labelValues={importanceLabelValues} /><br />
 
                         <label htmlFor="frequency">Frequency:</label>
-                        <input
-                            type="range"
-                            id="frequency"
-                            name="frequency"
-                            min="1"
-                            max="5"
-                            value={this.state.frequency}
-                            onChange={this.handleInputChange}
-                        />
+                        <DotSlider name="frequency" type="frequency" onChange={this.handleInputChange} labelValues={frequencyLabelValues} /><br />
 
                         <label htmlFor="difficulty">Difficulty:</label>
-                        <input
-                            type="range"
-                            id="difficulty"
-                            name="difficulty"
-                            min="1"
-                            max="5"
-                            value={this.state.difficulty}
-                            onChange={this.handleInputChange}
-                        />
+                        <DotSlider name="difficulty" type="difficulty" onChange={this.handleInputChange} labelValues={difficultyLabelValues} /><br />
 
                         <label htmlFor="intendedDuration">Intended Duration (minutes):</label>
                         <input
