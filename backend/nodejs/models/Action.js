@@ -47,6 +47,25 @@ class Action {
       });
     });
   }
+
+  static deleteById(id) {
+    console.log("DELETING ACTION:", id);
+    return new Promise((resolve, reject) => {
+      db.run(
+        'DELETE FROM actions WHERE id = ?',
+        [id],
+        function (err) {
+          if (err) {
+            console.error('Error deleting action:', err);
+            reject(err);
+          } else {
+            console.log(`Action deleted: ${this.changes}`);
+            resolve();
+          }
+        }
+      );
+    });
+  }
 }
 
 module.exports = Action;
