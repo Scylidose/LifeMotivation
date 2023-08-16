@@ -30,4 +30,18 @@ async function createNewAction(actionData) {
     }
 }
 
-export { getActionsForUser, createNewAction };
+// Function to delete an action
+async function deleteAction(actionId) {
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/${actionId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error deleting action:', error);
+        throw error;
+    }
+}
+
+export { getActionsForUser, createNewAction, deleteAction };
