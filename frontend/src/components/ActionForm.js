@@ -10,6 +10,7 @@ class ActionForm extends Component {
             isFormVisible: false,
             title: '',
             description: '',
+            isGood: true,
             importance: 1,
             frequency: 1,
             difficulty: 1,
@@ -46,7 +47,8 @@ class ActionForm extends Component {
         const newAction = {
             title,
             description,
-            author: '1',
+            author: 'root', // To change
+            isGood: true, // To change
             importance: parseInt(importance),
             frequency: parseInt(frequency),
             difficulty: parseInt(difficulty),
@@ -128,7 +130,7 @@ class ActionForm extends Component {
                             value={this.state.intendedDuration}
                             onChange={this.handleInputChange}
                         />
-                        <button type="submit">Create</button>
+                        <button type="button" onClick={this.handleSubmit}>Create</button>
                     </form>
                 )}
             </div>
