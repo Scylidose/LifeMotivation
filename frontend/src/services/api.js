@@ -1,9 +1,9 @@
-const apiUrl = 'http://localhost:3000';
+const apiUrl = 'http://localhost:5000';
 
 // Function to fetch all actions for a user
 async function getActionsForUser(username) {
     try {
-        const response = await fetch(`${apiUrl}/api/users/${username}/actions`);
+        const response = await fetch(`${apiUrl}/api/actions/${username}`);
         const data = await response.json();
         return data;
     } catch (error) {
