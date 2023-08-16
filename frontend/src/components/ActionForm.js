@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { createNewAction } from '../services/api';
-import '../styles/form.css';
 import DotSlider from './DotSlider';
 
 class ActionForm extends Component {
@@ -61,6 +60,7 @@ class ActionForm extends Component {
         try {
             const createdAction = await createNewAction(newAction);
             console.log('Action created:', createdAction);
+            window.location.reload();
         } catch (error) {
             console.error('Error creating action:', error);
         }
