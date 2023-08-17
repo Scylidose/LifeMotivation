@@ -19,19 +19,7 @@ const ActionCard = ({ action, onDelete }) => {
         <div className="action-card">
             <div className="card-header">
                 <h2 className="card-title">{action.title}</h2>
-                <button className="card-header-button delete-button" onClick={() => onDelete(action.id)}>
-                    <i className="fa fa-trash" aria-hidden="true"></i>
-                </button>
-                <button className={`card-header-button add-comment-button ${commentContent && 'with-content'}`} onClick={toggleCommentPopup}>
-                    <i className="fa fa-comment" aria-hidden="true"></i>
-                </button>
             </div>
-            {showCommentPopup && (
-                <CommentPopup
-                    onSaveComment={saveComment}
-                    onCancel={toggleCommentPopup}
-                />
-            )}
             <p className="card-description">{action.description}</p>
             <div className="card-details">
                 <p className="card-info">Importance: {action.importance}</p>
@@ -41,6 +29,20 @@ const ActionCard = ({ action, onDelete }) => {
             <div className="card-footer">
                 <p className="card-duration">Intended Duration: {action.intendedDuration} min</p>
             </div>
+            <div className="action-buttons">
+                <button className={`card-header-button add-comment-button ${commentContent && 'with-content'}`} onClick={toggleCommentPopup}>
+                    <i className="fa fa-comment" aria-hidden="true"></i>
+                </button>
+                <button className="card-header-button delete-button" onClick={() => onDelete(action.id)}>
+                    <i className="fa fa-trash" aria-hidden="true"></i>
+                </button>
+            </div>
+            {showCommentPopup && (
+                <CommentPopup
+                    onSaveComment={saveComment}
+                    onCancel={toggleCommentPopup}
+                />
+            )}
         </div>
     );
 };
