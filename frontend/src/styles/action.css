@@ -27,14 +27,33 @@
      border-bottom: 1px solid #ddd;
  }
 
- .delete-button {
-     background-color: #f44336;
+ .card-header-button {
      color: white;
      border: none;
      padding: 5px 10px;
      border-radius: 4px;
      cursor: pointer;
      transition: background-color 0.3s ease;
+ }
+
+ .add-comment-button.with-content {
+    background-color: #F5A623;
+  }
+
+  .add-comment-button.with-content:hover {
+    background-color: #d89221;
+  }
+
+  .add-comment-button {
+    background-color: #EFEFEF;
+  }
+
+  .add-comment-button:hover {
+    background-color: #b8b8b8;
+  }
+
+ .delete-button {
+     background-color: #f44336;
  }
 
  .delete-button:hover {

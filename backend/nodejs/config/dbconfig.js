@@ -9,13 +9,18 @@ db.run(`
     id INTEGER PRIMARY KEY,
     title TEXT,
     description TEXT,
-    author TEXT,
-    isGood INTEGER,
     importance INTEGER,
     frequency INTEGER,
     difficulty INTEGER,
+    intendedDuration INTEGER,
+    realDuration INTEGER,
+    linkedObjective TEXT,
+    comment TEXT,
+    author TEXT,
     consistencyStreak INTEGER,
-    intendedDuration INTEGER
+    isGood INTEGER,
+    publishedDateTime INTEGER,
+    finishedDateTime INTEGER
   )
 `);
 

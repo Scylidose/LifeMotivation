@@ -1,15 +1,37 @@
-// components/ActionCard.js
-import React from 'react';
+import React, { useState } from 'react';
+import CommentPopup from './CommentPopup';
 
 const ActionCard = ({ action, onDelete }) => {
+    const [showCommentPopup, setShowCommentPopup] = useState(false);
+    const [commentContent, setCommentContent] = useState('');
+
+    const toggleCommentPopup = () => {
+        setShowCommentPopup(!showCommentPopup);
+    };
+
+    const saveComment = (comment) => {
+        console.log('Saving comment:', comment);
+        setCommentContent(comment);
+        setShowCommentPopup(false);
+    };
+
     return (
         <div className="action-card">
             <div className="card-header">
                 <h2 className="card-title">{action.title}</h2>
-                <button className="delete-button" onClick={() => onDelete(action.id)}>
+                <button className="card-header-button delete-button" onClick={() => onDelete(action.id)}>
                     <i className="fa fa-trash" aria-hidden="true"></i>
                 </button>
+                <button className={`card-header-button add-comment-button ${commentContent && 'with-content'}`} onClick={toggleCommentPopup}>
+                    <i className="fa fa-comment" aria-hidden="true"></i>
+                </button>
             </div>
+            {showCommentPopup && (
+                <CommentPopup
+                    onSaveComment={saveComment}
+                    onCancel={toggleCommentPopup}
+                />
+            )}
             <p className="card-description">{action.description}</p>
             <div className="card-details">
                 <p className="card-info">Importance: {action.importance}</p>
