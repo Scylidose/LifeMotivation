@@ -13,20 +13,19 @@ const CommentPopup = ({ onSaveComment, onCancel }) => {
   };
 
   return (
-    <div className="comment-popup">
-      <h3>Add Comment</h3>
+    <div className="comment-textarea">
       <textarea
         className="comment-input"
         placeholder="Enter your comment..."
         value={comment}
         onChange={handleCommentChange}
       />
-      <div className="popup-buttons">
-        <button className="cancel-button" onClick={onCancel}>
-          Cancel
+      <div className="comment-popup-buttons">
+        <button className="icon-button cancel-button" onClick={onCancel}>
+          <i className="fa fa-times"></i>
         </button>
-        <button className="save-button" onClick={handleSaveComment}>
-          Save
+        <button className="icon-button save-button" onClick={handleSaveComment}>
+          <i className="fa fa-check"></i>
         </button>
       </div>
     </div>
