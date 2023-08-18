@@ -54,6 +54,36 @@ class Action {
     });
   }
 
+  static findById(id) {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT * FROM actions WHERE id = ?', [id], (err, row) => {
+        if (err) {
+          reject(err);
+        } else if (!row) {
+          resolve(null);
+        } else {
+          resolve(new Action(
+            row.id,
+            row.title,
+            row.description,
+            row.author,
+            row.isGood,
+            row.importance,
+            row.frequency,
+            row.difficulty,
+            row.consistencyStreak,
+            row.intendedDuration,
+            row.finishedDateTime,
+            row.realDuration,
+            row.linkedObjective,
+            row.comments,
+            row.publishedDateTime
+          ));
+        }
+      });
+    });
+  }
+
   static finishActionById(id, consistencyStreak, realDuration) {
     console.log("UPDATING FINISHED ACTION:", id);
     return new Promise((resolve, reject) => {

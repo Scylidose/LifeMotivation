@@ -28,6 +28,26 @@ app.get('/api/actions/:author', async (req, res) => {
   }
 });
 
+app.post('/api/actions/:id/comments', async (req, res) => {
+  const id = req.params.id;
+  const { comment } = req.body;
+
+  try {
+    const action = await Action.findById(id);
+    if (!action) {
+      return res.status(404).json({ error: 'Action not found' });
+    }
+
+    action.comments.push(comment);
+    await action.save();
+
+    res.json(action);
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    res.status(500).json({ error: 'Error adding comment' });
+  }
+});
+
 app.delete('/api/actions/:id', async (req, res) => {
   const actionId = req.params.id;
   try {
