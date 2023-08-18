@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CommentPopup from './CommentPopup';
 
-const ActionCard = ({ action, onDelete }) => {
+const ActionCard = ({ action, onDelete, onSaveComment }) => {
     const [showCommentPopup, setShowCommentPopup] = useState(false);
     const [commentContent, setCommentContent] = useState('');
 
@@ -10,7 +10,7 @@ const ActionCard = ({ action, onDelete }) => {
     };
 
     const saveComment = (comment) => {
-        console.log('Saving comment:', comment);
+        onSaveComment(comment);
         setCommentContent(comment);
         setShowCommentPopup(false);
     };
