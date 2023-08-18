@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
-import { getActionsForUser, deleteAction } from '../services/api';
+import { getActionsForUser, deleteAction, addCommentToAction } from '../services/api';
 
 const HomePage = () => {
   const [actions, setActions] = useState([]);
@@ -30,13 +30,22 @@ const HomePage = () => {
     }
   };
 
+  const handleSaveComment = async (id, comment) => {
+    try {
+      await addCommentToAction(id, comment);
+      fetchActions();
+    } catch (error) {
+      console.error('Error saving comment:', error);
+    }
+  };
+
   return (
     <div>
       <ActionForm />
       <h1>Your Habits</h1>
       <div className="action-list">
         {actions.map(action => (
-          <ActionCard key={action.id} action={action} onDelete={handleDelete}/>
+          <ActionCard key={action.id} action={action} onDelete={handleDelete} onSaveComment={handleSaveComment} />
         ))}
       </div>
     </div>
