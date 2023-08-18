@@ -47,19 +47,19 @@ async function deleteAction(actionId) {
 // Function to save the comment in an action
 async function addCommentToAction(id, comment) {
     try {
-      const response = await fetch(`${apiUrl}/api/actions/${id}/comments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ comment }),
-      });
-      const data = await response.json();
-      return data;
+        const response = await fetch(`${apiUrl}/api/actions/${id}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ comment }),
+        });
+        const data = await response.json();
+        return data;
     } catch (error) {
-      console.error('Error adding comment:', error);
-      throw error;
+        console.error('Error adding comment:', error);
+        throw error;
     }
-  }
+}
 
 export { getActionsForUser, createNewAction, deleteAction, addCommentToAction };

@@ -8,8 +8,8 @@ const CommentPopup = ({ onSaveComment, onCancel }) => {
   };
 
   const handleSaveComment = () => {
-    onSaveComment(comment); // Call the onSaveComment prop function
-    setComment(''); // Clear the comment input
+    onSaveComment(comment);
+    setComment('');
   };
 
   return (
