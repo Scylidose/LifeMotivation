@@ -37,8 +37,21 @@ app.post('/api/actions/:id/finish', async (req, res) => {
     const action = await Action.findById(id);
     res.json(action);
   } catch (error) {
-    console.error('Error adding comment:', error);
-    res.status(500).json({ error: 'Error adding comment' });
+    console.error('Error finishing action:', error);
+    res.status(500).json({ error: 'Error finishing action' });
+  }
+});
+
+app.post('/api/actions/:id/reset', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Action.resetActionById(id);
+    const action = await Action.findById(id);
+    res.json(action);
+  } catch (error) {
+    console.error('Error resetting action:', error);
+    res.status(500).json({ error: 'Error resetting action' });
   }
 });
 

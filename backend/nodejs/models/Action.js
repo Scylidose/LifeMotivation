@@ -151,7 +151,28 @@ class Action {
           } else {
             console.log(`Finished action updated: ${this.changes}`);
             const action = await Action.findById(id);
-            console.log(action);
+            resolve(action);
+          }
+        }
+      );
+    });
+  }
+
+
+  static finishActionById(id) {
+    console.log("UPDATING RESETTING ACTION:", id);
+    return new Promise((resolve, reject) => {
+
+      db.run(
+        'UPDATE actions SET finishedDateTime = ?, realDuration = ? WHERE id = ?',
+        [null, null, id],
+        async function (err) {
+          if (err) {
+            console.error('Error updating resetting action:', err);
+            reject(err);
+          } else {
+            console.log(`Resetting action updated: ${this.changes}`);
+            const action = await Action.findById(id);
             resolve(action);
           }
         }
