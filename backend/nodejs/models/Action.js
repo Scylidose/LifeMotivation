@@ -158,8 +158,7 @@ class Action {
     });
   }
 
-
-  static finishActionById(id) {
+  static resetActionById(id) {
     console.log("UPDATING RESETTING ACTION:", id);
     return new Promise((resolve, reject) => {
 
