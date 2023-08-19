@@ -1,12 +1,12 @@
 const db = require('../config/dbconfig');
 
 class Action {
-  constructor(id, title, description, author, isGood, importance, frequency, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, linkedObjective, comment, publishedDateTime) {
+  constructor(id, title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, linkedObjective, comment, publishedDateTime) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.importance = importance;
-    this.frequency = frequency;
+    this.daysOfWeek = daysOfWeek;
     this.difficulty = difficulty;
     this.intendedDuration = intendedDuration;
     this.realDuration = realDuration;
@@ -19,13 +19,13 @@ class Action {
     this.finishedDateTime = finishedDateTime;
   }
 
-  static create(title, description, author, isGood, importance, frequency, difficulty, intendedDuration) {
-    console.log("INSERTING : ", title, description, author, isGood, importance, frequency, difficulty, 0, intendedDuration);
+  static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration) {
+    console.log("INSERTING : ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration);
     return new Promise((resolve, reject) => {
       const publishedDateTime = new Date().getTime();
       db.run(
-        'INSERT INTO actions (title, description, author, isGood, importance, frequency, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [title, description, author, isGood, importance, frequency, difficulty, 0, "", intendedDuration, publishedDateTime],
+        'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime],
         function (err) {
           if (err) {
             console.log("ROLLBACK");
@@ -39,7 +39,7 @@ class Action {
               author,
               isGood,
               importance,
-              frequency,
+              daysOfWeek,
               difficulty,
               0,
               intendedDuration,
@@ -70,7 +70,7 @@ class Action {
             row.author,
             row.isGood,
             row.importance,
-            row.frequency,
+            row.daysOfWeek,
             row.difficulty,
             row.consistencyStreak,
             row.intendedDuration,
@@ -101,7 +101,7 @@ class Action {
             row.author,
             row.isGood,
             row.importance,
-            row.frequency,
+            row.daysOfWeek,
             row.difficulty,
             row.consistencyStreak,
             row.intendedDuration,

@@ -10,7 +10,7 @@ db.run(`
     title TEXT,
     description TEXT,
     importance INTEGER,
-    frequency INTEGER,
+    daysOfWeek TEXT,
     difficulty INTEGER,
     intendedDuration INTEGER,
     realDuration INTEGER,

@@ -82,7 +82,7 @@ app.delete('/api/actions/:id', async (req, res) => {
 
 app.post('/api/actions', async (req, res) => {
 
-  const { title, description, author, isGood, importance, frequency, difficulty, intendedDuration } = req.body;
+  const { title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration } = req.body;
   try {
 
     const newAction = await Action.create(
@@ -91,7 +91,7 @@ app.post('/api/actions', async (req, res) => {
       author,
       isGood,
       importance,
-      frequency,
+      daysOfWeek,
       difficulty,
       intendedDuration
     );

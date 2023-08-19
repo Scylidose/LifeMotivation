@@ -68,7 +68,7 @@ class ActionForm extends Component {
             author: 'root', // To change
             isGood: true, // To change
             importance: parseInt(importance),
-            daysOfWeek: daysOfWeek,
+            daysOfWeek: JSON.stringify(daysOfWeek),
             difficulty: parseInt(difficulty),
             consistencyStreak: 0,
             intendedDuration: parseInt(intendedDuration)
