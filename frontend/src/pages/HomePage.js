@@ -58,7 +58,7 @@ const HomePage = () => {
   return (
     <div>
       <ActionForm />
-      <h1>Your Habits</h1>
+      <h1>Your Bits</h1>
       <div className="action-list">
         {actions.map(action => (
           <ActionCard key={action.id} action={action} onDelete={handleDeleteAction} onFinish={handleFinishAction} resetAction={handleResetAction} onSaveComment={handleSaveActionComment} />
