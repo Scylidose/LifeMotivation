@@ -63,6 +63,24 @@ async function finishAction(actionId, realDuration) {
     }
 }
 
+// Function to reset an action
+async function resetAction(actionId) {
+
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/${actionId}/reset`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error finish action:', error);
+        throw error;
+    }
+}
+
 // Function to save the comment in an action
 async function addCommentToAction(id, comment) {
     try {
@@ -81,4 +99,4 @@ async function addCommentToAction(id, comment) {
     }
 }
 
-export { getActionsForUser, createNewAction, deleteAction, finishAction, addCommentToAction };
+export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction };

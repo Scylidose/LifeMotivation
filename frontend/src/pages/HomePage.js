@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
-import { getActionsForUser, deleteAction, finishAction, addCommentToAction } from '../services/api';
+import { getActionsForUser, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
 
 const HomePage = () => {
   const [actions, setActions] = useState([]);
@@ -37,6 +37,15 @@ const HomePage = () => {
     }
   };
 
+  const handleResetAction = async (actionId) => {
+    try {
+      await resetAction(actionId);
+      fetchActions();
+    } catch (error) {
+      console.error('Error resetting action:', error);
+    }
+  };
+
   const handleFinishAction = async (actionId, realDuration) => {
     try {
       await finishAction(actionId, realDuration);
@@ -52,7 +61,7 @@ const HomePage = () => {
       <h1>Your Habits</h1>
       <div className="action-list">
         {actions.map(action => (
-          <ActionCard key={action.id} action={action} onDelete={handleDeleteAction} onFinish={handleFinishAction} onSaveComment={handleSaveActionComment} />
+          <ActionCard key={action.id} action={action} onDelete={handleDeleteAction} onFinish={handleFinishAction} resetAction={handleResetAction} onSaveComment={handleSaveActionComment} />
         ))}
       </div>
     </div>
