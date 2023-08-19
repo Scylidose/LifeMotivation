@@ -54,11 +54,11 @@
 }
 
 .icon-button.cancel-button {
-    color: red;
+    color: #dc3545;
 }
 
 .icon-button.save-button {
-    color: green;
+    color: #28a745;
 }
 
 .icon-button:hover {
