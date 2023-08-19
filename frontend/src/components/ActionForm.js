@@ -11,7 +11,15 @@ class ActionForm extends Component {
             description: '',
             isGood: true,
             importance: 1,
-            frequency: 1,
+            daysOfWeek: {
+                sunday: false,
+                monday: false,
+                tuesday: false,
+                wednesday: false,
+                thursday: false,
+                friday: false,
+                saturday: false,
+            },
             difficulty: 1,
             intendedDuration: 1
         };
@@ -30,6 +38,17 @@ class ActionForm extends Component {
         this.setState({ [name]: value });
     };
 
+    // Handle select day of the week
+    handleDayOfWeekChange = (event) => {
+        const { name, checked } = event.target;
+        this.setState((prevState) => ({
+            daysOfWeek: {
+                ...prevState.daysOfWeek,
+                [name]: checked,
+            },
+        }));
+    };
+
     // Handle form submission
     handleSubmit = async event => {
         event.preventDefault();
@@ -37,7 +56,7 @@ class ActionForm extends Component {
             title,
             description,
             importance,
-            frequency,
+            daysOfWeek,
             difficulty,
             intendedDuration
         } = this.state;
@@ -49,7 +68,7 @@ class ActionForm extends Component {
             author: 'root', // To change
             isGood: true, // To change
             importance: parseInt(importance),
-            frequency: parseInt(frequency),
+            daysOfWeek: daysOfWeek,
             difficulty: parseInt(difficulty),
             consistencyStreak: 0,
             intendedDuration: parseInt(intendedDuration)
@@ -68,7 +87,15 @@ class ActionForm extends Component {
             title: '',
             description: '',
             importance: 1,
-            frequency: 1,
+            daysOfWeek: {
+                sunday: false,
+                monday: false,
+                tuesday: false,
+                wednesday: false,
+                thursday: false,
+                friday: false,
+                saturday: false,
+            },
             difficulty: 1,
             intendedDuration: 1,
             isFormVisible: false
@@ -79,7 +106,6 @@ class ActionForm extends Component {
         const { isFormVisible } = this.state;
 
         const importanceLabelValues = ['Meh, No Big Deal', '', '', '', 'Seriously Crucial'];
-        const frequencyLabelValues = ['Once in a Blue Moon', '', '', '', 'All the Time'];
         const difficultyLabelValues = ['A Breeze', '', '', '', 'Quite a Challenge'];
 
         return (
@@ -112,8 +138,25 @@ class ActionForm extends Component {
                         <label htmlFor="importance">Importance:</label>
                         <DotSlider name="importance" type="importance" onChange={this.handleInputChange} labelValues={importanceLabelValues} /><br />
 
-                        <label htmlFor="frequency">Frequency:</label>
-                        <DotSlider name="frequency" type="frequency" onChange={this.handleInputChange} labelValues={frequencyLabelValues} /><br />
+                        <div>
+                            <label>Days of the Week:</label>
+                            <div className="day-checkboxes">
+
+                                {Object.keys(this.state.daysOfWeek).map((day) => (
+                                    <div key={day} className={this.state.daysOfWeek[day] ? 'selected-day' : ''}>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                name={day}
+                                                checked={this.state.daysOfWeek[day]}
+                                                onChange={this.handleDayOfWeekChange}
+                                            />
+                                            <span className="day-label-span">{day.charAt(0).toUpperCase() + day.charAt(1)}</span>
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
 
                         <label htmlFor="difficulty">Difficulty:</label>
                         <DotSlider name="difficulty" type="difficulty" onChange={this.handleInputChange} labelValues={difficultyLabelValues} /><br />
