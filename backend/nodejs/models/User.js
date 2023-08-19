@@ -42,7 +42,7 @@ class User {
             row.author,
             row.isGood,
             row.importance,
-            row.frequency,
+            row.daysOfWeek,
             row.difficulty,
             row.consistencyStreak,
             row.intendedDuration
