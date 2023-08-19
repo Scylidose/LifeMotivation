@@ -28,6 +28,20 @@ app.get('/api/actions/:author', async (req, res) => {
   }
 });
 
+app.post('/api/actions/:id/finish', async (req, res) => {
+  const id = req.params.id;
+  const { realDuration } = req.body;
+
+  try {
+    await Action.finishActionById(id, realDuration);
+    const action = await Action.findById(id);
+    res.json(action);
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    res.status(500).json({ error: 'Error adding comment' });
+  }
+});
+
 app.post('/api/actions/:id/comments', async (req, res) => {
   const id = req.params.id;
   const { comment } = req.body;

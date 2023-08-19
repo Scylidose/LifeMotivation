@@ -44,6 +44,25 @@ async function deleteAction(actionId) {
     }
 }
 
+// Function to mark an action has finished
+async function finishAction(actionId, realDuration) {
+
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/${actionId}/finish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ realDuration }),
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error finish action:', error);
+        throw error;
+    }
+}
+
 // Function to save the comment in an action
 async function addCommentToAction(id, comment) {
     try {
@@ -62,4 +81,4 @@ async function addCommentToAction(id, comment) {
     }
 }
 
-export { getActionsForUser, createNewAction, deleteAction, addCommentToAction };
+export { getActionsForUser, createNewAction, deleteAction, finishAction, addCommentToAction };

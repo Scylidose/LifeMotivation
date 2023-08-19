@@ -137,20 +137,22 @@ class Action {
     });
   }
 
-  static finishActionById(id, consistencyStreak, realDuration) {
+  static finishActionById(id, realDuration) {
     console.log("UPDATING FINISHED ACTION:", id);
     return new Promise((resolve, reject) => {
       const finishedDateTime = new Date().getTime();
       db.run(
-        'UPDATE actions SET finishedDateTime = ?, consistencyStreak = ?, realDuration = ? WHERE id = ?',
-        [finishedDateTime, consistencyStreak, realDuration, id],
-        function (err) {
+        'UPDATE actions SET finishedDateTime = ?, realDuration = ? WHERE id = ?',
+        [finishedDateTime, realDuration, id],
+        async function (err) {
           if (err) {
             console.error('Error updating finished action:', err);
             reject(err);
           } else {
             console.log(`Finished action updated: ${this.changes}`);
-            resolve(this.changes);
+            const action = await Action.findById(id);
+            console.log(action);
+            resolve(action);
           }
         }
       );
