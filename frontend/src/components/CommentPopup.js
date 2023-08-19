@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
-const CommentPopup = ({ onSaveComment, onCancel }) => {
-  const [comment, setComment] = useState('');
+const CommentPopup = ({ action, onSaveComment, onCancel }) => {
+  const [comment, setComment] = useState(action.comment || '');
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
   };
 
   const handleSaveComment = () => {
-    onSaveComment(comment);
-    setComment('');
+    onSaveComment(action.id, comment);
+    setComment(comment);
   };
 
   return (

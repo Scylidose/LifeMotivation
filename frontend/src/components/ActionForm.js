@@ -55,8 +55,6 @@ class ActionForm extends Component {
             intendedDuration: parseInt(intendedDuration)
         };
 
-        console.log(newAction);
-
         try {
             const createdAction = await createNewAction(newAction);
             console.log('Action created:', createdAction);

@@ -3,15 +3,13 @@ import CommentPopup from './CommentPopup';
 
 const ActionCard = ({ action, onDelete, onSaveComment }) => {
     const [showCommentPopup, setShowCommentPopup] = useState(false);
-    const [commentContent, setCommentContent] = useState('');
 
     const toggleCommentPopup = () => {
         setShowCommentPopup(!showCommentPopup);
     };
 
-    const saveComment = (comment) => {
-        onSaveComment(comment);
-        setCommentContent(comment);
+    const saveComment = (id, comment) => {
+        onSaveComment(id, comment);
         setShowCommentPopup(false);
     };
 
@@ -30,7 +28,7 @@ const ActionCard = ({ action, onDelete, onSaveComment }) => {
                 <p className="card-duration">Intended Duration: {action.intendedDuration} min</p>
             </div>
             <div className="action-buttons">
-                <button className={`card-header-button add-comment-button ${commentContent && 'with-content'}`} onClick={toggleCommentPopup}>
+                <button className={`card-header-button add-comment-button ${action.comment != '' ? 'with-content' : ''}`} onClick={toggleCommentPopup}>
                     <i className="fa fa-comment" aria-hidden="true"></i>
                 </button>
                 <button className="card-header-button delete-button" onClick={() => onDelete(action.id)}>
@@ -39,6 +37,7 @@ const ActionCard = ({ action, onDelete, onSaveComment }) => {
             </div>
             {showCommentPopup && (
                 <CommentPopup
+                    action={action}
                     onSaveComment={saveComment}
                     onCancel={toggleCommentPopup}
                 />
