@@ -1,7 +1,7 @@
 const db = require('../config/dbconfig');
 
 class Action {
-  constructor(id, title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, linkedObjective, comment, publishedDateTime) {
+  constructor(id, title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, linkedObjective, comment, publishedDateTime, objectiveId) {
     this.id = id;
     this.title = title;
     this.description = description;
@@ -17,6 +17,7 @@ class Action {
     this.isGood = isGood;
     this.publishedDateTime = publishedDateTime;
     this.finishedDateTime = finishedDateTime;
+    this.objectiveId = objectiveId;
   }
 
   static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration) {
@@ -78,7 +79,7 @@ class Action {
             row.realDuration,
             row.linkedObjective,
             row.comment,
-            row.publishedDateTime
+            row.publishedDateTime,
           ));
           resolve(actions);
         }
