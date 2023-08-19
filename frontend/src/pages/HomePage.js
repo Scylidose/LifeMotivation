@@ -7,19 +7,17 @@ const HomePage = () => {
   const [actions, setActions] = useState([]);
 
   useEffect(() => {
-    const fetchActions = async () => {
-      try {
-        const username = 'root'; // To change
-        const actionsData = await getActionsForUser(username);
-        setActions(actionsData);
-        console.log(actionsData);
-      } catch (error) {
-        console.error('Error fetching actions:', error);
-      }
-    };
-
     fetchActions();
   }, []);
+
+  const fetchActions = async () => {
+    try {
+      const fetchedActions = await getActionsForUser('root') // To change
+      setActions(fetchedActions);
+    } catch (error) {
+      console.error('Error fetching actions:', error);
+    }
+  };
 
   const handleDelete = async (actionId) => {
     try {
