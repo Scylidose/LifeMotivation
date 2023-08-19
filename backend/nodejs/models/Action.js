@@ -25,8 +25,8 @@ class Action {
     return new Promise((resolve, reject) => {
       const publishedDateTime = new Date().getTime();
       db.run(
-        'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime],
+        'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime, objectiveId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime, 1],
         function (err) {
           if (err) {
             console.log("ROLLBACK");
@@ -48,7 +48,8 @@ class Action {
               null,
               null,
               "",
-              publishedDateTime
+              publishedDateTime,
+              1
             ));
             console.log(`Row updated: ${this.changes}`);
           }
