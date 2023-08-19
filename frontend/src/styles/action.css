@@ -8,6 +8,7 @@
      width: 100%;
      border: 1px solid #ddd;
      padding: 20px;
+     padding-bottom: 40px;
      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
      margin: 10px auto;
      background-color: #fff;
@@ -17,6 +18,10 @@
 
  .action-card:hover {
      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+ }
+
+ .action-card.completed {
+     border: 2px solid #28a745;
  }
 
  .card-header {
@@ -32,6 +37,7 @@
      display: flex;
      gap: 10px;
      align-items: center;
+     position: relative;
  }
 
  .card-header-button {
@@ -41,6 +47,57 @@
      border-radius: 4px;
      cursor: pointer;
      transition: background-color 0.3s ease;
+ }
+
+ .card-header-button.reset-button {
+     background-color: #17a2b8;
+ }
+
+ .card-header-button.reset-button:hover {
+     background-color: #138496;
+ }
+
+ .card-header-button.finish-button {
+     background-color: #28a745;
+ }
+
+ .card-header-button.finish-button:hover {
+     background-color: #218838;
+ }
+
+ .real-duration-card {
+     position: absolute;
+     top: 35px;
+     display: flex;
+     align-items: center;
+ }
+
+ .real-duration-card>span {
+     margin-right: 5px
+ }
+
+ .real-duration-buttons {
+     border: 1px solid #333;
+ }
+
+ #finished-duration {
+     border: none;
+ }
+
+ .real-duration-buttons>.cancel-button {
+     color: #dc3545;
+     background-color: transparent;
+     border: none;
+     border-right: 1px solid #333;
+     border-left: 1px solid #333;
+     cursor: pointer;
+ }
+
+ .real-duration-buttons>.save-button {
+     color: green;
+     background-color: transparent;
+     border: none;
+     cursor: pointer;
  }
 
  .add-comment-button.with-content {
@@ -60,11 +117,11 @@
  }
 
  .delete-button {
-     background-color: #f44336;
+     background-color: #dc3545;
  }
 
  .delete-button:hover {
-     background-color: #d32f2f;
+     background-color: #c82333;
  }
 
  .card-title {
