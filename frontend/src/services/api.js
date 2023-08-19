@@ -44,4 +44,59 @@ async function deleteAction(actionId) {
     }
 }
 
-export { getActionsForUser, createNewAction, deleteAction };
+// Function to mark an action has finished
+async function finishAction(actionId, realDuration) {
+
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/${actionId}/finish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ realDuration }),
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error finish action:', error);
+        throw error;
+    }
+}
+
+// Function to reset an action
+async function resetAction(actionId) {
+
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/${actionId}/reset`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error finish action:', error);
+        throw error;
+    }
+}
+
+// Function to save the comment in an action
+async function addCommentToAction(id, comment) {
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/${id}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ comment }),
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error adding comment:', error);
+        throw error;
+    }
+}
+
+export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction };

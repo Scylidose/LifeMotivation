@@ -1,32 +1,56 @@
 const db = require('../config/dbconfig');
 
 class Action {
-  constructor(id, title, description, author, isGood, importance, frequency, difficulty, consistencyStreak, intendedDuration) {
+  constructor(id, title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, linkedObjective, comment, publishedDateTime, objectiveId) {
     this.id = id;
     this.title = title;
     this.description = description;
-    this.author = author;
-    this.isGood = isGood;
     this.importance = importance;
-    this.frequency = frequency;
+    this.daysOfWeek = daysOfWeek;
     this.difficulty = difficulty;
-    this.consistencyStreak = consistencyStreak;
     this.intendedDuration = intendedDuration;
+    this.realDuration = realDuration;
+    this.linkedObjective = linkedObjective;
+    this.comment = comment;
+    this.author = author;
+    this.consistencyStreak = consistencyStreak;
+    this.isGood = isGood;
+    this.publishedDateTime = publishedDateTime;
+    this.finishedDateTime = finishedDateTime;
+    this.objectiveId = objectiveId;
   }
 
-  static create(title, description, author, isGood, importance, frequency, difficulty, intendedDuration) {
-    console.log("INSERTING : ", title, description, author, isGood, importance, frequency, difficulty, 0, intendedDuration);
+  static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration) {
+    console.log("INSERTING : ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration);
     return new Promise((resolve, reject) => {
+      const publishedDateTime = new Date().getTime();
       db.run(
-        'INSERT INTO actions (title, description, author, isGood, importance, frequency, difficulty, consistencyStreak, intendedDuration) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [title, description, author, isGood, importance, frequency, difficulty, 0, intendedDuration],
+        'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime, objectiveId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime, 1],
         function (err) {
           if (err) {
             console.log("ROLLBACK");
             db.run('ROLLBACK'); // Roll back the transaction if there's an error
             reject(err);
           } else {
-            resolve(new Action(this.lastID, title, description, author, isGood, importance, frequency, difficulty, 0, intendedDuration));
+            resolve(new Action(
+              this.lastID,
+              title,
+              description,
+              author,
+              isGood,
+              importance,
+              daysOfWeek,
+              difficulty,
+              0,
+              intendedDuration,
+              null,
+              null,
+              null,
+              "",
+              publishedDateTime,
+              1
+            ));
             console.log(`Row updated: ${this.changes}`);
           }
         }
@@ -41,10 +65,119 @@ class Action {
         if (err) {
           throw err;
         } else {
-          const actions = rows.map(row => new Action(row.id, row.title, row.description, row.author, row.isGood, row.importance, row.frequency, row.difficulty, row.consistencyStreak, row.intendedDuration));
+          const actions = rows.map(row => new Action(
+            row.id,
+            row.title,
+            row.description,
+            row.author,
+            row.isGood,
+            row.importance,
+            row.daysOfWeek,
+            row.difficulty,
+            row.consistencyStreak,
+            row.intendedDuration,
+            row.finishedDateTime,
+            row.realDuration,
+            row.linkedObjective,
+            row.comment,
+            row.publishedDateTime,
+          ));
           resolve(actions);
         }
       });
+    });
+  }
+
+  static findById(id) {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT * FROM actions WHERE id = ?', [id], (err, row) => {
+        if (err) {
+          reject(err);
+        } else if (!row) {
+          resolve(null);
+        } else {
+          const action = new Action(
+            row.id,
+            row.title,
+            row.description,
+            row.author,
+            row.isGood,
+            row.importance,
+            row.daysOfWeek,
+            row.difficulty,
+            row.consistencyStreak,
+            row.intendedDuration,
+            row.finishedDateTime,
+            row.realDuration,
+            row.linkedObjective,
+            row.comment,
+            row.publishedDateTime
+          );
+          resolve(action);
+        }
+      });
+    });
+  }
+
+  static saveActionComment(id, comment) {
+    console.log("UPDATING ACTION COMMENT:", id);
+
+    return new Promise((resolve, reject) => {
+      db.run(
+        'UPDATE actions SET comment = ? WHERE id = ?',
+        [comment, id],
+        function (err) {
+          if (err) {
+            console.error('Error updating action comment:', err);
+            reject(err);
+          } else {
+            console.log(`Action comment updated: ${this.changes}`);
+            resolve(this.changes);
+          }
+        }
+      );
+    });
+  }
+
+  static finishActionById(id, realDuration) {
+    console.log("UPDATING FINISHED ACTION:", id);
+    return new Promise((resolve, reject) => {
+      const finishedDateTime = new Date().getTime();
+      db.run(
+        'UPDATE actions SET finishedDateTime = ?, realDuration = ? WHERE id = ?',
+        [finishedDateTime, realDuration, id],
+        async function (err) {
+          if (err) {
+            console.error('Error updating finished action:', err);
+            reject(err);
+          } else {
+            console.log(`Finished action updated: ${this.changes}`);
+            const action = await Action.findById(id);
+            resolve(action);
+          }
+        }
+      );
+    });
+  }
+
+  static resetActionById(id) {
+    console.log("UPDATING RESETTING ACTION:", id);
+    return new Promise((resolve, reject) => {
+
+      db.run(
+        'UPDATE actions SET finishedDateTime = ?, realDuration = ? WHERE id = ?',
+        [null, null, id],
+        async function (err) {
+          if (err) {
+            console.error('Error updating resetting action:', err);
+            reject(err);
+          } else {
+            console.log(`Resetting action updated: ${this.changes}`);
+            const action = await Action.findById(id);
+            resolve(action);
+          }
+        }
+      );
     });
   }
 

@@ -9,15 +9,30 @@ db.run(`
     id INTEGER PRIMARY KEY,
     title TEXT,
     description TEXT,
-    author TEXT,
-    isGood INTEGER,
     importance INTEGER,
-    frequency INTEGER,
+    daysOfWeek TEXT,
     difficulty INTEGER,
+    intendedDuration INTEGER,
+    realDuration INTEGER,
+    linkedObjective TEXT,
+    comment TEXT,
+    author TEXT,
     consistencyStreak INTEGER,
-    intendedDuration INTEGER
+    isGood INTEGER,
+    publishedDateTime INTEGER,
+    finishedDateTime INTEGER,
+    objectiveId      INTEGER NOT NULL,
+    FOREIGN KEY (objectiveId)
+       REFERENCES objectives (id) 
   )
 `);
 
+db.run(`
+  CREATE TABLE IF NOT EXISTS objectives (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    description TEXT
+  )
+`);
 
 module.exports = db;

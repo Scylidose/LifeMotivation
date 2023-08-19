@@ -4,7 +4,7 @@
     border: 1px solid #ccc;
 }
 
-#action-form label {
+#action-form label :not(.day-checkboxes *) {
     margin-bottom: 5px;
     display: block;
     font-weight: bold;
@@ -24,6 +24,28 @@
     padding: 5px 10px;
     border: none;
     cursor: pointer;
+}
+
+.day-checkboxes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.day-checkboxes label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.selected-day {
+    font-weight: bold;
+}
+
+.day-label-span {
+    text-align: center;
 }
 
 .dot-slider {

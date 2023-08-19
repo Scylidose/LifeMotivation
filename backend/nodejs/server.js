@@ -28,6 +28,47 @@ app.get('/api/actions/:author', async (req, res) => {
   }
 });
 
+app.post('/api/actions/:id/finish', async (req, res) => {
+  const id = req.params.id;
+  const { realDuration } = req.body;
+
+  try {
+    await Action.finishActionById(id, realDuration);
+    const action = await Action.findById(id);
+    res.json(action);
+  } catch (error) {
+    console.error('Error finishing action:', error);
+    res.status(500).json({ error: 'Error finishing action' });
+  }
+});
+
+app.post('/api/actions/:id/reset', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Action.resetActionById(id);
+    const action = await Action.findById(id);
+    res.json(action);
+  } catch (error) {
+    console.error('Error resetting action:', error);
+    res.status(500).json({ error: 'Error resetting action' });
+  }
+});
+
+app.post('/api/actions/:id/comments', async (req, res) => {
+  const id = req.params.id;
+  const { comment } = req.body;
+
+  try {
+    await Action.saveActionComment(id, comment);
+    const action = await Action.findById(id);
+    res.json(action);
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    res.status(500).json({ error: 'Error adding comment' });
+  }
+});
+
 app.delete('/api/actions/:id', async (req, res) => {
   const actionId = req.params.id;
   try {
@@ -41,7 +82,7 @@ app.delete('/api/actions/:id', async (req, res) => {
 
 app.post('/api/actions', async (req, res) => {
 
-  const { title, description, author, isGood, importance, frequency, difficulty, intendedDuration } = req.body;
+  const { title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration } = req.body;
   try {
 
     const newAction = await Action.create(
@@ -50,7 +91,7 @@ app.post('/api/actions', async (req, res) => {
       author,
       isGood,
       importance,
-      frequency,
+      daysOfWeek,
       difficulty,
       intendedDuration
     );
