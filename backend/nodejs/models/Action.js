@@ -1,7 +1,7 @@
 const db = require('../config/dbconfig');
 
 class Action {
-  constructor(id, title, description, importance, frequency, difficulty, intendedDuration, realDuration, linkedObjective, comment, author, consistencyStreak, isGood, publishedDateTime, finishedDateTime) {
+  constructor(id, title, description, author, isGood, importance, frequency, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, linkedObjective, comment, publishedDateTime) {
     this.id = id;
     this.title = title;
     this.description = description;
@@ -24,15 +24,31 @@ class Action {
     return new Promise((resolve, reject) => {
       const publishedDateTime = new Date().getTime();
       db.run(
-        'INSERT INTO actions (title, description, author, isGood, importance, frequency, difficulty, consistencyStreak, intendedDuration, publishedDateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [title, description, author, isGood, importance, frequency, difficulty, 0, intendedDuration, publishedDateTime],
+        'INSERT INTO actions (title, description, author, isGood, importance, frequency, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [title, description, author, isGood, importance, frequency, difficulty, 0, "", intendedDuration, publishedDateTime],
         function (err) {
           if (err) {
             console.log("ROLLBACK");
             db.run('ROLLBACK'); // Roll back the transaction if there's an error
             reject(err);
           } else {
-            resolve(new Action(this.lastID, title, description, author, isGood, importance, frequency, difficulty, 0, intendedDuration, publishedDateTime));
+            resolve(new Action(
+              this.lastID,
+              title,
+              description,
+              author,
+              isGood,
+              importance,
+              frequency,
+              difficulty,
+              0,
+              intendedDuration,
+              null,
+              null,
+              null,
+              "",
+              publishedDateTime
+            ));
             console.log(`Row updated: ${this.changes}`);
           }
         }
@@ -47,7 +63,23 @@ class Action {
         if (err) {
           throw err;
         } else {
-          const actions = rows.map(row => new Action(row.id, row.title, row.description, row.author, row.isGood, row.importance, row.frequency, row.difficulty, row.consistencyStreak, row.intendedDuration));
+          const actions = rows.map(row => new Action(
+            row.id,
+            row.title,
+            row.description,
+            row.author,
+            row.isGood,
+            row.importance,
+            row.frequency,
+            row.difficulty,
+            row.consistencyStreak,
+            row.intendedDuration,
+            row.finishedDateTime,
+            row.realDuration,
+            row.linkedObjective,
+            row.comment,
+            row.publishedDateTime
+          ));
           resolve(actions);
         }
       });
@@ -62,7 +94,7 @@ class Action {
         } else if (!row) {
           resolve(null);
         } else {
-          resolve(new Action(
+          const action = new Action(
             row.id,
             row.title,
             row.description,
@@ -76,11 +108,32 @@ class Action {
             row.finishedDateTime,
             row.realDuration,
             row.linkedObjective,
-            row.comments,
+            row.comment,
             row.publishedDateTime
-          ));
+          );
+          resolve(action);
         }
       });
+    });
+  }
+
+  static saveActionComment(id, comment) {
+    console.log("UPDATING ACTION COMMENT:", id);
+
+    return new Promise((resolve, reject) => {
+      db.run(
+        'UPDATE actions SET comment = ? WHERE id = ?',
+        [comment, id],
+        function (err) {
+          if (err) {
+            console.error('Error updating action comment:', err);
+            reject(err);
+          } else {
+            console.log(`Action comment updated: ${this.changes}`);
+            resolve(this.changes);
+          }
+        }
+      );
     });
   }
 

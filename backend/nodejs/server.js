@@ -33,14 +33,8 @@ app.post('/api/actions/:id/comments', async (req, res) => {
   const { comment } = req.body;
 
   try {
+    await Action.saveActionComment(id, comment);
     const action = await Action.findById(id);
-    if (!action) {
-      return res.status(404).json({ error: 'Action not found' });
-    }
-
-    action.comments.push(comment);
-    await action.save();
-
     res.json(action);
   } catch (error) {
     console.error('Error adding comment:', error);
