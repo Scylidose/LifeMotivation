@@ -10,6 +10,10 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
         setRealDuration(event.target.value);
     };
 
+    const handleResetAction = () => {
+        resetAction(action.id);
+    };
+
     const handleSaveRealDuration = () => {
         onFinish(action.id, realDuration);
         setRealDuration(realDuration);
@@ -48,7 +52,7 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
             </div>
             <div className="action-buttons">
                 {action.finishedDateTime && (
-                    <button className="card-header-button reset-button" onClick={resetAction}>
+                    <button className="card-header-button reset-button" onClick={handleResetAction}>
                         <i className="fa fa-refresh" aria-hidden="true"></i>
                     </button>
                 )}
