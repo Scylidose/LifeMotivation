@@ -110,12 +110,12 @@ class ActionForm extends Component {
 
         return (
             <div>
-                <button id="create-action-button" onClick={this.toggleForm}>
+                <button id="create-form-button" onClick={this.toggleForm}>
                     Create New Action
                 </button>
 
                 {isFormVisible && (
-                    <form id="action-form">
+                    <form id="form-card">
                         <label htmlFor="title">Title:</label>
                         <input
                             type="text"
