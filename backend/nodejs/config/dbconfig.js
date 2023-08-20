@@ -45,7 +45,9 @@ db.run(`
     description TEXT,
     priority INTEGER,
     complexity INTEGER,
+    publishedDateTime INTEGER,
     intendedFinishDateTime INTEGER,
+    realFinishDateTime INTEGER,
     author TEXT,
     FOREIGN KEY (author)
        REFERENCES users (username) 
