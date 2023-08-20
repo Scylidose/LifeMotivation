@@ -24,6 +24,7 @@ async function createNewAction(actionData) {
         });
         const data = await response.json();
         return data;
+
     } catch (error) {
         console.error('Error creating action:', error);
         throw error;
@@ -99,4 +100,24 @@ async function addCommentToAction(id, comment) {
     }
 }
 
-export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction };
+// Function to create a new objective
+async function createNewObjective(objectiveData) {
+    try {
+        const response = await fetch(`${apiUrl}/api/objectives`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(objectiveData),
+        });
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error creating objective:', error);
+        throw error;
+    }
+}
+
+
+export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction, createNewObjective };

@@ -4,6 +4,7 @@ const path = require('path');
 const db = require('./config/dbconfig');
 const User = require('./models/User');
 const Action = require('./models/Action');
+const Objective = require('./models/Objective');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -11,8 +12,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../../frontend/public')));
-
-User.findOrCreate("root");
 
 app.get('/', (req, res) => {
   const indexPath = path.join(__dirname, '../../frontend/public', 'index.html');
@@ -116,9 +115,33 @@ app.get('/api/users/:username/actions', async (req, res) => {
   }
 });
 
+
+app.post('/api/objectives', async (req, res) => {
+  const { title, description, author, priority, complexity, intendedFinishDateTime } = req.body;
+  try {
+
+    const newObjective = await Objective.create(
+      title,
+      description,
+      author,
+      priority,
+      complexity,
+      intendedFinishDateTime
+    );
+
+    res.status(201).json({ message: 'Objective created successfully', objective: newObjective });
+  } catch (error) {
+    console.error('Error creating objective:', error);
+    res.status(500).json({ error: 'Failed to create objective' });
+  }
+});
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+
+  User.findOrCreate("root");
 });
 
 process.on('SIGINT', () => {
