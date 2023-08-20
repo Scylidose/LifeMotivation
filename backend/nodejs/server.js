@@ -12,6 +12,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../../frontend/public')));
 
+User.findOrCreate("root");
+
 app.get('/', (req, res) => {
   const indexPath = path.join(__dirname, '../../frontend/public', 'index.html');
   res.sendFile(indexPath);
