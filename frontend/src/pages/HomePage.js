@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
+
+import ObjectiveForm from '../components/ObjectiveForm';
+import ObjectiveCard from '../components/ObjectiveCard';
+
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
+
 import { getActionsForUser, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
 
 const HomePage = () => {
