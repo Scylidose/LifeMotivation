@@ -1,28 +1,27 @@
 const db = require('../config/dbconfig');
 
 class User {
-  constructor(id, username, courriel, password) {
-    this.id = id;
+  constructor(username) {
     this.username = username;
-    this.courriel = courriel;
-    this.password = password;
   }
 
-  static findOrCreate(username, courriel, password) {
+  static findOrCreate(username) {
     return new Promise((resolve, reject) => {
+      console.log("CHECK IF USER ", username, " EXISTS");
       db.get('SELECT * FROM users WHERE username = ?', [username], (err, row) => {
         if (err) {
           reject(err);
         } else if (!row) {
-          db.run('INSERT INTO users (username, courriel, password) VALUES (?, ?, ?)', [username, courriel, password], function (err) {
+          console.log("INSERTING NEW USER: ", username);
+          db.run('INSERT INTO users (username) VALUES (?)', [username], function (err) {
             if (err) {
               reject(err);
             } else {
-              resolve(new User(this.lastID, username, courriel, password));
+              resolve(new User(username));
             }
           });
         } else {
-          resolve(new User(row.id, row.username, row.courriel, row.password));
+          resolve(new User(row.username));
         }
       });
     });
@@ -31,7 +30,7 @@ class User {
   // Get all actions associated with a user
   async getActions() {
     return new Promise((resolve, reject) => {
-      db.all('SELECT * FROM actions WHERE author = ?', [this.id], (err, rows) => {
+      db.all('SELECT * FROM actions WHERE author = ?', [this.username], (err, rows) => {
         if (err) {
           reject(err);
         } else {
