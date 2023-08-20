@@ -21,7 +21,7 @@ class Action {
   }
 
   static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration) {
-    console.log("INSERTING : ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration);
+    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration);
     return new Promise((resolve, reject) => {
       const publishedDateTime = new Date().getTime();
       db.run(
@@ -59,7 +59,7 @@ class Action {
   }
 
   static findAllByAuthor(author) {
-    console.log("FETCHING....");
+    console.log("FETCHING ACTIONS BY AUTHOR....");
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM actions WHERE author = ?', [author], (err, rows) => {
         if (err) {
@@ -89,6 +89,7 @@ class Action {
   }
 
   static findById(id) {
+    console.log("FETCHING ACTIONS BY ID....");
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM actions WHERE id = ?', [id], (err, row) => {
         if (err) {
@@ -121,7 +122,6 @@ class Action {
 
   static saveActionComment(id, comment) {
     console.log("UPDATING ACTION COMMENT:", id);
-
     return new Promise((resolve, reject) => {
       db.run(
         'UPDATE actions SET comment = ? WHERE id = ?',

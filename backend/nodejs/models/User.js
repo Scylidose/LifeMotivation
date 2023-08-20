@@ -28,9 +28,10 @@ class User {
   }
 
   // Get all actions associated with a user
-  async getActions() {
+  async getActions(username) {
+    console.log("GET ACTIONS FROM ", username);
     return new Promise((resolve, reject) => {
-      db.all('SELECT * FROM actions WHERE author = ?', [this.username], (err, rows) => {
+      db.all('SELECT * FROM actions WHERE author = ?', [username], (err, rows) => {
         if (err) {
           reject(err);
         } else {
