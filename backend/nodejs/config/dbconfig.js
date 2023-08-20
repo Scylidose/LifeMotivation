@@ -31,7 +31,10 @@ db.run(`
   CREATE TABLE IF NOT EXISTS objectives (
     id INTEGER PRIMARY KEY,
     title TEXT,
-    description TEXT
+    description TEXT,
+    priority INTEGER,
+    complexity INTEGER,
+    intendedFinishDateTime INTEGER
   )
 `);
 
