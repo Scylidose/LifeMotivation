@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CommentPopup from './CommentPopup';
+import { getObjectiveById } from '../services/api';
 
 const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) => {
     const [showCommentPopup, setShowCommentPopup] = useState(false);
     const [showFinishDuration, setShowFinishDuration] = useState(false);
     const [realDuration, setRealDuration] = useState(0);
+    const [linkedObjective, setLinkedObjective] = useState(null);
 
     const handleRealDuration = (event) => {
         setRealDuration(event.target.value);
@@ -45,6 +47,19 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
 
     const selectedDays = formatDaysOfWeek(JSON.parse(action.daysOfWeek));
 
+    useEffect(() => {
+        const fetchObjectiveActions = async (objectiveId) => {
+            try {
+                const result = await getObjectiveById(objectiveId);
+                setLinkedObjective(result);
+            } catch (error) {
+                console.error('Error fetching linked objective:', error);
+            }
+        };
+
+        fetchObjectiveActions(action.linkedObjective);
+    }, []);
+
     return (
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
             <div className="card-header">
@@ -57,6 +72,11 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
                 {selectedDays && (
                     <div className="selected-days">
                         <strong>Days of the Week:</strong> {selectedDays}
+                    </div>
+                )}
+                {linkedObjective && (
+                    <div className="linked-objective">
+                        <strong>Linked with objective:</strong> {linkedObjective.title}
                     </div>
                 )}
             </div>
