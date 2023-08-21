@@ -89,6 +89,8 @@ class ObjectiveForm extends Component {
     render() {
         const { isFormVisible } = this.state;
         const complexityLabelValues = ['A Breeze', '', '', '', 'Quite a Challenge'];
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate()+1);
 
         return (
             <div>
@@ -136,7 +138,7 @@ class ObjectiveForm extends Component {
                                 selected={this.state.intendedFinishDateTime}
                                 onChange={this.handleDateChange}
                                 dateFormat="MMMM d, yyyy"
-                                minDate={new Date()}
+                                minDate={tomorrow}
                                 inline
                             />
                         </div>
