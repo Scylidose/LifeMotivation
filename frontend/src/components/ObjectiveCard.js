@@ -15,8 +15,9 @@ const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
         return date.toLocaleDateString('en-GB')
     };
 
+    console.log(objective);
     return (
-        <div className={`objective-card ${objective.finishedDateTime ? 'completed' : ''}`}>
+        <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
             <div className="card-header">
                 <h2 className="card-title">{objective.title}</h2>
             </div>
@@ -29,12 +30,12 @@ const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
                 <p className="card-duration"><strong>Intended finish date:</strong> {convertDate(objective.intendedFinishDateTime)}</p>
             </div>
             <div className="objective-buttons">
-                {objective.finishedDateTime && (
+                {objective.realFinishDateTime && (
                     <button className="card-header-button reset-button" onClick={handleResetObjective}>
                         <i className="fa fa-refresh" aria-hidden="true"></i>
                     </button>
                 )}
-                {!objective.finishedDateTime && (
+                {!objective.realFinishDateTime && (
                     <button className="card-header-button finish-button" onClick={handleFinishObjective}>
                         <i className="fa fa-check" aria-hidden="true"></i>
                     </button>

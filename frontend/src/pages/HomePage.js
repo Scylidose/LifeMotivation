@@ -114,7 +114,7 @@ const HomePage = () => {
         <h1>Your Objectives</h1>
         <div className="objective-list">
           {objectives.map(objective => (
-            <ObjectiveCard key={objective.id} objective={objective} onDelete={handleDeleteObjective} onFinish={handleFinishObjective} resetAction={handleResetObjective}  />
+            <ObjectiveCard key={objective.id} objective={objective} onDelete={handleDeleteObjective} onFinish={handleFinishObjective} resetObjective={handleResetObjective}  />
           ))}
         </div>
       </div>
