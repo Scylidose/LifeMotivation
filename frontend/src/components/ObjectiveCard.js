@@ -15,7 +15,6 @@ const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
         return date.toLocaleDateString('en-GB')
     };
 
-    console.log(objective);
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
             <div className="card-header">
