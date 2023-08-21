@@ -6,7 +6,7 @@ import ObjectiveCard from '../components/ObjectiveCard';
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
 
-import { getActionsForUser, getObjectivesForUser, deleteObjective, finishObjective, resetObjective, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
+import { getActionsForUser, getObjectivesForUser, getObjectiveActions, deleteObjective, finishObjective, resetObjective, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
 
 const HomePage = () => {
   const [actions, setActions] = useState([]);
@@ -32,6 +32,14 @@ const HomePage = () => {
       setObjectives(fetchedObjectives);
     } catch (error) {
       console.error('Error fetching objectives:', error);
+    }
+  };
+
+  const fetchObjectiveActions = async (objectiveId) => {
+    try {
+      await getObjectiveActions(objectiveId)
+    } catch (error) {
+      console.error('Error fetching objective actions:', error);
     }
   };
 
@@ -113,9 +121,30 @@ const HomePage = () => {
         <ObjectiveForm />
         <h1>Your Objectives</h1>
         <div className="objective-list">
-          {objectives.map(objective => (
-            <ObjectiveCard key={objective.id} objective={objective} onDelete={handleDeleteObjective} onFinish={handleFinishObjective} resetObjective={handleResetObjective}  />
-          ))}
+          {objectives
+            .sort((a, b) => {
+              // Sort by priority first
+              if (a.priority !== b.priority) {
+                return a.priority - b.priority;
+              }
+
+              // If priorities are equal, compare intended finish dates
+              const todayTimestamp = Date.now();
+              const aTimeDifference = Math.abs(a.intendedFinishDateTime - todayTimestamp);
+              const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
+
+              return aTimeDifference - bTimeDifference;
+            })
+            .map(objective => (
+              <ObjectiveCard
+                key={objective.id}
+                objective={objective}
+                objectiveActions={fetchObjectiveActions}
+                onDelete={handleDeleteObjective}
+                onFinish={handleFinishObjective}
+                resetObjective={handleResetObjective}
+              />
+            ))}
         </div>
       </div>
     </div>

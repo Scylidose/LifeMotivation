@@ -63,7 +63,7 @@ class ObjectiveForm extends Component {
             description,
             author: 'root', // To change
             complexity: parseInt(complexity),
-            priority: JSON.stringify(priority),
+            priority: parseInt(priority),
             intendedFinishDateTime: intendedFinishDateTime
         };
 

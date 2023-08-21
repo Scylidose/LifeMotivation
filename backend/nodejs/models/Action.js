@@ -88,6 +88,36 @@ class Action {
     });
   }
 
+  static findActionsByObjective(id) {
+    console.log("FETCHING OBJECTIVE ACTIONS BY ID....");
+    return new Promise((resolve, reject) => {
+      db.all('SELECT * FROM actions WHERE objectiveId = ?', [id], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          const actions = rows.map(row => new Action(
+            row.id,
+            row.title,
+            row.description,
+            row.author,
+            row.isGood,
+            row.importance,
+            row.daysOfWeek,
+            row.difficulty,
+            row.consistencyStreak,
+            row.intendedDuration,
+            row.finishedDateTime,
+            row.realDuration,
+            row.linkedObjective,
+            row.comment,
+            row.publishedDateTime,
+          ));
+          resolve(actions);
+        }
+      });
+    });
+  }
+
   static findById(id) {
     console.log("FETCHING ACTIONS BY ID....");
     return new Promise((resolve, reject) => {

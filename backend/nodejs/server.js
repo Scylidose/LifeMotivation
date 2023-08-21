@@ -126,6 +126,18 @@ app.get('/api/objectives/:author', async (req, res) => {
   }
 });
 
+app.get('/api/objectives/:id/actions', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const actions = await Action.findActionsByObjective(id);
+    console.log("->",actions);
+    res.json(actions);
+  } catch (error) {
+    console.error('Error fetching objective actions:', error);
+    res.status(500).json({ error: 'Error fetching objective actions' });
+  }
+});
+
 app.post('/api/objectives', async (req, res) => {
   const { title, description, author, priority, complexity, intendedFinishDateTime } = req.body;
   try {

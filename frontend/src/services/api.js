@@ -131,6 +131,18 @@ async function getObjectivesForUser(username) {
     }
 }
 
+// Function to get the actions related to an objective
+async function getObjectiveActions(objectiveId) {
+    try {
+        const response = await fetch(`${apiUrl}/api/objectives/${objectiveId}/actions`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching objective actions:', error);
+        throw error;
+    }
+}
+
 
 // Function to delete an objective
 async function deleteObjective(objectiveId) {
@@ -183,4 +195,4 @@ async function resetObjective(objectiveId) {
     }
 }
 
-export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction, createNewObjective, getObjectivesForUser, deleteObjective, finishObjective, resetObjective };
+export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction, createNewObjective, getObjectivesForUser, getObjectiveActions, deleteObjective, finishObjective, resetObjective };

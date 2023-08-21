@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
+const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetObjective }) => {
 
     const handleFinishObjective = () => {
         onFinish(objective.id);
@@ -15,6 +15,12 @@ const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
         return date.toLocaleDateString('en-GB')
     };
 
+    const handleObjectiveActions = () => {
+        return objectiveActions(objective.id)
+    }
+
+    const actions = handleObjectiveActions();
+
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
             <div className="card-header">
@@ -24,6 +30,18 @@ const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
             <div className="card-details">
                 <p className="card-info"><strong>Priority:</strong> {objective.priority}</p>
                 <p className="card-info"><strong>Complexity:</strong> {objective.complexity}</p>
+                {actions.length > 0 && (
+                    <div>
+                        <button type="button" class="collapsible">Related Bits</button>
+                        <div class="collapsible-content">
+                            <ul>
+                                {actions.map(action => (
+                                    <li key={action.id}>{action.title} - {convertDate(action.finishedDateTime)}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
             </div>
             <div className="card-footer">
                 <p className="card-duration"><strong>Intended finish date:</strong> {convertDate(objective.intendedFinishDateTime)}</p>
