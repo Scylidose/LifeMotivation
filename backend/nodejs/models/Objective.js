@@ -60,8 +60,8 @@ class Objective {
                         row.author,
                         row.priority,
                         row.complexity,
-                        row.intendedFinishDateTime,
                         row.publishedDateTime,
+                        row.intendedFinishDateTime,
                         row.realFinishDateTime
                     );
                     resolve(objective);
@@ -84,8 +84,8 @@ class Objective {
                         row.author,
                         row.priority,
                         row.complexity,
-                        row.intendedFinishDateTime,
                         row.publishedDateTime,
+                        row.intendedFinishDateTime,
                         row.realFinishDateTime
                     ));
                     resolve(objective);
