@@ -115,11 +115,20 @@ app.get('/api/users/:username/actions', async (req, res) => {
   }
 });
 
+app.get('/api/objectives/:author', async (req, res) => {
+  const author = req.params.author;
+  try {
+    const objectives = await Objective.findAllByAuthor(author);
+    res.json(objectives);
+  } catch (error) {
+    console.error('Error fetching objectives:', error);
+    res.status(500).json({ error: 'Error fetching objectives' });
+  }
+});
 
 app.post('/api/objectives', async (req, res) => {
   const { title, description, author, priority, complexity, intendedFinishDateTime } = req.body;
   try {
-
     const newObjective = await Objective.create(
       title,
       description,
@@ -136,6 +145,42 @@ app.post('/api/objectives', async (req, res) => {
   }
 });
 
+app.delete('/api/objectives/:id', async (req, res) => {
+  const objectiveId = req.params.id;
+  try {
+    await Objective.deleteById(objectiveId);
+    res.json({ message: 'Objective deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting objective:', error);
+    res.status(500).json({ error: 'Error deleting objective' });
+  }
+});
+
+app.post('/api/objectives/:id/finish', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Objective.finishObjectiveById(id);
+    const objective = await Objective.findById(id);
+    res.json(objective);
+  } catch (error) {
+    console.error('Error finishing objective:', error);
+    res.status(500).json({ error: 'Error finishing objective' });
+  }
+});
+
+app.post('/api/objectives/:id/reset', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Objective.resetObjectiveById(id);
+    const objective = await Objective.findById(id);
+    res.json(objective);
+  } catch (error) {
+    console.error('Error resetting objective:', error);
+    res.status(500).json({ error: 'Error resetting objective' });
+  }
+});
 
 // Start the server
 app.listen(port, () => {
