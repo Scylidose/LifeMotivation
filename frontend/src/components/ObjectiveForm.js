@@ -11,7 +11,7 @@ class ObjectiveForm extends Component {
             description: '',
             complexity: 1,
             priority: 1,
-            intendedDuration: 1
+            intendedFinishDateTime: null
         };
     }
 
@@ -36,7 +36,7 @@ class ObjectiveForm extends Component {
             description,
             complexity,
             priority,
-            intendedDuration
+            intendedFinishDateTime
         } = this.state;
 
         // Create a new objective object using the input values
@@ -46,7 +46,7 @@ class ObjectiveForm extends Component {
             author: 'root', // To change
             complexity: parseInt(complexity),
             priority: JSON.stringify(priority),
-            intendedDuration: parseInt(intendedDuration)
+            intendedFinishDateTime: parseInt(intendedFinishDateTime)
         };
 
         try {
@@ -64,7 +64,7 @@ class ObjectiveForm extends Component {
             description: '',
             complexity: 1,
             priority: 1,
-            intendedDuration: 1
+            intendedFinishDateTime: null
         });
     };
 
@@ -112,16 +112,8 @@ class ObjectiveForm extends Component {
                             onChange={this.handleInputChange}
                         />
 
-                        <label htmlFor="intendedDuration">Intended Duration (minutes):</label>
-                        <input
-                            type="number"
-                            id="intended-duration"
-                            name="intendedDuration"
-                            min="1"
-                            max="1440"
-                            value={this.state.intendedDuration}
-                            onChange={this.handleInputChange}
-                        />
+                        <label htmlFor="intendedFinishDateTime">Intended Duration (minutes):</label>
+                        
                         <button type="button" onClick={this.handleSubmit}>Create</button>
                     </form>
                 )}

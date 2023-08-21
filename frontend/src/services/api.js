@@ -119,5 +119,68 @@ async function createNewObjective(objectiveData) {
     }
 }
 
+// Function to get objectives by user
+async function getObjectivesForUser(username) {
+    try {
+        const response = await fetch(`${apiUrl}/api/objectives/${username}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching objectives:', error);
+        throw error;
+    }
+}
 
-export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction, createNewObjective };
+
+// Function to delete an objective
+async function deleteObjective(objectiveId) {
+    try {
+        const response = await fetch(`${apiUrl}/api/objectives/${objectiveId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error deleting objective:', error);
+        throw error;
+    }
+}
+
+// Function to mark an objective has finished
+async function finishObjective(objectiveId, realDuration) {
+
+    try {
+        const response = await fetch(`${apiUrl}/api/objectives/${objectiveId}/finish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ realDuration }),
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error finish objective:', error);
+        throw error;
+    }
+}
+
+// Function to reset an objective
+async function resetObjective(objectiveId) {
+
+    try {
+        const response = await fetch(`${apiUrl}/api/objectives/${objectiveId}/reset`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error finish objective:', error);
+        throw error;
+    }
+}
+
+export { getActionsForUser, createNewAction, deleteAction, resetAction, finishAction, addCommentToAction, createNewObjective, getObjectivesForUser, deleteObjective, finishObjective, resetObjective };
