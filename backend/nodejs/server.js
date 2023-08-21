@@ -83,7 +83,7 @@ app.delete('/api/actions/:id', async (req, res) => {
 
 app.post('/api/actions', async (req, res) => {
 
-  const { title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration } = req.body;
+  const { title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration, linkedObjective } = req.body;
   try {
 
     const newAction = await Action.create(
@@ -94,7 +94,8 @@ app.post('/api/actions', async (req, res) => {
       importance,
       daysOfWeek,
       difficulty,
-      intendedDuration
+      intendedDuration,
+      linkedObjective
     );
 
     res.status(201).json({ message: 'Action created successfully', action: newAction });
@@ -126,11 +127,21 @@ app.get('/api/objectives/:author', async (req, res) => {
   }
 });
 
+app.get('/api/objective/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const objective = await Objective.findById(id);
+    res.json(objective);
+  } catch (error) {
+    console.error('Error fetching objective:', error);
+    res.status(500).json({ error: 'Error fetching objective' });
+  }
+});
+
 app.get('/api/objectives/:id/actions', async (req, res) => {
   const id = req.params.id;
   try {
     const actions = await Action.findActionsByObjective(id);
-    console.log("->",actions);
     res.json(actions);
   } catch (error) {
     console.error('Error fetching objective actions:', error);

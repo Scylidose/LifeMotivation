@@ -20,13 +20,13 @@ class Action {
     this.objectiveId = objectiveId;
   }
 
-  static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration) {
-    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration);
+  static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration, linkedObjective) {
+    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration, linkedObjective);
     return new Promise((resolve, reject) => {
       const publishedDateTime = new Date().getTime();
       db.run(
-        'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime, objectiveId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime, 1],
+        'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime, linkedObjective, objectiveId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime, linkedObjective, 1],
         function (err) {
           if (err) {
             console.log("ROLLBACK");
@@ -49,6 +49,7 @@ class Action {
               null,
               "",
               publishedDateTime,
+              linkedObjective,
               1
             ));
             console.log(`Row updated: ${this.changes}`);
