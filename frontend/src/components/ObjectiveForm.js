@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { createNewObjective } from '../services/api';
 import DotSlider from './DotSlider';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 class ObjectiveForm extends Component {
     constructor(props) {
@@ -28,6 +30,22 @@ class ObjectiveForm extends Component {
         this.setState({ [name]: value });
     };
 
+    saveTimestamp = (selectedDate) => {
+        if (selectedDate) {
+            const timestamp = selectedDate.getTime();
+            console.log('Selected Timestamp:', timestamp);
+            console.log('Selected Date: ', selectedDate);
+            return timestamp;
+        } else {
+            console.log('No date selected.');
+            return null;
+        }
+    };
+
+    handleDateChange = (date) => {
+        this.setState({ ["intendedFinishDateTime"]: this.saveTimestamp(date) });
+    };
+
     // Handle form submission
     handleSubmit = async event => {
         event.preventDefault();
@@ -46,7 +64,7 @@ class ObjectiveForm extends Component {
             author: 'root', // To change
             complexity: parseInt(complexity),
             priority: JSON.stringify(priority),
-            intendedFinishDateTime: parseInt(intendedFinishDateTime)
+            intendedFinishDateTime: intendedFinishDateTime
         };
 
         try {
@@ -113,7 +131,16 @@ class ObjectiveForm extends Component {
                         />
 
                         <label htmlFor="intendedFinishDateTime">Intended Duration (minutes):</label>
-                        
+                        <div className="calendar">
+                            <DatePicker
+                                selected={this.state.intendedFinishDateTime}
+                                onChange={this.handleDateChange}
+                                dateFormat="MMMM d, yyyy"
+                                minDate={new Date()}
+                                inline
+                            />
+                        </div>
+
                         <button type="button" onClick={this.handleSubmit}>Create</button>
                     </form>
                 )}
