@@ -9,11 +9,6 @@ import React from 'react';
  */
 const DotSlider = ({ labelValues, type }) => {
 
-    // Returns the label for a given value.
-    const getLabel = (value) => {
-        return value;
-    };
-
     return (
         <div className="dot-slider">
             {labelValues.map((value, index) => (
@@ -25,13 +20,13 @@ const DotSlider = ({ labelValues, type }) => {
                         value={index + 1}
                         required
                     />
-                    {index === 0 || index === labelValues.length - 1 ? (
-                        // Display labels for the first and last items
-                        <label htmlFor={`${type}-${index + 1}`} className="slider-label">{getLabel(value)}</label>
-                    ) : (
-                        // Empty label for other items
-                        <label htmlFor={`${type}-${index + 1}`} className="slider-label"></label>
-                    )}
+                    <label
+                        key={value ? `${type}-${index + 1}` : `empty-label-${index}`}
+                        htmlFor={`${type}-${index + 1}`}
+                        className="slider-label"
+                    >
+                        {value}
+                    </label>
                 </React.Fragment>
             ))}
         </div>

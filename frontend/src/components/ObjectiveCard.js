@@ -2,34 +2,34 @@ import React, { useState, useEffect } from 'react';
 import Collapsible from 'react-collapsible';
 
 import { objectivesApi } from '../services/api/index';
+import { convertDate } from '../utils/Utils';
 
-const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetObjective }) => {
+const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
     const [linkedActions, setLinkedActions] = useState(null);
 
+    // Effect to fetch linked actions when the objective ID changes
     useEffect(() => {
-        const fetchObjectiveActions = async (objectiveId) => {
+        const fetchObjectiveActions = async () => {
             try {
-                const result = await objectivesApi.getObjectiveActions(objectiveId);
+                const result = await objectivesApi.getObjectiveActions(objective.id);
                 setLinkedActions(result);
             } catch (error) {
                 console.error('Error fetching linked actions:', error);
             }
         };
 
-        fetchObjectiveActions(objective.id);
-    }, []);
+        // Call the fetchObjectiveActions function when the objective ID changes
+        fetchObjectiveActions();
+    }, [objective.id]);
 
+    // Function to handle finishing the objective
     const handleFinishObjective = () => {
         onFinish(objective.id);
     };
 
+    // Function to handle resetting the objective
     const handleResetObjective = () => {
         resetObjective(objective.id);
-    };
-
-    const convertDate = (timestamp) => {
-        var date = new Date(timestamp);
-        return date.toLocaleDateString('en-GB')
     };
 
     return (
@@ -47,7 +47,7 @@ const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetO
                             <ul className="linked-actions">
                                 {linkedActions.map(action => (
                                     <li key={action.id}>
-                                        {action.title} - Created {convertDate(action.publishedDateTime)} 
+                                        {action.title} - Created {convertDate(action.publishedDateTime)}
                                         {action.finishedDateTime ? (
                                             ` - Finished the ${convertDate(action.finishedDateTime)}`
                                         ) : (

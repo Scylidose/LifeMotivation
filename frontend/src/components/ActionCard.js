@@ -8,33 +8,40 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
     const [realDuration, setRealDuration] = useState(0);
     const [linkedObjective, setLinkedObjective] = useState(null);
 
+    // Handler for the real duration input change
     const handleRealDuration = (event) => {
         setRealDuration(event.target.value);
     };
 
+    // Handler to reset an action
     const handleResetAction = () => {
         resetAction(action.id);
     };
 
+    // Handler to reset an action
     const handleSaveRealDuration = () => {
         onFinish(action.id, realDuration);
         setRealDuration(realDuration);
         setShowFinishDuration(false);
     };
 
+    // Toggles the visibility of the comment popup
     const toggleCommentPopup = () => {
         setShowCommentPopup(!showCommentPopup);
     };
 
+    // Toggles the visibility of the real duration input
     const toggleFinishDuration = () => {
         setShowFinishDuration(!showFinishDuration);
     };
 
+    // Saves a comment for an action
     const saveComment = (id, comment) => {
         onSaveComment(id, comment);
         setShowCommentPopup(false);
     };
 
+    // Formats the days of the week from an object to a string
     const formatDaysOfWeek = (daysOfWeekObject) => {
         const selectedDays = [];
         for (const day in daysOfWeekObject) {
@@ -45,20 +52,22 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
         return selectedDays.join(', ');
     };
 
+    // Formats the days of the week for display
     const selectedDays = formatDaysOfWeek(JSON.parse(action.daysOfWeek));
 
+    // Effect to fetch linked objective information when the component mounts
     useEffect(() => {
-        const fetchObjectiveActions = async (objectiveId) => {
+        const fetchObjectiveActions = async () => {
             try {
-                const result = await objectivesApi.getObjectiveById(objectiveId);
+                const result = await objectivesApi.getObjectiveById(action.objectiveId);
                 setLinkedObjective(result);
             } catch (error) {
                 console.error('Error fetching linked objective:', error);
             }
         };
-
-        fetchObjectiveActions(action.objectiveId);
-    }, []);
+        // Fetch the linked objective information
+        fetchObjectiveActions();
+    }, [action.objectiveId]);
 
     return (
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
