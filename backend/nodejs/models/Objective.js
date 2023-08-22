@@ -45,7 +45,7 @@ class Objective {
     }
 
     static findById(id) {
-        console.log("FETCHING OBJECTIVE BY ID....");
+        console.log("FETCHING OBJECTIVE BY ID: ", id);
         return new Promise((resolve, reject) => {
             db.get('SELECT * FROM objectives WHERE id = ?', [id], (err, row) => {
                 if (err) {

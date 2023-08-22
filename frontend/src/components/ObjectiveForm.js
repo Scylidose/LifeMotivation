@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createNewObjective } from '../services/api';
+import { objectivesApi } from '../services/api/index';
 import DotSlider from './DotSlider';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -30,11 +30,10 @@ class ObjectiveForm extends Component {
         this.setState({ [name]: value });
     };
 
+    // Convert a selected date into a timestamp and log it
     saveTimestamp = (selectedDate) => {
         if (selectedDate) {
             const timestamp = selectedDate.getTime();
-            console.log('Selected Timestamp:', timestamp);
-            console.log('Selected Date: ', selectedDate);
             return timestamp;
         } else {
             console.log('No date selected.');
@@ -42,8 +41,9 @@ class ObjectiveForm extends Component {
         }
     };
 
+    // Handle date picker changes and set the intended finish date and time
     handleDateChange = (date) => {
-        this.setState({ ["intendedFinishDateTime"]: this.saveTimestamp(date) });
+        this.setState({ intendedFinishDateTime: this.saveTimestamp(date) });
     };
 
     // Handle form submission
@@ -68,9 +68,9 @@ class ObjectiveForm extends Component {
         };
 
         try {
-            const createdObjective = await createNewObjective(newObjective);
+            const createdObjective = await objectivesApi.createNewObjective(newObjective);
             console.log('Objective created:', createdObjective);
-            window.location.reload();
+            window.location.reload(); // Reload the page after creating the objective
         } catch (error) {
             console.error('Error creating objective:', error);
         }
@@ -88,9 +88,9 @@ class ObjectiveForm extends Component {
 
     render() {
         const { isFormVisible } = this.state;
-        const complexityLabelValues = ['A Breeze', '', '', '', 'Quite a Challenge'];
+        const complexityLabelValues = ['A Breeze', '', 'Moderate', '', 'Quite a Challenge'];
         const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate()+1);
+        tomorrow.setDate(tomorrow.getDate() + 1); // Set the date to tomorrow
 
         return (
             <div>

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
+/**
+ * DotSlider component displays a set of radio buttons with labels.
+ * @param {object} props - The component's properties.
+ * @param {Array} props.labelValues - An array of labels to display.
+ * @param {string} props.type - The type of the slider (e.g., "rating").
+ * @returns {JSX.Element} The DotSlider component.
+ */
 const DotSlider = ({ labelValues, type }) => {
-    const [_selectedValue, setSelectedValue] = useState(null);
-
-    const handleChange = (event) => {
-        setSelectedValue(event.target.value);
-    };
 
     return (
         <div className="dot-slider">
@@ -17,21 +19,18 @@ const DotSlider = ({ labelValues, type }) => {
                         id={`${type}-${index + 1}`}
                         value={index + 1}
                         required
-                        onChange={handleChange}
                     />
-                    {index === 0 || index === labelValues.length - 1 ? (
-                        <label htmlFor={`${type}-${index + 1}`} className="slider-label">{getLabel(value)}</label>
-                    ) : (
-                        <label htmlFor={`${type}-${index + 1}`} className="slider-label"></label>
-                    )}
+                    <label
+                        key={value ? `${type}-${index + 1}` : `empty-label-${index}`}
+                        htmlFor={`${type}-${index + 1}`}
+                        className="slider-label"
+                    >
+                        {value}
+                    </label>
                 </React.Fragment>
             ))}
         </div>
     );
-};
-
-const getLabel = (value) => {
-    return value;
 };
 
 export default DotSlider;

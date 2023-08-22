@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { createNewAction, getObjectivesForUser } from '../services/api';
+import { actionsApi, objectivesApi } from '../services/api/index';
+import { convertDate } from '../utils/Utils';
+
 import DotSlider from './DotSlider';
 
 class ActionForm extends Component {
@@ -28,7 +30,8 @@ class ActionForm extends Component {
     }
 
     componentDidMount() {
-        getObjectivesForUser('root')
+        // Fetch existing objectives when the component mounts
+        objectivesApi.getObjectivesForUser('root')
             .then((data) => {
                 this.setState({ existingObjectives: data });
             })
@@ -36,11 +39,6 @@ class ActionForm extends Component {
                 console.error('Error fetching objectives:', error);
             });
     }
-
-    handleObjectiveChange = (event) => {
-        const selectedObjectiveID = event.target.value;
-        this.setState({ selectedObjective: selectedObjectiveID });
-    };
 
     // Toggle form visibility
     toggleForm = () => {
@@ -64,6 +62,12 @@ class ActionForm extends Component {
                 [name]: checked,
             },
         }));
+    };
+
+    // Handle changes in the selected objective
+    handleObjectiveChange = (event) => {
+        const selectedObjectiveID = event.target.value;
+        this.setState({ selectedObjective: selectedObjectiveID });
     };
 
     // Handle form submission
@@ -94,7 +98,8 @@ class ActionForm extends Component {
         };
 
         try {
-            const createdAction = await createNewAction(newAction);
+            // Create the action using the API
+            const createdAction = await actionsApi.createNewAction(newAction);
             console.log('Action created:', createdAction);
             window.location.reload();
         } catch (error) {
@@ -123,19 +128,11 @@ class ActionForm extends Component {
     };
 
     render() {
-        const { isFormVisible } = this.state;
-        const { selectedObjective, existingObjectives } = this.state;
+        const { isFormVisible, selectedObjective, existingObjectives } = this.state;
 
+        // Label values for importance and difficulty sliders
         const importanceLabelValues = ['Meh, No Big Deal', '', '', '', 'Seriously Crucial'];
         const difficultyLabelValues = ['A Breeze', '', '', '', 'Quite a Challenge'];
-
-        const convertDate = (timestamp) => {
-            if(timestamp) {
-                var date = new Date(timestamp);
-                return date.toLocaleDateString('en-GB')
-            }
-            return "No date";
-        };
 
         return (
             <div>
