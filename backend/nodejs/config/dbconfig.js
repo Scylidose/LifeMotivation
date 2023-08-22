@@ -22,7 +22,6 @@ db.run(`
     difficulty INTEGER,
     intendedDuration INTEGER,
     realDuration INTEGER,
-    linkedObjective TEXT,
     comment TEXT,
     author TEXT,
     consistencyStreak INTEGER,

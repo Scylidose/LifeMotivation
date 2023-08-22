@@ -85,7 +85,6 @@ app.post('/api/actions', async (req, res) => {
 
   const { title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration, linkedObjective } = req.body;
   try {
-
     const newAction = await Action.create(
       title,
       description,
