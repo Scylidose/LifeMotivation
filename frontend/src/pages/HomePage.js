@@ -6,7 +6,7 @@ import ObjectiveCard from '../components/ObjectiveCard';
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
 
-import { getActionsForUser, getObjectivesForUser, getObjectiveActions, deleteObjective, finishObjective, resetObjective, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
+import { getActionsForUser, getObjectivesForUser, deleteObjective, finishObjective, resetObjective, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
 
 const HomePage = () => {
   const [actions, setActions] = useState([]);
@@ -32,14 +32,6 @@ const HomePage = () => {
       setObjectives(fetchedObjectives);
     } catch (error) {
       console.error('Error fetching objectives:', error);
-    }
-  };
-
-  const fetchObjectiveActions = async (objectiveId) => {
-    try {
-      await getObjectiveActions(objectiveId)
-    } catch (error) {
-      console.error('Error fetching objective actions:', error);
     }
   };
 
@@ -139,7 +131,6 @@ const HomePage = () => {
               <ObjectiveCard
                 key={objective.id}
                 objective={objective}
-                objectiveActions={fetchObjectiveActions}
                 onDelete={handleDeleteObjective}
                 onFinish={handleFinishObjective}
                 resetObjective={handleResetObjective}

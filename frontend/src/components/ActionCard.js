@@ -57,7 +57,7 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
             }
         };
 
-        fetchObjectiveActions(action.linkedObjective);
+        fetchObjectiveActions(action.objectiveId);
     }, []);
 
     return (
