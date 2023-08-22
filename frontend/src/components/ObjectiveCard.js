@@ -10,7 +10,6 @@ const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetO
         const fetchObjectiveActions = async (objectiveId) => {
             try {
                 const result = await getObjectiveActions(objectiveId);
-                console.log("=>", result);
                 setLinkedActions(result);
             } catch (error) {
                 console.error('Error fetching linked actions:', error);
@@ -33,7 +32,6 @@ const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetO
         return date.toLocaleDateString('en-GB')
     };
 
-    console.log("==>", linkedActions);
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
             <div className="card-header">
