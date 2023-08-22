@@ -4,6 +4,7 @@ const path = require('path');
 const db = require('./config/dbconfig');
 const User = require('./models/User');
 const Action = require('./models/Action');
+const Objective = require('./models/Objective');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -82,9 +83,8 @@ app.delete('/api/actions/:id', async (req, res) => {
 
 app.post('/api/actions', async (req, res) => {
 
-  const { title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration } = req.body;
+  const { title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration, linkedObjective } = req.body;
   try {
-
     const newAction = await Action.create(
       title,
       description,
@@ -93,7 +93,8 @@ app.post('/api/actions', async (req, res) => {
       importance,
       daysOfWeek,
       difficulty,
-      intendedDuration
+      intendedDuration,
+      linkedObjective
     );
 
     res.status(201).json({ message: 'Action created successfully', action: newAction });
@@ -114,9 +115,100 @@ app.get('/api/users/:username/actions', async (req, res) => {
   }
 });
 
+app.get('/api/objectives/:author', async (req, res) => {
+  const author = req.params.author;
+  try {
+    const objectives = await Objective.findAllByAuthor(author);
+    res.json(objectives);
+  } catch (error) {
+    console.error('Error fetching objectives:', error);
+    res.status(500).json({ error: 'Error fetching objectives' });
+  }
+});
+
+app.get('/api/objective/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const objective = await Objective.findById(id);
+    res.json(objective);
+  } catch (error) {
+    console.error('Error fetching objective:', error);
+    res.status(500).json({ error: 'Error fetching objective' });
+  }
+});
+
+app.get('/api/objectives/:id/actions', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const actions = await Action.findActionsByObjective(id);
+    res.json(actions);
+  } catch (error) {
+    console.error('Error fetching objective actions:', error);
+    res.status(500).json({ error: 'Error fetching objective actions' });
+  }
+});
+
+app.post('/api/objectives', async (req, res) => {
+  const { title, description, author, priority, complexity, intendedFinishDateTime } = req.body;
+  try {
+    const newObjective = await Objective.create(
+      title,
+      description,
+      author,
+      priority,
+      complexity,
+      intendedFinishDateTime
+    );
+
+    res.status(201).json({ message: 'Objective created successfully', objective: newObjective });
+  } catch (error) {
+    console.error('Error creating objective:', error);
+    res.status(500).json({ error: 'Failed to create objective' });
+  }
+});
+
+app.delete('/api/objectives/:id', async (req, res) => {
+  const objectiveId = req.params.id;
+  try {
+    await Objective.deleteById(objectiveId);
+    res.json({ message: 'Objective deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting objective:', error);
+    res.status(500).json({ error: 'Error deleting objective' });
+  }
+});
+
+app.post('/api/objectives/:id/finish', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Objective.finishObjectiveById(id);
+    const objective = await Objective.findById(id);
+    res.json(objective);
+  } catch (error) {
+    console.error('Error finishing objective:', error);
+    res.status(500).json({ error: 'Error finishing objective' });
+  }
+});
+
+app.post('/api/objectives/:id/reset', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Objective.resetObjectiveById(id);
+    const objective = await Objective.findById(id);
+    res.json(objective);
+  } catch (error) {
+    console.error('Error resetting objective:', error);
+    res.status(500).json({ error: 'Error resetting objective' });
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+
+  User.findOrCreate("root");
 });
 
 process.on('SIGINT', () => {

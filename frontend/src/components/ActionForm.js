@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createNewAction } from '../services/api';
+import { createNewAction, getObjectivesForUser } from '../services/api';
 import DotSlider from './DotSlider';
 
 class ActionForm extends Component {
@@ -21,9 +21,26 @@ class ActionForm extends Component {
                 saturday: false,
             },
             difficulty: 1,
-            intendedDuration: 1
+            intendedDuration: 1,
+            selectedObjective: '',
+            existingObjectives: [],
         };
     }
+
+    componentDidMount() {
+        getObjectivesForUser('root')
+            .then((data) => {
+                this.setState({ existingObjectives: data });
+            })
+            .catch((error) => {
+                console.error('Error fetching objectives:', error);
+            });
+    }
+
+    handleObjectiveChange = (event) => {
+        const selectedObjectiveID = event.target.value;
+        this.setState({ selectedObjective: selectedObjectiveID });
+    };
 
     // Toggle form visibility
     toggleForm = () => {
@@ -58,7 +75,8 @@ class ActionForm extends Component {
             importance,
             daysOfWeek,
             difficulty,
-            intendedDuration
+            intendedDuration,
+            selectedObjective
         } = this.state;
 
         // Create a new action object using the input values
@@ -71,7 +89,8 @@ class ActionForm extends Component {
             daysOfWeek: JSON.stringify(daysOfWeek),
             difficulty: parseInt(difficulty),
             consistencyStreak: 0,
-            intendedDuration: parseInt(intendedDuration)
+            intendedDuration: parseInt(intendedDuration),
+            linkedObjective: selectedObjective
         };
 
         try {
@@ -98,24 +117,34 @@ class ActionForm extends Component {
             },
             difficulty: 1,
             intendedDuration: 1,
-            isFormVisible: false
+            isFormVisible: false,
+            selectedObjective: ''
         });
     };
 
     render() {
         const { isFormVisible } = this.state;
+        const { selectedObjective, existingObjectives } = this.state;
 
         const importanceLabelValues = ['Meh, No Big Deal', '', '', '', 'Seriously Crucial'];
         const difficultyLabelValues = ['A Breeze', '', '', '', 'Quite a Challenge'];
 
+        const convertDate = (timestamp) => {
+            if(timestamp) {
+                var date = new Date(timestamp);
+                return date.toLocaleDateString('en-GB')
+            }
+            return "No date";
+        };
+
         return (
             <div>
-                <button id="create-action-button" onClick={this.toggleForm}>
+                <button id="create-form-button" onClick={this.toggleForm}>
                     Create New Action
                 </button>
 
                 {isFormVisible && (
-                    <form id="action-form">
+                    <form id="form-card">
                         <label htmlFor="title">Title:</label>
                         <input
                             type="text"
@@ -160,6 +189,25 @@ class ActionForm extends Component {
 
                         <label htmlFor="difficulty">Difficulty:</label>
                         <DotSlider name="difficulty" type="difficulty" onChange={this.handleInputChange} labelValues={difficultyLabelValues} /><br />
+
+                        {existingObjectives.length > 0 && (
+                            <div>
+                                <label htmlFor="linkedObjective">Link an objective</label>
+                                <select
+                                    id="objective"
+                                    name="objective"
+                                    value={selectedObjective}
+                                    onChange={this.handleObjectiveChange}
+                                >
+                                    <option value="">Select an Objective</option>
+                                    {existingObjectives.map((objective) => (
+                                        <option key={objective.id} value={objective.id}>
+                                            {objective.title} - P{objective.priority} - ENDS: {convertDate(objective.intendedFinishDateTime)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
                         <label htmlFor="intendedDuration">Intended Duration (minutes):</label>
                         <input

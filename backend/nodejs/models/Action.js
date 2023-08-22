@@ -1,7 +1,7 @@
 const db = require('../config/dbconfig');
 
 class Action {
-  constructor(id, title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, linkedObjective, comment, publishedDateTime, objectiveId) {
+  constructor(id, title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, comment, publishedDateTime, objectiveId) {
     this.id = id;
     this.title = title;
     this.description = description;
@@ -10,7 +10,6 @@ class Action {
     this.difficulty = difficulty;
     this.intendedDuration = intendedDuration;
     this.realDuration = realDuration;
-    this.linkedObjective = linkedObjective;
     this.comment = comment;
     this.author = author;
     this.consistencyStreak = consistencyStreak;
@@ -20,13 +19,13 @@ class Action {
     this.objectiveId = objectiveId;
   }
 
-  static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration) {
-    console.log("INSERTING : ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration);
+  static create(title, description, author, isGood, importance, daysOfWeek, difficulty, intendedDuration, objectiveId) {
+    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, difficulty, 0, intendedDuration, objectiveId);
     return new Promise((resolve, reject) => {
       const publishedDateTime = new Date().getTime();
       db.run(
         'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime, objectiveId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime, 1],
+        [title, description, author, isGood, importance, daysOfWeek, difficulty, 0, "", intendedDuration, publishedDateTime, objectiveId],
         function (err) {
           if (err) {
             console.log("ROLLBACK");
@@ -46,10 +45,9 @@ class Action {
               intendedDuration,
               null,
               null,
-              null,
               "",
               publishedDateTime,
-              1
+              objectiveId
             ));
             console.log(`Row updated: ${this.changes}`);
           }
@@ -59,7 +57,7 @@ class Action {
   }
 
   static findAllByAuthor(author) {
-    console.log("FETCHING....");
+    console.log("FETCHING ACTIONS BY AUTHOR....");
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM actions WHERE author = ?', [author], (err, rows) => {
         if (err) {
@@ -78,9 +76,39 @@ class Action {
             row.intendedDuration,
             row.finishedDateTime,
             row.realDuration,
-            row.linkedObjective,
             row.comment,
             row.publishedDateTime,
+            row.objectiveId
+          ));
+          resolve(actions);
+        }
+      });
+    });
+  }
+
+  static findActionsByObjective(id) {
+    console.log("FETCHING OBJECTIVE ACTIONS BY ID: ", id);
+    return new Promise((resolve, reject) => {
+      db.all('SELECT * FROM actions WHERE objectiveId = ?', [id], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          const actions = rows.map(row => new Action(
+            row.id,
+            row.title,
+            row.description,
+            row.author,
+            row.isGood,
+            row.importance,
+            row.daysOfWeek,
+            row.difficulty,
+            row.consistencyStreak,
+            row.intendedDuration,
+            row.finishedDateTime,
+            row.realDuration,
+            row.comment,
+            row.publishedDateTime,
+            row.objectiveId
           ));
           resolve(actions);
         }
@@ -89,6 +117,7 @@ class Action {
   }
 
   static findById(id) {
+    console.log("FETCHING ACTIONS BY ID....");
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM actions WHERE id = ?', [id], (err, row) => {
         if (err) {
@@ -109,9 +138,9 @@ class Action {
             row.intendedDuration,
             row.finishedDateTime,
             row.realDuration,
-            row.linkedObjective,
             row.comment,
-            row.publishedDateTime
+            row.publishedDateTime,
+            row.objectiveId
           );
           resolve(action);
         }
@@ -121,7 +150,6 @@ class Action {
 
   static saveActionComment(id, comment) {
     console.log("UPDATING ACTION COMMENT:", id);
-
     return new Promise((resolve, reject) => {
       db.run(
         'UPDATE actions SET comment = ? WHERE id = ?',

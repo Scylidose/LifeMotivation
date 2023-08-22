@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
+
+import ObjectiveForm from '../components/ObjectiveForm';
+import ObjectiveCard from '../components/ObjectiveCard';
+
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
-import { getActionsForUser, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
+
+import { getActionsForUser, getObjectivesForUser, deleteObjective, finishObjective, resetObjective, deleteAction, finishAction, resetAction, addCommentToAction } from '../services/api';
 
 const HomePage = () => {
   const [actions, setActions] = useState([]);
+  const [objectives, setObjectives] = useState([]);
 
   useEffect(() => {
     fetchActions();
+    fetchObjectives();
   }, []);
 
   const fetchActions = async () => {
@@ -19,21 +26,48 @@ const HomePage = () => {
     }
   };
 
+  const fetchObjectives = async () => {
+    try {
+      const fetchedObjectives = await getObjectivesForUser('root') // To change
+      setObjectives(fetchedObjectives);
+    } catch (error) {
+      console.error('Error fetching objectives:', error);
+    }
+  };
+
+  const handleDeleteObjective = async (objectiveId) => {
+    try {
+      await deleteObjective(objectiveId);
+      setObjectives(objectives.filter((objective) => objective.id !== objectiveId));
+    } catch (error) {
+      console.error('Error deleting objective:', error);
+    }
+  };
+
+  const handleResetObjective = async (objectiveId) => {
+    try {
+      await resetObjective(objectiveId);
+      fetchObjectives();
+    } catch (error) {
+      console.error('Error resetting objective:', error);
+    }
+  };
+
+  const handleFinishObjective = async (objectiveId, realDuration) => {
+    try {
+      await finishObjective(objectiveId, realDuration);
+      fetchObjectives();
+    } catch (error) {
+      console.error('Error finishing objective:', error);
+    }
+  };
+
   const handleDeleteAction = async (actionId) => {
     try {
       await deleteAction(actionId);
       setActions(actions.filter((action) => action.id !== actionId));
     } catch (error) {
       console.error('Error deleting action:', error);
-    }
-  };
-
-  const handleSaveActionComment = async (id, comment) => {
-    try {
-      await addCommentToAction(id, comment);
-      fetchActions();
-    } catch (error) {
-      console.error('Error saving comment:', error);
     }
   };
 
@@ -55,14 +89,54 @@ const HomePage = () => {
     }
   };
 
+  const handleSaveActionComment = async (id, comment) => {
+    try {
+      await addCommentToAction(id, comment);
+      fetchActions();
+    } catch (error) {
+      console.error('Error saving comment:', error);
+    }
+  };
+
   return (
     <div>
-      <ActionForm />
-      <h1>Your Bits</h1>
-      <div className="action-list">
-        {actions.map(action => (
-          <ActionCard key={action.id} action={action} onDelete={handleDeleteAction} onFinish={handleFinishAction} resetAction={handleResetAction} onSaveComment={handleSaveActionComment} />
-        ))}
+      <div>
+        <ActionForm />
+        <h1>Your Bits</h1>
+        <div className="action-list">
+          {actions.map(action => (
+            <ActionCard key={action.id} action={action} onDelete={handleDeleteAction} onFinish={handleFinishAction} resetAction={handleResetAction} onSaveComment={handleSaveActionComment} />
+          ))}
+        </div>
+      </div>
+      <div>
+        <ObjectiveForm />
+        <h1>Your Objectives</h1>
+        <div className="objective-list">
+          {objectives
+            .sort((a, b) => {
+              // Sort by priority first
+              if (a.priority !== b.priority) {
+                return a.priority - b.priority;
+              }
+
+              // If priorities are equal, compare intended finish dates
+              const todayTimestamp = Date.now();
+              const aTimeDifference = Math.abs(a.intendedFinishDateTime - todayTimestamp);
+              const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
+
+              return aTimeDifference - bTimeDifference;
+            })
+            .map(objective => (
+              <ObjectiveCard
+                key={objective.id}
+                objective={objective}
+                onDelete={handleDeleteObjective}
+                onFinish={handleFinishObjective}
+                resetObjective={handleResetObjective}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );
