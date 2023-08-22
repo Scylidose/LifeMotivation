@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Collapsible from 'react-collapsible';
 
-import { getObjectiveActions } from '../services/api';
+import { objectivesApi } from '../services/api/index';
 
 const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetObjective }) => {
     const [linkedActions, setLinkedActions] = useState(null);
@@ -9,7 +9,7 @@ const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetO
     useEffect(() => {
         const fetchObjectiveActions = async (objectiveId) => {
             try {
-                const result = await getObjectiveActions(objectiveId);
+                const result = await objectivesApi.getObjectiveActions(objectiveId);
                 setLinkedActions(result);
             } catch (error) {
                 console.error('Error fetching linked actions:', error);

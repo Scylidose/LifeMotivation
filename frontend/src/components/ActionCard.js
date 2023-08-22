@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CommentPopup from './CommentPopup';
-import { getObjectiveById } from '../services/api';
+import { objectivesApi } from '../services/api/index';
 
 const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) => {
     const [showCommentPopup, setShowCommentPopup] = useState(false);
@@ -50,7 +50,7 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
     useEffect(() => {
         const fetchObjectiveActions = async (objectiveId) => {
             try {
-                const result = await getObjectiveById(objectiveId);
+                const result = await objectivesApi.getObjectiveById(objectiveId);
                 setLinkedObjective(result);
             } catch (error) {
                 console.error('Error fetching linked objective:', error);

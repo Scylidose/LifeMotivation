@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createNewAction, getObjectivesForUser } from '../services/api';
+import { actionsApi, objectivesApi } from '../services/api/index';
 import DotSlider from './DotSlider';
 
 class ActionForm extends Component {
@@ -28,7 +28,7 @@ class ActionForm extends Component {
     }
 
     componentDidMount() {
-        getObjectivesForUser('root')
+        objectivesApi.getObjectivesForUser('root')
             .then((data) => {
                 this.setState({ existingObjectives: data });
             })
@@ -94,7 +94,7 @@ class ActionForm extends Component {
         };
 
         try {
-            const createdAction = await createNewAction(newAction);
+            const createdAction = await actionsApi.createNewAction(newAction);
             console.log('Action created:', createdAction);
             window.location.reload();
         } catch (error) {

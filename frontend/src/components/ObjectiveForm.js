@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createNewObjective } from '../services/api';
+import { objectivesApi } from '../services/api/index';
 import DotSlider from './DotSlider';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -68,7 +68,7 @@ class ObjectiveForm extends Component {
         };
 
         try {
-            const createdObjective = await createNewObjective(newObjective);
+            const createdObjective = await objectivesApi.createNewObjective(newObjective);
             console.log('Objective created:', createdObjective);
             window.location.reload();
         } catch (error) {
