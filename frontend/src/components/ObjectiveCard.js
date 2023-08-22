@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Collapsible from 'react-collapsible';
+
+import { getObjectiveActions } from '../services/api';
 
 const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetObjective }) => {
+    const [linkedActions, setLinkedActions] = useState(null);
+
+    useEffect(() => {
+        const fetchObjectiveActions = async (objectiveId) => {
+            try {
+                const result = await getObjectiveActions(objectiveId);
+                console.log("=>", result);
+                setLinkedActions(result);
+            } catch (error) {
+                console.error('Error fetching linked actions:', error);
+            }
+        };
+
+        fetchObjectiveActions(objective.id);
+    }, []);
 
     const handleFinishObjective = () => {
         onFinish(objective.id);
@@ -15,12 +33,7 @@ const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetO
         return date.toLocaleDateString('en-GB')
     };
 
-    const handleObjectiveActions = () => {
-        return objectiveActions(objective.id)
-    }
-
-    const actions = handleObjectiveActions();
-
+    console.log("==>", linkedActions);
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
             <div className="card-header">
@@ -30,16 +43,22 @@ const ObjectiveCard = ({ objective, objectiveActions, onDelete, onFinish, resetO
             <div className="card-details">
                 <p className="card-info"><strong>Priority:</strong> {objective.priority}</p>
                 <p className="card-info"><strong>Complexity:</strong> {objective.complexity}</p>
-                {actions.length > 0 && (
+                {linkedActions && (
                     <div>
-                        <button type="button" class="collapsible">Related Bits</button>
-                        <div class="collapsible-content">
-                            <ul>
-                                {actions.map(action => (
-                                    <li key={action.id}>{action.title} - {convertDate(action.finishedDateTime)}</li>
+                        <Collapsible trigger="Related Bits" className="collapsible-actions">
+                            <ul className="linked-actions">
+                                {linkedActions.map(action => (
+                                    <li key={action.id}>
+                                        {action.title} - Created {convertDate(action.publishedDateTime)} 
+                                        {action.finishedDateTime ? (
+                                            ` - Finished the ${convertDate(action.finishedDateTime)}`
+                                        ) : (
+                                            ''
+                                        )}
+                                    </li>
                                 ))}
                             </ul>
-                        </div>
+                        </Collapsible>
                     </div>
                 )}
             </div>
