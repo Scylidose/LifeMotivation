@@ -2,38 +2,41 @@ import React, { useState, useEffect } from 'react';
 
 import ObjectiveForm from '../components/ObjectiveForm';
 import ObjectiveCard from '../components/ObjectiveCard';
-
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
 
 import { actionsApi, objectivesApi } from '../services/api/index';
 
 const HomePage = () => {
+  // State variables for actions, objectives, loading state, and error handling
   const [actions, setActions] = useState([]);
   const [objectives, setObjectives] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchActions();
-    fetchObjectives();
+    // Fetch data when the component mounts
+    fetchData();
   }, []);
 
-  const fetchActions = async () => {
+  const fetchData = async () => {
     try {
-      const fetchedActions = await actionsApi.getActionsForUser('root') // To change
-      setActions(fetchedActions);
+      // Fetch actions and objectives data in parallel
+      const [actionsData, objectivesData] = await Promise.all([
+        actionsApi.getActionsForUser('root'),
+        objectivesApi.getObjectivesForUser('root')
+      ]);
+      setActions(actionsData);
+      setObjectives(objectivesData);
+      setLoading(false);
     } catch (error) {
-      console.error('Error fetching actions:', error);
+      console.error('Error fetching data:', error);
+      setError(error);
+      setLoading(false);
     }
   };
 
-  const fetchObjectives = async () => {
-    try {
-      const fetchedObjectives = await objectivesApi.getObjectivesForUser('root') // To change
-      setObjectives(fetchedObjectives);
-    } catch (error) {
-      console.error('Error fetching objectives:', error);
-    }
-  };
+  /* Functions for handling objective operations */
 
   const handleDeleteObjective = async (objectiveId) => {
     try {
@@ -47,7 +50,7 @@ const HomePage = () => {
   const handleResetObjective = async (objectiveId) => {
     try {
       await objectivesApi.resetObjective(objectiveId);
-      fetchObjectives();
+      fetchData();
     } catch (error) {
       console.error('Error resetting objective:', error);
     }
@@ -56,11 +59,13 @@ const HomePage = () => {
   const handleFinishObjective = async (objectiveId, realDuration) => {
     try {
       await objectivesApi.finishObjective(objectiveId, realDuration);
-      fetchObjectives();
+      fetchData();
     } catch (error) {
       console.error('Error finishing objective:', error);
     }
   };
+
+  /* Functions for handling action operations */
 
   const handleDeleteAction = async (actionId) => {
     try {
@@ -74,7 +79,7 @@ const HomePage = () => {
   const handleResetAction = async (actionId) => {
     try {
       await actionsApi.resetAction(actionId);
-      fetchActions();
+      fetchData();
     } catch (error) {
       console.error('Error resetting action:', error);
     }
@@ -83,7 +88,7 @@ const HomePage = () => {
   const handleFinishAction = async (actionId, realDuration) => {
     try {
       await actionsApi.finishAction(actionId, realDuration);
-      fetchActions();
+      fetchData();
     } catch (error) {
       console.error('Error finishing action:', error);
     }
@@ -92,7 +97,7 @@ const HomePage = () => {
   const handleSaveActionComment = async (id, comment) => {
     try {
       await actionsApi.addCommentToAction(id, comment);
-      fetchActions();
+      fetchData();
     } catch (error) {
       console.error('Error saving comment:', error);
     }
@@ -103,40 +108,59 @@ const HomePage = () => {
       <div>
         <ActionForm />
         <h1>Your Bits</h1>
-        <div className="action-list">
-          {actions.map(action => (
-            <ActionCard key={action.id} action={action} onDelete={handleDeleteAction} onFinish={handleFinishAction} resetAction={handleResetAction} onSaveComment={handleSaveActionComment} />
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <div className="action-list">
+            {actions.map(action => (
+              <ActionCard
+                key={action.id}
+                action={action}
+                onDelete={handleDeleteAction}
+                onFinish={handleFinishAction}
+                resetAction={handleResetAction}
+                onSaveComment={handleSaveActionComment}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <div>
         <ObjectiveForm />
         <h1>Your Objectives</h1>
-        <div className="objective-list">
-          {objectives
-            .sort((a, b) => {
-              // Sort by priority first
-              if (a.priority !== b.priority) {
-                return a.priority - b.priority;
-              }
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <div className="objective-list">
+            {objectives
+              .sort((a, b) => {
+                // Sort by priority first
+                if (a.priority !== b.priority) {
+                  return a.priority - b.priority;
+                }
 
-              // If priorities are equal, compare intended finish dates
-              const todayTimestamp = Date.now();
-              const aTimeDifference = Math.abs(a.intendedFinishDateTime - todayTimestamp);
-              const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
+                // If priorities are equal, compare intended finish dates
+                const todayTimestamp = Date.now();
+                const aTimeDifference = Math.abs(a.intendedFinishDateTime - todayTimestamp);
+                const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
 
-              return aTimeDifference - bTimeDifference;
-            })
-            .map(objective => (
-              <ObjectiveCard
-                key={objective.id}
-                objective={objective}
-                onDelete={handleDeleteObjective}
-                onFinish={handleFinishObjective}
-                resetObjective={handleResetObjective}
-              />
-            ))}
-        </div>
+                return aTimeDifference - bTimeDifference;
+              })
+              .map(objective => (
+                <ObjectiveCard
+                  key={objective.id}
+                  objective={objective}
+                  onDelete={handleDeleteObjective}
+                  onFinish={handleFinishObjective}
+                  resetObjective={handleResetObjective}
+                />
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );
