@@ -57,7 +57,7 @@ class Action {
   }
 
   static findAllByAuthor(author) {
-    console.log("FETCHING ACTIONS BY AUTHOR....");
+    console.log("FETCHING ACTIONS BY AUTHOR: ", author);
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM actions WHERE author = ?', [author], (err, rows) => {
         if (err) {
@@ -117,7 +117,7 @@ class Action {
   }
 
   static findById(id) {
-    console.log("FETCHING ACTIONS BY ID....");
+    console.log("FETCHING ACTIONS BY ID: ", id);
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM actions WHERE id = ?', [id], (err, row) => {
         if (err) {
