@@ -21,6 +21,23 @@ async function getActionsForUser(username) {
 }
 
 /**
+ * Fetches actions related to an objective.
+ * @param {string} objectiveId - The ID of the objective.
+ * @returns {Promise} A Promise that resolves to the retrieved actions data.
+ */
+async function getObjectiveActions(objectiveId) {
+    try {
+        console.log("test");
+        const response = await fetch(`${apiUrl}/api/actions/objective/${objectiveId}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching objective actions:', error);
+        throw error;
+    }
+}
+
+/**
  * Creates a new action.
  * @param {Object} actionData - The data for the new action.
  * @returns {Promise} A Promise that resolves to the created action data.
@@ -132,6 +149,7 @@ async function addCommentToAction(id, comment) {
 
 export {
     getActionsForUser,
+    getObjectiveActions,
     createNewAction,
     deleteAction,
     finishAction,

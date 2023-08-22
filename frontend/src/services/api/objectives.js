@@ -60,22 +60,6 @@ async function getObjectiveById(id) {
 }
 
 /**
- * Fetches actions related to an objective.
- * @param {string} objectiveId - The ID of the objective.
- * @returns {Promise} A Promise that resolves to the retrieved actions data.
- */
-async function getObjectiveActions(objectiveId) {
-    try {
-        const response = await fetch(`${apiUrl}/api/objectives/${objectiveId}/actions`);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching objective actions:', error);
-        throw error;
-    }
-}
-
-/**
  * Deletes an objective.
  * @param {string} objectiveId - The ID of the objective to delete.
  * @returns {Promise} A Promise that resolves to the deleted objective data.
@@ -143,7 +127,6 @@ export {
     createNewObjective,
     getObjectivesForUser,
     getObjectiveById,
-    getObjectiveActions,
     deleteObjective,
     finishObjective,
     resetObjective
