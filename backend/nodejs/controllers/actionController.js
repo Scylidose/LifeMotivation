@@ -89,6 +89,7 @@ exports.createAction = async (req, res) => {
         isGood,
         importance,
         daysOfWeek,
+        frequency,
         difficulty,
         intendedDuration,
         linkedObjective,
@@ -101,6 +102,7 @@ exports.createAction = async (req, res) => {
             isGood,
             importance,
             daysOfWeek,
+            frequency,
             difficulty,
             intendedDuration,
             linkedObjective
