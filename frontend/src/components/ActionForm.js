@@ -22,6 +22,7 @@ class ActionForm extends Component {
                 friday: false,
                 saturday: false,
             },
+            frequency: 1,
             difficulty: 1,
             intendedDuration: 1,
             selectedObjective: '',
@@ -39,6 +40,13 @@ class ActionForm extends Component {
                 console.error('Error fetching objectives:', error);
             });
     }
+
+    // Function to toggle between "Good" and "Bad" action forms
+    toggleActionType = () => {
+        this.setState((prevState) => ({
+            isGood: !prevState.isGood,
+        }));
+    };
 
     // Toggle form visibility
     toggleForm = () => {
@@ -70,14 +78,16 @@ class ActionForm extends Component {
         this.setState({ selectedObjective: selectedObjectiveID });
     };
 
-    // Handle form submission
+    // Handle form submission for a good action
     handleSubmit = async event => {
         event.preventDefault();
         const {
             title,
             description,
             importance,
+            isGood,
             daysOfWeek,
+            frequency,
             difficulty,
             intendedDuration,
             selectedObjective
@@ -88,9 +98,10 @@ class ActionForm extends Component {
             title,
             description,
             author: 'root', // To change
-            isGood: true, // To change
+            isGood: isGood,
             importance: parseInt(importance),
             daysOfWeek: JSON.stringify(daysOfWeek),
+            frequency: parseInt(frequency),
             difficulty: parseInt(difficulty),
             consistencyStreak: 0,
             intendedDuration: parseInt(intendedDuration),
@@ -110,6 +121,7 @@ class ActionForm extends Component {
         this.setState({
             title: '',
             description: '',
+            isGood: true,
             importance: 1,
             daysOfWeek: {
                 sunday: false,
@@ -120,6 +132,7 @@ class ActionForm extends Component {
                 friday: false,
                 saturday: false,
             },
+            frequency: 1,
             difficulty: 1,
             intendedDuration: 1,
             isFormVisible: false,
@@ -128,11 +141,12 @@ class ActionForm extends Component {
     };
 
     render() {
-        const { isFormVisible, selectedObjective, existingObjectives } = this.state;
+        const { isFormVisible, selectedObjective, existingObjectives, isGood } = this.state;
 
-        // Label values for importance and difficulty sliders
-        const importanceLabelValues = ['Meh, No Big Deal', '', '', '', 'Seriously Crucial'];
-        const difficultyLabelValues = ['A Breeze', '', '', '', 'Quite a Challenge'];
+        // Label values for importance, frequency and difficulty sliders
+        const importanceLabelValues = ['Meh, No Big Deal', '', 'Moderately Important', '', 'Seriously Crucial'];
+        const difficultyLabelValues = ['A Breeze', '', 'Moderately Challenging', '', 'Quite a Challenge'];
+        const frequencyLabelValues = ['Once in a Blue Moon', '', 'Occasionally', '', 'All the Time'];
 
         return (
             <div>
@@ -140,7 +154,12 @@ class ActionForm extends Component {
                     Create New Action
                 </button>
 
+                <button onClick={this.toggleActionType}>
+                    Switch to {isGood ? 'Bad' : 'Good'} Action
+                </button>
+
                 {isFormVisible && (
+
                     <form id="form-card">
                         <label htmlFor="title">Title:</label>
                         <input
@@ -161,62 +180,81 @@ class ActionForm extends Component {
                             onChange={this.handleInputChange}
                             required
                         /><br />
-                        <label htmlFor="importance">Importance:</label>
-                        <DotSlider name="importance" type="importance" onChange={this.handleInputChange} labelValues={importanceLabelValues} /><br />
 
-                        <div>
-                            <label>Days of the Week:</label>
-                            <div className="day-checkboxes">
-
-                                {Object.keys(this.state.daysOfWeek).map((day) => (
-                                    <div key={day} className={this.state.daysOfWeek[day] ? 'selected-day' : ''}>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name={day}
-                                                checked={this.state.daysOfWeek[day]}
-                                                onChange={this.handleDayOfWeekChange}
-                                            />
-                                            <span className="day-label-span">{day.charAt(0).toUpperCase() + day.charAt(1)}</span>
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <label htmlFor="difficulty">Difficulty:</label>
-                        <DotSlider name="difficulty" type="difficulty" onChange={this.handleInputChange} labelValues={difficultyLabelValues} /><br />
-
-                        {existingObjectives.length > 0 && (
+                        {isGood ? (
                             <div>
-                                <label htmlFor="linkedObjective">Link an objective</label>
-                                <select
-                                    id="objective"
-                                    name="objective"
-                                    value={selectedObjective}
-                                    onChange={this.handleObjectiveChange}
-                                >
-                                    <option value="">Select an Objective</option>
-                                    {existingObjectives.map((objective) => (
-                                        <option key={objective.id} value={objective.id}>
-                                            {objective.title} - P{objective.priority} - ENDS: {convertDate(objective.intendedFinishDateTime)}
-                                        </option>
-                                    ))}
-                                </select>
+                                <label htmlFor="importance">Importance:</label>
+                                <DotSlider name="importance" type="importance" onChange={this.handleInputChange} labelValues={importanceLabelValues} /><br />
+                                
+                                <label htmlFor="difficulty">Difficulty:</label>
+                                <DotSlider name="difficulty" type="difficulty" onChange={this.handleInputChange} labelValues={difficultyLabelValues} /><br />
+
+                                <label htmlFor="frequency">Frequency:</label>
+                                <DotSlider name="frequency" type="frequency" onChange={this.handleInputChange} labelValues={frequencyLabelValues} /><br />
+
+                                <div>
+                                    <label>Days of the Week:</label>
+                                    <div className="day-checkboxes">
+
+                                        {Object.keys(this.state.daysOfWeek).map((day) => (
+                                            <div key={day} className={this.state.daysOfWeek[day] ? 'selected-day' : ''}>
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        name={day}
+                                                        checked={this.state.daysOfWeek[day]}
+                                                        onChange={this.handleDayOfWeekChange}
+                                                    />
+                                                    <span className="day-label-span">{day.charAt(0).toUpperCase() + day.charAt(1)}</span>
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {existingObjectives.length > 0 && (
+                                    <div>
+                                        <label htmlFor="linkedObjective">Link an objective</label>
+                                        <select
+                                            id="objective"
+                                            name="objective"
+                                            value={selectedObjective}
+                                            onChange={this.handleObjectiveChange}
+                                        >
+                                            <option value="">Select an Objective</option>
+                                            {existingObjectives.map((objective) => (
+                                                <option key={objective.id} value={objective.id}>
+                                                    {objective.title} - P{objective.priority} - ENDS: {convertDate(objective.intendedFinishDateTime)}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
+                                <label htmlFor="intendedDuration">Intended Duration (minutes):</label>
+                                <input
+                                    type="number"
+                                    id="intended-duration"
+                                    name="intendedDuration"
+                                    min="1"
+                                    max="1440"
+                                    value={this.state.intendedDuration}
+                                    onChange={this.handleInputChange}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                                <label htmlFor="detrimentalImpact">Detrimental Impact:</label>
+
+                                <label htmlFor="detrimentalImpact">Frequency</label>
+
+                                <label htmlFor="detrimentalImpact">Difficulty to break:</label>
+
+                                <label htmlFor="detrimentalImpact">Duration:</label>
+
                             </div>
                         )}
-
-                        <label htmlFor="intendedDuration">Intended Duration (minutes):</label>
-                        <input
-                            type="number"
-                            id="intended-duration"
-                            name="intendedDuration"
-                            min="1"
-                            max="1440"
-                            value={this.state.intendedDuration}
-                            onChange={this.handleInputChange}
-                        />
-                        <button type="button" onClick={this.handleSubmit}>Create</button>
+                        <button type="button" onClick={this.handleSubmit}>Create {isGood ? 'Good' : 'Bad'} Action</button>
                     </form>
                 )}
             </div>

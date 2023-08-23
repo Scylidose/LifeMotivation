@@ -27,7 +27,6 @@ async function getActionsForUser(username) {
  */
 async function getObjectiveActions(objectiveId) {
     try {
-        console.log("test");
         const response = await fetch(`${apiUrl}/api/actions/objective/${objectiveId}`);
         const data = await response.json();
         return data;

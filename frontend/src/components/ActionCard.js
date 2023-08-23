@@ -78,6 +78,8 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
             <div className="card-details">
                 <p className="card-info"><strong>Importance:</strong> {action.importance}</p>
                 <p className="card-info"><strong>Difficulty:</strong> {action.difficulty}</p>
+                <p className="card-info"><strong>Frequency:</strong> {action.frequency}</p>
+
                 {selectedDays && (
                     <div className="selected-days">
                         <strong>Days of the Week:</strong> {selectedDays}
