@@ -57,16 +57,18 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
 
     // Effect to fetch linked objective information when the component mounts
     useEffect(() => {
-        const fetchObjectiveActions = async () => {
-            try {
-                const result = await objectivesApi.getObjectiveById(action.objectiveId);
-                setLinkedObjective(result);
-            } catch (error) {
-                console.error('Error fetching linked objective:', error);
-            }
-        };
-        // Fetch the linked objective information
-        fetchObjectiveActions();
+        if (action.objectiveId) {
+            const fetchObjectiveActions = async () => {
+                try {
+                    const result = await objectivesApi.getObjectiveById(action.objectiveId);
+                    setLinkedObjective(result);
+                } catch (error) {
+                    console.error('Error fetching linked objective:', error);
+                }
+            };
+            // Fetch the linked objective information
+            fetchObjectiveActions();
+        }
     }, [action.objectiveId]);
 
     return (

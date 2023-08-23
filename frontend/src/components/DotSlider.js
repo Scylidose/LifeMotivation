@@ -7,7 +7,11 @@ import React from 'react';
  * @param {string} props.type - The type of the slider (e.g., "rating").
  * @returns {JSX.Element} The DotSlider component.
  */
-const DotSlider = ({ labelValues, type }) => {
+const DotSlider = ({ labelValues, type, onChange }) => {
+
+    const handleSliderChange = (event) => {
+        onChange(type, event.target.value);
+    };
 
     return (
         <div className="dot-slider">
@@ -15,10 +19,10 @@ const DotSlider = ({ labelValues, type }) => {
                 <React.Fragment key={value ? `${type}-${index + 1}` : `empty-label-${index}`}>
                     <input
                         type="radio"
-                        name={`${type}-slider`}
                         id={`${type}-${index + 1}`}
                         value={index + 1}
                         required
+                        onChange={handleSliderChange}
                     />
                     <label
                         key={value ? `${type}-${index + 1}` : `empty-label-${index}`}

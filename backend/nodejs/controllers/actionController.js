@@ -101,8 +101,8 @@ exports.createAction = async (req, res) => {
             author,
             isGood,
             importance,
-            frequency,
             daysOfWeek,
+            frequency,
             difficulty,
             intendedDuration,
             linkedObjective

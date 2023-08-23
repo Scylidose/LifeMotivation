@@ -61,6 +61,11 @@ class ActionForm extends Component {
         this.setState({ [name]: value });
     };
 
+    // Handle slider input changes
+    handleSliderChange = (type, value) => {
+        this.setState({ [type]: value });
+    };
+
     // Handle select day of the week
     handleDayOfWeekChange = (event) => {
         const { name, checked } = event.target;
@@ -148,6 +153,9 @@ class ActionForm extends Component {
         const difficultyLabelValues = ['A Breeze', '', 'Moderately Challenging', '', 'Quite a Challenge'];
         const frequencyLabelValues = ['Once in a Blue Moon', '', 'Occasionally', '', 'All the Time'];
 
+        const detrimentalImpactLabelValues = ['Minimal Impact', '', 'Moderate Impact', '', 'Severe Impact'];
+        const difficultyBreakLabelValues = ['Easy to Break', '', 'Moderately Challenging', '', 'Extremely Difficult'];
+
         return (
             <div>
                 <button id="create-form-button" onClick={this.toggleForm}>
@@ -184,13 +192,13 @@ class ActionForm extends Component {
                         {isGood ? (
                             <div>
                                 <label htmlFor="importance">Importance:</label>
-                                <DotSlider name="importance" type="importance" onChange={this.handleInputChange} labelValues={importanceLabelValues} /><br />
-                                
+                                <DotSlider name="importance" type="importance" onChange={this.handleSliderChange} labelValues={importanceLabelValues} /><br />
+
                                 <label htmlFor="difficulty">Difficulty:</label>
-                                <DotSlider name="difficulty" type="difficulty" onChange={this.handleInputChange} labelValues={difficultyLabelValues} /><br />
+                                <DotSlider name="difficulty" type="difficulty" onChange={this.handleSliderChange} labelValues={difficultyLabelValues} /><br />
 
                                 <label htmlFor="frequency">Frequency:</label>
-                                <DotSlider name="frequency" type="frequency" onChange={this.handleInputChange} labelValues={frequencyLabelValues} /><br />
+                                <DotSlider name="frequency" type="frequency" onChange={this.handleSliderChange} labelValues={frequencyLabelValues} /><br />
 
                                 <div>
                                     <label>Days of the Week:</label>
@@ -245,12 +253,24 @@ class ActionForm extends Component {
                         ) : (
                             <div>
                                 <label htmlFor="detrimentalImpact">Detrimental Impact:</label>
+                                <DotSlider name="detrimentalImpact" type="detrimentalImpact" onChange={this.handleInputChange} labelValues={detrimentalImpactLabelValues} /><br />
 
-                                <label htmlFor="detrimentalImpact">Frequency</label>
+                                <label htmlFor="difficultyBreak">Difficulty to break:</label>
+                                <DotSlider name="difficultyBreak" type="difficultyBreak" onChange={this.handleInputChange} labelValues={difficultyBreakLabelValues} /><br />
 
-                                <label htmlFor="detrimentalImpact">Difficulty to break:</label>
+                                <label htmlFor="frequency">Frequency:</label>
+                                <DotSlider name="frequency" type="frequency" onChange={this.handleInputChange} labelValues={frequencyLabelValues} /><br />
 
-                                <label htmlFor="detrimentalImpact">Duration:</label>
+                                <label htmlFor="intendedDuration">How much time you spend on your bad Bit (minutes):</label>
+                                <input
+                                    type="number"
+                                    id="intended-duration"
+                                    name="intendedDuration"
+                                    min="1"
+                                    max="1440"
+                                    value={this.state.intendedDuration}
+                                    onChange={this.handleInputChange}
+                                />
 
                             </div>
                         )}
