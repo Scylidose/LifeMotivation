@@ -4,7 +4,6 @@ const actionController = require('../controllers/actionController');
 
 router.get('/:author', actionController.getActionsByAuthor);
 router.get('/objective/:id', actionController.getActionsByObjectiveId);
-router.get('/:author/actions', actionController.getActionsByUser);
 
 router.post('/', actionController.createAction);
 router.post('/:id/finish', actionController.finishAction);
