@@ -78,10 +78,19 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
             </div>
             <p className="card-description">{action.description}</p>
             <div className="card-details">
-                <p className="card-info"><strong>Importance:</strong> {action.importance}</p>
-                <p className="card-info"><strong>Difficulty:</strong> {action.difficulty}</p>
-                <p className="card-info"><strong>Frequency:</strong> {action.frequency}</p>
-
+                {action.isGood ? (
+                    <div>
+                        <p className="card-info"><strong>Importance:</strong> {action.importance}</p>
+                        <p className="card-info"><strong>Difficulty:</strong> {action.difficulty}</p>
+                        <p className="card-info"><strong>Frequency:</strong> {action.frequency}</p>
+                    </div>
+                ) : (
+                    <div>
+                        <p className="card-info"><strong>Detrimental Impact:</strong> {action.importance}</p>
+                        <p className="card-info"><strong>Difficulty to Break:</strong> {action.difficulty}</p>
+                        <p className="card-info"><strong>Frequency:</strong> {action.frequency}</p>
+                    </div>
+                )}
                 {selectedDays && (
                     <div className="selected-days">
                         <strong>Days of the Week:</strong> {selectedDays}
@@ -94,7 +103,15 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
                 )}
             </div>
             <div className="card-footer">
-                <p className="card-duration"><strong>Intended Duration:</strong> {action.intendedDuration} min</p>
+                {action.isGood ? (
+                    <div>
+                        <p className="card-duration"><strong>Intended Duration:</strong> {action.intendedDuration} min</p>
+                    </div>
+                ) : (
+                    <div>
+                        <p className="card-duration"><strong>Average time spend:</strong> {action.intendedDuration} min</p>
+                    </div>
+                )}
                 {action.finishedDateTime && (
                     <p className="card-duration"><strong>Real Duration:</strong> {action.realDuration} min</p>
                 )}

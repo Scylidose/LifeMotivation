@@ -261,7 +261,27 @@ class ActionForm extends Component {
                                 <label htmlFor="frequency">Frequency:</label>
                                 <DotSlider name="frequency" type="frequency" onChange={this.handleSliderChange} labelValues={frequencyLabelValues} /><br />
 
-                                <label htmlFor="intendedDuration">How much time you spend on your bad Bit (minutes):</label>
+                                <div>
+                                    <label>Days of the Week:</label>
+                                    <div className="day-checkboxes">
+
+                                        {Object.keys(this.state.daysOfWeek).map((day) => (
+                                            <div key={day} className={this.state.daysOfWeek[day] ? 'selected-day' : ''}>
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        name={day}
+                                                        checked={this.state.daysOfWeek[day]}
+                                                        onChange={this.handleDayOfWeekChange}
+                                                    />
+                                                    <span className="day-label-span">{day.charAt(0).toUpperCase() + day.charAt(1)}</span>
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <label htmlFor="intendedDuration">How much time in average you spend on your bad Bit (minutes):</label>
                                 <input
                                     type="number"
                                     id="intended-duration"
