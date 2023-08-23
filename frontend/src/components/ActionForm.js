@@ -253,13 +253,13 @@ class ActionForm extends Component {
                         ) : (
                             <div>
                                 <label htmlFor="detrimentalImpact">Detrimental Impact:</label>
-                                <DotSlider name="detrimentalImpact" type="detrimentalImpact" onChange={this.handleInputChange} labelValues={detrimentalImpactLabelValues} /><br />
+                                <DotSlider name="detrimentalImpact" type="detrimentalImpact" onChange={this.handleSliderChange} labelValues={detrimentalImpactLabelValues} /><br />
 
                                 <label htmlFor="difficultyBreak">Difficulty to break:</label>
-                                <DotSlider name="difficultyBreak" type="difficultyBreak" onChange={this.handleInputChange} labelValues={difficultyBreakLabelValues} /><br />
+                                <DotSlider name="difficultyBreak" type="difficultyBreak" onChange={this.handleSliderChange} labelValues={difficultyBreakLabelValues} /><br />
 
                                 <label htmlFor="frequency">Frequency:</label>
-                                <DotSlider name="frequency" type="frequency" onChange={this.handleInputChange} labelValues={frequencyLabelValues} /><br />
+                                <DotSlider name="frequency" type="frequency" onChange={this.handleSliderChange} labelValues={frequencyLabelValues} /><br />
 
                                 <label htmlFor="intendedDuration">How much time you spend on your bad Bit (minutes):</label>
                                 <input
