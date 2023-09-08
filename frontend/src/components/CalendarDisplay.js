@@ -3,6 +3,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { format, isSameDay } from 'date-fns';
 
+import Recommendation from './Recommendation';
+
 const CalendarDisplay = ({ actions }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -24,6 +26,7 @@ const CalendarDisplay = ({ actions }) => {
       </div>
       <div className="actions-list">
         <h2>Actions for {format(currentDate, 'MMMM d, yyyy')}</h2>
+        <Recommendation/>
         {todayActions.length === 0 ? (
           <p>No actions for today.</p>
         ) : (
