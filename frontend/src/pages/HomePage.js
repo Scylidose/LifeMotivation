@@ -26,7 +26,9 @@ const HomePage = () => {
         actionsApi.getActionsForUser('root'),
         objectivesApi.getObjectivesForUser('root')
       ]);
-      setActions(actionsData);
+      const sortedActionsData = [...actionsData].sort((a, b) => a.publishedDateTime - b.publishedDateTime);
+
+      setActions(sortedActionsData);
       setObjectives(objectivesData);
       setLoading(false);
     } catch (error) {
