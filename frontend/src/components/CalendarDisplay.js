@@ -6,39 +6,42 @@ import { format, isSameDay } from 'date-fns';
 import Recommendation from './Recommendation';
 
 const CalendarDisplay = ({ actions }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(new Date());
 
-  useEffect(() => {
-    setCurrentDate(new Date());
-  }, []);
+    useEffect(() => {
+        setCurrentDate(new Date());
+    }, []);
 
-  const todayActions = actions.filter((action) =>
-    isSameDay(new Date(action.publishedDateTime), currentDate)
-  );
+    const todayActions = actions.filter((action) =>
+        isSameDay(new Date(action.publishedDateTime), currentDate)
+    );
 
-  return (
-    <div className="page">
-      <div className="calendar">
-        <Calendar value={currentDate} onChange={setCurrentDate} />
-      </div>
-      <div className="current-day">
-        <h1>Today: {format(currentDate, 'MMMM d, yyyy')}</h1>
-      </div>
-      <div className="actions-list">
-        <h2>Actions for {format(currentDate, 'MMMM d, yyyy')}</h2>
-        <Recommendation actions={actions} />
-        {todayActions.length === 0 ? (
-          <p>No actions for today.</p>
-        ) : (
-          <ul>
-            {todayActions.map((action) => (
-              <li key={action.id}>{action.title}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
-  );
+    return (
+        <div className="page">
+            <div className="calendar">
+                <Calendar value={currentDate} onChange={setCurrentDate} />
+            </div>
+            <div className="current-day">
+                <h2>Actions for {format(currentDate, 'MMMM d, yyyy')}</h2>
+
+            </div>
+            <div className="actions-list">
+                <Recommendation actions={actions} />
+                {todayActions.length === 0 ? (
+                    <p>No actions for today.</p>
+                ) : (
+                    <div>
+                        <p>Today actions :</p>
+                        <ul>
+                            {todayActions.map((action) => (
+                                <li key={action.id}>{action.title}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default CalendarDisplay;

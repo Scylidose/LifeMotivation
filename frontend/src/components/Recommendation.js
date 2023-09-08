@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import ActionForm from './ActionForm';
 
 const Recommendation = ({ actions }) => {
 
@@ -11,17 +12,25 @@ const Recommendation = ({ actions }) => {
                 {actions.map((action) => {
                     const currentDayName = daysOfWeek[new Date().getDay()];
 
-                    if (JSON.parse(action.daysOfWeek)[currentDayName.toLowerCase()] || action.frequency == 1 || action.frequency == 2) {
+                    if (JSON.parse(action.daysOfWeek)[currentDayName.toLowerCase()] || action.frequency === 1 || action.frequency === 2) {
                         return (
                             <li key={action.id}>
-                               {action.title}
+                                {action.title}
+                                <ActionForm 
+                                    title={action.title}
+                                    description={action.description}
+                                    isGood={action.isGood}
+                                    daysOfWeek={JSON.parse(action.daysOfWeek)}
+                                    frequency={action.frequency}
+                                    difficulty={action.difficulty}
+                                    intendedDuration={action.intendedDuration}
+                                    selectedObjective={action.objectiveId} />
                             </li>
                         );
                     }
                     return null;
                 })}
             </ul>
-            <p>test</p>
         </div>
     );
 };
