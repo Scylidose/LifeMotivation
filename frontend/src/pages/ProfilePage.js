@@ -7,7 +7,7 @@ import ActionCard from '../components/ActionCard';
 
 import { actionsApi, objectivesApi } from '../services/api/index';
 
-const HomePage = () => {
+const ProfilePage = () => {
   // State variables for actions, objectives, loading state, and error handling
   const [actions, setActions] = useState([]);
   const [objectives, setObjectives] = useState([]);
@@ -168,4 +168,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ProfilePage;
