@@ -50,7 +50,7 @@ async function getObjectivesForUser(username) {
  */
 async function getObjectiveById(id) {
     try {
-        const response = await fetch(`${apiUrl}/api/objective/${id}`);
+        const response = await fetch(`${apiUrl}/api/objectives/${id}`);
         const data = await response.json();
         return data;
     } catch (error) {
