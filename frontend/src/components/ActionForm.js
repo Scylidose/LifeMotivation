@@ -9,24 +9,24 @@ class ActionForm extends Component {
         super(props);
         this.state = {
             isFormVisible: false,
-            title: '',
-            description: '',
-            isGood: true,
-            importance: 1,
+            title: props.title || '',
+            description: props.description || '',
+            isGood: props.isGood !== undefined ? props.isGood : true,
+            importance: props.importance || 1,
             daysOfWeek: {
-                sunday: false,
-                monday: false,
-                tuesday: false,
-                wednesday: false,
-                thursday: false,
-                friday: false,
-                saturday: false,
+                sunday: props.daysOfWeek && props.daysOfWeek.sunday !== undefined ? props.daysOfWeek.sunday : false,
+                monday: props.daysOfWeek && props.daysOfWeek.monday !== undefined ? props.daysOfWeek.monday : false,
+                tuesday: props.daysOfWeek && props.daysOfWeek.tuesday !== undefined ? props.daysOfWeek.tuesday : false,
+                wednesday: props.daysOfWeek && props.daysOfWeek.wednesday !== undefined ? props.daysOfWeek.wednesday : false,
+                thursday: props.daysOfWeek && props.daysOfWeek.thursday !== undefined ? props.daysOfWeek.thursday : false,
+                friday: props.daysOfWeek && props.daysOfWeek.friday !== undefined ? props.daysOfWeek.friday : false,
+                saturday: props.daysOfWeek && props.daysOfWeek.saturday !== undefined ? props.daysOfWeek.saturday : false,
             },
-            frequency: 1,
-            difficulty: 1,
-            intendedDuration: 1,
-            selectedObjective: '',
-            existingObjectives: [],
+            frequency: props.frequency || 1,
+            difficulty: props.difficulty || 1,
+            intendedDuration: props.intendedDuration || 1,
+            selectedObjective: props.selectedObjective || '',
+            existingObjectives: props.existingObjectives || [],
         };
     }
 
@@ -146,7 +146,7 @@ class ActionForm extends Component {
     };
 
     render() {
-        const { isFormVisible, selectedObjective, existingObjectives, isGood } = this.state;
+        const { isFormVisible, existingObjectives, isGood } = this.state;
 
         // Label values for importance, frequency and difficulty sliders
         const importanceLabelValues = ['Meh, No Big Deal', '', 'Moderately Important', '', 'Seriously Crucial'];
@@ -162,13 +162,16 @@ class ActionForm extends Component {
                     Create New Action
                 </button>
 
-                <button onClick={this.toggleActionType}>
-                    Switch to {isGood ? 'Bad' : 'Good'} Action
-                </button>
-
                 {isFormVisible && (
-
                     <form id="form-card">
+                        <div className="slider-container">
+                            <div className="slider-action-label">Good</div>
+                            <label className="slider-switch">
+                                <input type="checkbox" onClick={this.toggleActionType} />
+                                <span className={`slider-slider ${isGood ? 'good' : 'bad'}`}></span>
+                            </label>
+                            <div className="slider-action-label">Bad</div>
+                        </div>
                         <label htmlFor="title">Title:</label>
                         <input
                             type="text"
@@ -189,16 +192,16 @@ class ActionForm extends Component {
                             required
                         /><br />
 
-                        {isGood ? (
+                        {this.state.isGood ? (
                             <div>
                                 <label htmlFor="importance">Importance:</label>
-                                <DotSlider name="importance" type="importance" onChange={this.handleSliderChange} labelValues={importanceLabelValues} /><br />
+                                <DotSlider name="importance" type="importance" baseValue={this.state.importance} onChange={this.handleSliderChange} labelValues={importanceLabelValues} /><br />
 
                                 <label htmlFor="difficulty">Difficulty:</label>
-                                <DotSlider name="difficulty" type="difficulty" onChange={this.handleSliderChange} labelValues={difficultyLabelValues} /><br />
+                                <DotSlider name="difficulty" type="difficulty" baseValue={this.state.difficulty} onChange={this.handleSliderChange} labelValues={difficultyLabelValues} /><br />
 
                                 <label htmlFor="frequency">Frequency:</label>
-                                <DotSlider name="frequency" type="frequency" onChange={this.handleSliderChange} labelValues={frequencyLabelValues} /><br />
+                                <DotSlider name="frequency" type="frequency" baseValue={this.state.frequency} onChange={this.handleSliderChange} labelValues={frequencyLabelValues} /><br />
 
                                 <div>
                                     <label>Days of the Week:</label>
@@ -226,7 +229,7 @@ class ActionForm extends Component {
                                         <select
                                             id="objective"
                                             name="objective"
-                                            value={selectedObjective}
+                                            value={this.state.selectedObjective}
                                             onChange={this.handleObjectiveChange}
                                         >
                                             <option value="">Select an Objective</option>
@@ -253,13 +256,13 @@ class ActionForm extends Component {
                         ) : (
                             <div>
                                 <label htmlFor="detrimentalImpact">Detrimental Impact:</label>
-                                <DotSlider name="detrimentalImpact" type="detrimentalImpact" onChange={this.handleSliderChange} labelValues={detrimentalImpactLabelValues} /><br />
+                                <DotSlider name="importance" type="importance" baseValue={this.state.importance} onChange={this.handleSliderChange} labelValues={detrimentalImpactLabelValues} /><br />
 
                                 <label htmlFor="difficultyBreak">Difficulty to break:</label>
-                                <DotSlider name="difficultyBreak" type="difficultyBreak" onChange={this.handleSliderChange} labelValues={difficultyBreakLabelValues} /><br />
+                                <DotSlider name="difficulty" type="difficulty" baseValue={this.state.difficulty} onChange={this.handleSliderChange} labelValues={difficultyBreakLabelValues} /><br />
 
                                 <label htmlFor="frequency">Frequency:</label>
-                                <DotSlider name="frequency" type="frequency" onChange={this.handleSliderChange} labelValues={frequencyLabelValues} /><br />
+                                <DotSlider name="frequency" type="frequency" baseValue={this.state.frequency} onChange={this.handleSliderChange} labelValues={frequencyLabelValues} /><br />
 
                                 <div>
                                     <label>Days of the Week:</label>
@@ -294,7 +297,7 @@ class ActionForm extends Component {
 
                             </div>
                         )}
-                        <button type="button" onClick={this.handleSubmit}>Create {isGood ? 'Good' : 'Bad'} Action</button>
+                        <button type="button" onClick={this.handleSubmit}>Create {this.state.isGood ? 'Good' : 'Bad'} Action</button>
                     </form>
                 )}
             </div>
