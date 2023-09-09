@@ -27,6 +27,7 @@ class ActionForm extends Component {
             intendedDuration: props.intendedDuration || 1,
             selectedObjective: props.selectedObjective || '',
             existingObjectives: props.existingObjectives || [],
+            publishedDateTime: props.publishedDateTime || new Date().getTime()
         };
     }
 
@@ -95,7 +96,8 @@ class ActionForm extends Component {
             frequency,
             difficulty,
             intendedDuration,
-            selectedObjective
+            selectedObjective,
+            publishedDateTime
         } = this.state;
 
         // Create a new action object using the input values
@@ -110,11 +112,13 @@ class ActionForm extends Component {
             difficulty: parseInt(difficulty),
             consistencyStreak: 0,
             intendedDuration: parseInt(intendedDuration),
-            linkedObjective: selectedObjective
+            linkedObjective: selectedObjective,
+            publishedDateTime: parseInt(publishedDateTime)
         };
 
         try {
             // Create the action using the API
+            console.log(newAction);
             const createdAction = await actionsApi.createNewAction(newAction);
             console.log('Action created:', createdAction);
             window.location.reload();
@@ -141,7 +145,8 @@ class ActionForm extends Component {
             difficulty: 1,
             intendedDuration: 1,
             isFormVisible: false,
-            selectedObjective: ''
+            selectedObjective: '',
+            publishedDateTime: new Date().getTime()
         });
     };
 

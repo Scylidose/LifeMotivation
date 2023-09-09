@@ -40,7 +40,7 @@ const CalendarDisplay = ({ actions }) => {
                         </ul>
                     </div>
                 )}
-                <ActionForm />
+                <ActionForm publishedDateTime={currentDate.getTime()}/>
             </div>
         </div>
     );

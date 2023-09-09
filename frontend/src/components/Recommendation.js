@@ -24,7 +24,8 @@ const Recommendation = ({ actions, currentDate }) => {
                                     frequency={action.frequency}
                                     difficulty={action.difficulty}
                                     intendedDuration={action.intendedDuration}
-                                    selectedObjective={action.objectiveId} />
+                                    selectedObjective={action.objectiveId} 
+                                    publishedDateTime={currentDate.getTime()} />
                             </li>
                         );
                     }
