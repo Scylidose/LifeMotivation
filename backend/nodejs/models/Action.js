@@ -20,10 +20,9 @@ class Action {
     this.objectiveId = objectiveId;
   }
 
-  static create(title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, intendedDuration, objectiveId) {
-    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, 0, intendedDuration, objectiveId);
+  static create(title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, intendedDuration, objectiveId, publishedDateTime) {
+    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, 0, intendedDuration, objectiveId, publishedDateTime);
     return new Promise((resolve, reject) => {
-      const publishedDateTime = new Date().getTime();
       db.run(
         'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime, objectiveId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, 0, "", intendedDuration, publishedDateTime, objectiveId],
