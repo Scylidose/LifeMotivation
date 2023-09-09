@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
+import CalendarPage from './pages/CalendarPage';
+import Layout from './pages/Layout';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <h1>aBitMotivation</h1>
-        <HomePage />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />} >
+            <Route index element={<CalendarPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter >
     );
   }
 }

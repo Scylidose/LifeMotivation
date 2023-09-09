@@ -5,13 +5,16 @@ import React from 'react';
  * @param {object} props - The component's properties.
  * @param {Array} props.labelValues - An array of labels to display.
  * @param {string} props.type - The type of the slider (e.g., "rating").
+ * @param {string} props.baseValue - The already existing value of the input.
+ * @param {function} props.onChange - Callback function to handle changes.
  * @returns {JSX.Element} The DotSlider component.
  */
-const DotSlider = ({ labelValues, type, onChange }) => {
+const DotSlider = ({ labelValues, type, baseValue, onChange }) => {
 
     const handleSliderChange = (event) => {
-        onChange(type, event.target.value);
-    };
+        const newValue = parseInt(event.target.value, 10);
+        onChange(type, newValue); 
+      };
 
     return (
         <div className="dot-slider">
@@ -20,8 +23,10 @@ const DotSlider = ({ labelValues, type, onChange }) => {
                     <input
                         type="radio"
                         id={`${type}-${index + 1}`}
+                        name={type}
                         value={index + 1}
                         required
+                        checked={baseValue === index + 1}
                         onChange={handleSliderChange}
                     />
                     <label

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CommentPopup from './CommentPopup';
 import { objectivesApi } from '../services/api/index';
+import { convertDate } from '../utils/Utils';
 
 const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) => {
     const [showCommentPopup, setShowCommentPopup] = useState(false);
@@ -75,6 +76,9 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
             <div className="card-header">
                 <h2 className="card-title">{action.title}</h2>
+                <div>
+                    <p className="card-duration"><strong>Created:</strong> {convertDate(action.publishedDateTime)}</p>
+                </div>
             </div>
             <p className="card-description">{action.description}</p>
             <div className="card-details">
