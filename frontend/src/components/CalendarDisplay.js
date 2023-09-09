@@ -27,7 +27,7 @@ const CalendarDisplay = ({ actions }) => {
 
             </div>
             <div className="actions-list">
-                <Recommendation actions={actions} />
+                <Recommendation actions={actions} currentDate={currentDate}/>
                 {todayActions.length === 0 ? (
                     <p>No actions for today.</p>
                 ) : (

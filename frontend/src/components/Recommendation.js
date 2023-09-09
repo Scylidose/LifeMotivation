@@ -1,7 +1,7 @@
 import React from 'react';
 import ActionForm from './ActionForm';
 
-const Recommendation = ({ actions }) => {
+const Recommendation = ({ actions, currentDate }) => {
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -10,7 +10,7 @@ const Recommendation = ({ actions }) => {
             <p>Recommended actions :</p>
             <ul>
                 {actions.map((action) => {
-                    const currentDayName = daysOfWeek[new Date().getDay()];
+                    const currentDayName = daysOfWeek[currentDate.getDay()];
 
                     if (JSON.parse(action.daysOfWeek)[currentDayName.toLowerCase()] || action.frequency === 1 || action.frequency === 2) {
                         return (
