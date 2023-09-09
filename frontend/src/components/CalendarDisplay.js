@@ -4,6 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import { format, isSameDay } from 'date-fns';
 
 import Recommendation from './Recommendation';
+import ActionForm from './ActionForm';
 
 const CalendarDisplay = ({ actions }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -39,6 +40,7 @@ const CalendarDisplay = ({ actions }) => {
                         </ul>
                     </div>
                 )}
+                <ActionForm />
             </div>
         </div>
     );
