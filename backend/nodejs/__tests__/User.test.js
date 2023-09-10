@@ -1,12 +1,6 @@
-const { db, closeDatabase } = require('../config/dbconfig');
 const User = require('../models/User');
 
 describe('User model', () => {
-
-    afterAll(async () => {
-    // Close the database connection after tests
-    await closeDatabase();
-  });
 
   test('findOrCreate returns a user', async () => {
     const username = 'testUser';

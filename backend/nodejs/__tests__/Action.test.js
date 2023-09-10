@@ -1,12 +1,6 @@
-const { db, closeDatabase } = require('../config/dbconfig');
 const Action = require('../models/Action');
 
 describe('Action model', () => {
-
-    afterAll(async () => {
-    // Close the database connection after tests
-    await closeDatabase();
-  });
 
   test('findAllByAuthor returns actions for a given author', async () => {
     const author = 'testAuthor';
