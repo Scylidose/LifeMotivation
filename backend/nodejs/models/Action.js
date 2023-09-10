@@ -1,4 +1,4 @@
-const db = require('../config/dbconfig');
+const { db } = require('../config/dbconfig');
 
 class Action {
   constructor(id, title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, comment, publishedDateTime, objectiveId) {
@@ -62,7 +62,7 @@ class Action {
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM actions WHERE author = ?', [author], (err, rows) => {
         if (err) {
-          throw err;
+          reject(err);
         } else {
           const actions = rows.map(row => new Action(
             row.id,
