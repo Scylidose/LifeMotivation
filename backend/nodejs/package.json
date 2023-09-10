@@ -4,8 +4,9 @@
   "description": "Web app for tracking positive habits, leveling up through experience points, and achieving personal growth milestones. Built to promote well-being and habit-building.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"cd backend/nodejs && node server.js\" \"cd frontend && npm start\""
+    "test": "jest",
+    "start": "node server.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,19 @@
   },
   "homepage": "https://github.com/Scylidose/aBitMotivation#readme",
   "dependencies": {
-    "concurrently": "^8.2.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "path": "^0.12.7",
     "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "eslint": "^8.49.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.0.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "jest": "^29.6.4",
+    "supertest": "^6.3.3"
   }
 }

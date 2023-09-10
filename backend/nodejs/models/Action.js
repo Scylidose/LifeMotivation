@@ -1,4 +1,4 @@
-const db = require('../config/dbconfig');
+const { db } = require('../config/dbconfig');
 
 class Action {
   constructor(id, title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, consistencyStreak, intendedDuration, finishedDateTime, realDuration, comment, publishedDateTime, objectiveId) {
@@ -20,10 +20,9 @@ class Action {
     this.objectiveId = objectiveId;
   }
 
-  static create(title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, intendedDuration, objectiveId) {
-    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, 0, intendedDuration, objectiveId);
+  static create(title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, intendedDuration, objectiveId, publishedDateTime) {
+    console.log("INSERTING ACTION: ", title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, 0, intendedDuration, objectiveId, publishedDateTime);
     return new Promise((resolve, reject) => {
-      const publishedDateTime = new Date().getTime();
       db.run(
         'INSERT INTO actions (title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, consistencyStreak, comment, intendedDuration, publishedDateTime, objectiveId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, 0, "", intendedDuration, publishedDateTime, objectiveId],
@@ -63,7 +62,7 @@ class Action {
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM actions WHERE author = ?', [author], (err, rows) => {
         if (err) {
-          throw err;
+          reject(err);
         } else {
           const actions = rows.map(row => new Action(
             row.id,

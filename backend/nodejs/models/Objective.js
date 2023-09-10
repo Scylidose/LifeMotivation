@@ -1,4 +1,4 @@
-const db = require('../config/dbconfig');
+const { db } = require('../config/dbconfig');
 
 class Objective {
     constructor(id, title, description, author, priority, complexity, publishedDateTime, intendedFinishDateTime, realFinishDateTime) {
@@ -75,7 +75,7 @@ class Objective {
         return new Promise((resolve, reject) => {
             db.all('SELECT * FROM objectives WHERE author = ?', [author], (err, rows) => {
                 if (err) {
-                    throw err;
+                    reject(err);
                 } else {
                     const objective = rows.map(row => new Objective(
                         row.id,

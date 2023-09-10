@@ -30,6 +30,9 @@ dist/
 *.db
 *.sqlite
 
+# Exclude mocked DB file
+!mock.db
+
 # Ignore log files
 *.log
 

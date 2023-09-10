@@ -93,6 +93,7 @@ exports.createAction = async (req, res) => {
         difficulty,
         intendedDuration,
         linkedObjective,
+        publishedDateTime
     } = req.body;
     try {
         const newAction = await Action.create(
@@ -105,7 +106,8 @@ exports.createAction = async (req, res) => {
             frequency,
             difficulty,
             intendedDuration,
-            linkedObjective
+            linkedObjective,
+            publishedDateTime
         );
 
         res.status(201).json({ message: 'Action created successfully', action: newAction });

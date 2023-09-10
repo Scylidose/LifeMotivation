@@ -1,4 +1,4 @@
-const db = require('../config/dbconfig');
+const { db } = require('../config/dbconfig');
 
 class User {
   constructor(username) {
@@ -22,6 +22,19 @@ class User {
           });
         } else {
           resolve(new User(row.username));
+        }
+      });
+    });
+  }
+
+  static deleteById(username) {
+    return new Promise((resolve, reject) => {
+      console.log("DELETING USER ", username);
+      db.run('DELETE FROM users WHERE username = ?', [username], function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
         }
       });
     });
