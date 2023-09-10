@@ -1,9 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+// Connect to the SQLite database
+const { closeDatabase } = require('./config/dbconfig');
 
 const actionRoutes = require('./routes/actionRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -32,16 +36,6 @@ app.listen(port, () => {
 
 process.on('SIGINT', () => {
   console.log('Closing database connection...');
-
-  // Close the database connection
-  db.close((err) => {
-    if (err) {
-      console.error('Error closing database:', err);
-    } else {
-      console.log('Database connection closed.');
-    }
-
-    // Terminate the application
-    process.exit();
-  });
+  closeDatabase();
+  process.exit();
 });
