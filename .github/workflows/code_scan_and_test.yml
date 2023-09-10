@@ -18,11 +18,11 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install Dependencies
-        run: npm install
-
       - name: Navigate to Backend Directory
         run: cd backend/nodejs
+
+      - name: Install Dependencies
+        run: npm install
 
       - name: Code Scanning (ESLint)
         run: npm run lint
