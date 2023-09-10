@@ -3,7 +3,7 @@ name: NodeJS Code Scan and Test
 on:
   push:
     branches:
-      - feature/add-scan-tests-automation
+      - master
 
 jobs:
   build:
