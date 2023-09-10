@@ -1,16 +1,26 @@
 const User = require('../models/User');
 
 describe('User model', () => {
+    const author = 'testAuthor';
 
-  test('findOrCreate returns a user', async () => {
-    const username = 'testUser';
-    const user = await User.findOrCreate(username);
+    beforeAll(async () => {
+        // Create a test user
+        await User.findOrCreate(author);
+    });
 
-    // Check that the returned data is an object
-    expect(typeof user).toBe('object');
+    afterAll(async () => {
+        // Remove the test user
+        await User.deleteById(author);
+    });
 
-    // Check that the user has the correct username
-    expect(user.username).toBe(username);
-  });
+    test('findOrCreate returns a user', async () => {
+        const user = await User.findOrCreate(author);
+
+        // Check that the returned data is an object
+        expect(typeof user).toBe('object');
+
+        // Check that the user has the correct username
+        expect(user.username).toBe(author);
+    });
 
 });
