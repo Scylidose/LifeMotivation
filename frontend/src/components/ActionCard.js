@@ -1,29 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import CommentPopup from './CommentPopup';
-import { objectivesApi } from '../services/api/index';
-import { convertDate } from '../utils/Utils';
 
-const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) => {
+import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
+import { convertDate, calculateBitXP } from '../utils/Utils';
+
+const ActionCard = ({ action }) => {
     const [showCommentPopup, setShowCommentPopup] = useState(false);
     const [showFinishDuration, setShowFinishDuration] = useState(false);
     const [realDuration, setRealDuration] = useState(0);
     const [linkedObjective, setLinkedObjective] = useState(null);
 
+    // Handler for deleting an action
+    const handleDeleteAction = async (actionId) => {
+        try {
+            await actionsApi.deleteAction(actionId).then(() => {
+                window.location.reload();
+            });
+        } catch (error) {
+            console.error('Error deleting action:', error);
+        }
+    };
+
+    // Handler for resetting an action
+    const handleResetAction = async () => {
+        const actionId = action.id
+        const username = action.author;
+        var xp = calculateBitXP(action) * (-1);
+
+        try {
+            await actionsApi.resetAction(actionId).then(async () => {
+                await usersApi.updateUserXP(username, xp).then(() => {
+                    window.location.reload();
+                });
+            });
+        } catch (error) {
+            console.error('Error resetting action:', error);
+        }
+    };
+
+    // Handler to finish an action
+    const handleFinishAction = async () => {
+        const actionId = action.id;
+        const username = action.author;
+        var xp = calculateBitXP(action);
+
+        try {
+            console.log("te3t");
+            await actionsApi.finishAction(actionId, realDuration).then(async () => {
+                console.log("test2");
+                await usersApi.updateUserXP(username, xp).then(() => {
+                    console.log("test");
+                    setRealDuration(realDuration);
+                    setShowFinishDuration(false);
+                    window.location.reload();
+                });
+            });
+        } catch (error) {
+            console.error('Error finishing action:', error);
+        }
+    };
+
+    // Saves a comment for an action
+    const handleSaveActionComment = async (actionId, comment) => {
+        try {
+            await actionsApi.addCommentToAction(actionId, comment).then(() => {
+                setShowCommentPopup(false);
+                window.location.reload();
+            });
+        } catch (error) {
+            console.error('Error saving comment:', error);
+        }
+    };
+
     // Handler for the real duration input change
     const handleRealDuration = (event) => {
         setRealDuration(event.target.value);
-    };
-
-    // Handler to reset an action
-    const handleResetAction = () => {
-        resetAction(action.id);
-    };
-
-    // Handler to reset an action
-    const handleSaveRealDuration = () => {
-        onFinish(action.id, realDuration);
-        setRealDuration(realDuration);
-        setShowFinishDuration(false);
     };
 
     // Toggles the visibility of the comment popup
@@ -34,12 +85,6 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
     // Toggles the visibility of the real duration input
     const toggleFinishDuration = () => {
         setShowFinishDuration(!showFinishDuration);
-    };
-
-    // Saves a comment for an action
-    const saveComment = (id, comment) => {
-        onSaveComment(id, comment);
-        setShowCommentPopup(false);
     };
 
     // Formats the days of the week from an object to a string
@@ -74,6 +119,7 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
 
     return (
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
+            <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
             <div className="card-header">
                 <h2 className="card-title">{action.title}</h2>
                 <div>
@@ -146,7 +192,7 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
                             <button className="icon-button cancel-button" onClick={toggleFinishDuration}>
                                 <i className="fa fa-times"></i>
                             </button>
-                            <button className="icon-button save-button" onClick={handleSaveRealDuration}>
+                            <button className="icon-button save-button" onClick={handleFinishAction}>
                                 <i className="fa fa-check"></i>
                             </button>
                         </div>
@@ -156,14 +202,14 @@ const ActionCard = ({ action, onDelete, onFinish, resetAction, onSaveComment }) 
                 <button className={`card-header-button add-comment-button ${action.comment !== '' ? 'with-content' : ''}`} onClick={toggleCommentPopup}>
                     <i className="fa fa-comment" aria-hidden="true"></i>
                 </button>
-                <button className="card-header-button delete-button" onClick={() => onDelete(action.id)}>
+                <button className="card-header-button delete-button" onClick={() => handleDeleteAction(action.id)}>
                     <i className="fa fa-trash" aria-hidden="true"></i>
                 </button>
             </div>
             {showCommentPopup && (
                 <CommentPopup
                     action={action}
-                    onSaveComment={saveComment}
+                    onSaveComment={handleSaveActionComment}
                     onCancel={toggleCommentPopup}
                 />
             )}
