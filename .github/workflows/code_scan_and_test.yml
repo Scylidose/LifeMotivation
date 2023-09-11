@@ -3,7 +3,7 @@ name: NodeJS Code Scan and Test
 on:
   push:
     branches:
-      - master
+      - feature/implement-xp-logic
 
 jobs:
   build:
