@@ -1,3 +1,3 @@
 module.exports = {
-    databasePath: '../../database/mock.db',
+    databasePath: '../../database/abitmotivation.db',
 };
