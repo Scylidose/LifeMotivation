@@ -26,8 +26,9 @@ dist/
 .env.test.local
 .env.production.local
 
-# Ignore database files
+# Ignore database files and config
 *.db
+dbconfig.js
 *.sqlite
 
 # Exclude mocked DB file

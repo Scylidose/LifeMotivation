@@ -1,8 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
+const config = require('./config');
+
 // Create and connect to the SQLite database
-const db = new sqlite3.Database(path.join(__dirname, '../../database/mock.db'), (err) => {
+const db = new sqlite3.Database(path.join(__dirname, config.databasePath), (err) => {
   if (err) {
     console.error('Error connecting to the SQLite database:', err);
   } else {
@@ -37,7 +39,10 @@ const createTable = (tableName, schema) => {
 };
 
 // Define the schema for each table
-const usersSchema = 'username TEXT PRIMARY KEY';
+const usersSchema = `
+  username TEXT PRIMARY KEY,
+  xp INTEGER
+`;
 const actionsSchema = `
   id INTEGER PRIMARY KEY,
   title TEXT,
