@@ -28,7 +28,7 @@ dist/
 
 # Ignore database files and config
 *.db
-dbconfig.js
+*/config.js
 *.sqlite
 
 # Exclude mocked DB file
