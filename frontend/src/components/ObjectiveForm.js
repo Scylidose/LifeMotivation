@@ -4,6 +4,8 @@ import DotSlider from './DotSlider';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import jwt from 'jwt-decode';
+
 class ObjectiveForm extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +17,7 @@ class ObjectiveForm extends Component {
             priority: 1,
             intendedFinishDateTime: null
         };
+        this.token = props.token || null;
     }
 
     // Toggle form visibility
@@ -57,18 +60,20 @@ class ObjectiveForm extends Component {
             intendedFinishDateTime
         } = this.state;
 
+        const decodedToken = jwt(this.token);
+
         // Create a new objective object using the input values
         const newObjective = {
             title,
             description,
-            author: 'root', // To change
+            author: decodedToken.username,
             complexity: parseInt(complexity),
             priority: parseInt(priority),
             intendedFinishDateTime: intendedFinishDateTime
         };
 
         try {
-            const createdObjective = await objectivesApi.createNewObjective(newObjective);
+            const createdObjective = await objectivesApi.createNewObjective(newObjective, this.token);
             console.log('Objective created:', createdObjective);
             window.location.reload(); // Reload the page after creating the objective
         } catch (error) {

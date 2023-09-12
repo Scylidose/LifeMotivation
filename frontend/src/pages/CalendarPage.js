@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import CalendarDisplay from '../components/CalendarDisplay';
 import { actionsApi } from '../services/api/index';
 
-const CalendarPage = () => {
+import jwt from 'jwt-decode';
+
+const CalendarPage = ({ token }) => {
     // State variables for actions, loading state, and error handling
     const [actions, setActions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -10,23 +12,27 @@ const CalendarPage = () => {
 
     useEffect(() => {
         // Fetch data when the component mounts
+        const fetchData = async () => {
+            try {
+                if (!token) {
+                    // Token is not available, handle accordingly (e.g., redirect to login)
+                    return;
+                }
+                const decodedToken = jwt(token);
+
+                // Fetch actions data
+                const actions = await actionsApi.getActionsForUser(decodedToken.username, token);
+
+                setActions(actions);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError(error);
+                setLoading(false);
+            }
+        };
         fetchData();
-    }, []);
-
-    const fetchData = async () => {
-        try {
-            // Fetch actions data
-            const actions = await actionsApi.getActionsForUser('root');
-
-            setActions(actions);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setError(error);
-            setLoading(false);
-        }
-    };
-
+    }, [token]);
 
     return (
 
@@ -37,7 +43,7 @@ const CalendarPage = () => {
                 <p>Error: {error.message}</p>
             ) : (
                 <div>
-                    <CalendarDisplay actions={actions} />
+                    <CalendarDisplay token={token} actions={actions} />
                 </div>
             )}
         </div>

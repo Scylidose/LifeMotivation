@@ -1,7 +1,7 @@
 import React from 'react';
 import ActionForm from './ActionForm';
 
-const Recommendation = ({ actions, currentDate }) => {
+const Recommendation = ({ actions, currentDate, token }) => {
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -17,6 +17,7 @@ const Recommendation = ({ actions, currentDate }) => {
                             <li key={action.id}>
                                 {action.title}
                                 <ActionForm 
+                                    token={token}
                                     title={action.title}
                                     description={action.description}
                                     isGood={action.isGood}

@@ -6,7 +6,7 @@ import { format, isSameDay } from 'date-fns';
 import Recommendation from './Recommendation';
 import ActionForm from './ActionForm';
 
-const CalendarDisplay = ({ actions }) => {
+const CalendarDisplay = ({ actions, token }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const CalendarDisplay = ({ actions }) => {
 
             </div>
             <div className="actions-list">
-                <Recommendation actions={actions} currentDate={currentDate}/>
+                <Recommendation actions={actions} token={token} currentDate={currentDate}/>
                 {todayActions.length === 0 ? (
                     <p>No actions for today.</p>
                 ) : (
@@ -40,7 +40,7 @@ const CalendarDisplay = ({ actions }) => {
                         </ul>
                     </div>
                 )}
-                <ActionForm publishedDateTime={currentDate.getTime()}/>
+                <ActionForm token={token} publishedDateTime={currentDate.getTime()}/>
             </div>
         </div>
     );

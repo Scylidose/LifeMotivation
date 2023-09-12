@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const actionController = require('../controllers/actionController');
+const authenticateToken = require('../middleware/authenticateToken');
 
-router.get('/:author', actionController.getActionsByAuthor);
-router.get('/objective/:id', actionController.getActionsByObjectiveId);
+router.get('/:author', authenticateToken, actionController.getActionsByAuthor);
+router.get('/objective/:id', authenticateToken, actionController.getActionsByObjectiveId);
 
-router.post('/', actionController.createAction);
-router.post('/:id/finish', actionController.finishAction);
-router.post('/:id/reset', actionController.resetAction);
-router.post('/:id/comments', actionController.addActionComment);
+router.post('/', authenticateToken, actionController.createAction);
+router.post('/:id/finish', authenticateToken, actionController.finishAction);
+router.post('/:id/reset', authenticateToken, actionController.resetAction);
+router.post('/:id/comments', authenticateToken, actionController.addActionComment);
 
-router.delete('/:id', actionController.deleteAction);
+router.delete('/:id', authenticateToken, actionController.deleteAction);
 
 module.exports = router;

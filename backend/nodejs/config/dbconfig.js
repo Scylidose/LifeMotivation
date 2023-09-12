@@ -40,7 +40,13 @@ const createTable = (tableName, schema) => {
 
 // Define the schema for each table
 const usersSchema = `
-  username TEXT PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  salt TEXT NOT NULL,
+  email TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   xp INTEGER
 `;
 const actionsSchema = `
