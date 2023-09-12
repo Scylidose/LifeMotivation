@@ -1,5 +1,5 @@
 const base_xp = 500;
-const grown_rate = 1.5;
+const grown_rate = 1.3;
 
 // Function to convert a timestamp to a formatted date
 export function convertDate(timestamp) {
@@ -27,7 +27,9 @@ export function calculateBitXP(action) {
     let duration_ratio = Math.max(actual_duration / intended_duration, 2);
 
     let gained_xp = (importance * frequency * (1 / difficulty)) * duration_ratio;
-    console.log("XP = (", importance, " * ", frequency, " * (1 / ", difficulty, ")) * ", duration_ratio, " = ", gained_xp);
+    console.log(
+        `XP = (${importance} * ${frequency} * (1 / ${difficulty})) * ${duration_ratio} = ${gained_xp}`
+    );
 
     return gained_xp;
 }
@@ -37,10 +39,41 @@ export function calculateBitXP(action) {
 // Base XP (required for the first level) = 500
 // B (growth rate) = 1.5 (Modify this value to change the progression difficulty)
 export function calculateXPLevel(total_xp) {
-    const level = Math.floor(1 + Math.pow(total_xp / base_xp, grown_rate));
-    console.log("Level = 1 + (", total_xp, " / ", base_xp, ")^ ", grown_rate, " = ", level);
+    let current_level = 0;
+    let next_level_xp = base_xp;
 
-    return level;
+    while (total_xp >= next_level_xp) {
+        current_level++;
+        next_level_xp = base_xp * (Math.pow(current_level + 1, grown_rate) - 1);
+    }
+
+    current_level++;
+
+    console.log(
+        `Level = 1 + (${total_xp} /${base_xp})^ ${grown_rate} = ${current_level}`
+    );
+
+    return current_level;
+}
+
+// Function to calculate current level XP based of total XP from user
+// Current Level = 1 + (Total XP / Base XP)^B
+// Level XP = Base XP * ((Current Level^B) - 1)
+// Base XP (required for the first level) = 500
+// B (growth rate) = 1.5 (Modify this value to change the progression difficulty)
+export function calculateLevelXP(total_xp) {
+    const level = calculateXPLevel(total_xp);
+    var level_xp = Math.floor(base_xp * (Math.pow(level, grown_rate) - 1));
+
+    if (level === 1) {
+        level_xp = base_xp;
+    }
+
+    console.log(
+        `Level XP = (${base_xp} * (${level})^ "${grown_rate}") - 1 = ${level_xp}`
+    );
+
+    return level_xp;
 }
 
 // Function to calculate next level xp needed based of total XP from user
@@ -49,16 +82,17 @@ export function calculateXPLevel(total_xp) {
 // Current Level = 1 + (Total XP / Base XP)^B
 // Base XP (required for the first level) = 500
 // B (growth rate) = 1.5 (Modify this value to change the progression difficulty)
-export function calculateXPNextLevel(total_xp) {
+export function calculateNextLevelXP(total_xp) {
     const current_level = calculateXPLevel(total_xp);
-
-    var next_level = current_level + 1;
-    var next_level_xp = base_xp * (Math.pow(next_level, grown_rate) - 1);
+    var next_level_xp = calculateLevelXP(total_xp);
+    if (next_level_xp <= 0) {
+        next_level_xp = 0;
+    }
 
     const xp_needed_next_level = Math.floor(next_level_xp - total_xp);
 
     console.log(
-        `Next Level XP Needed = (${base_xp} * (${current_level + 1}^${grown_rate} - 1)) - (${base_xp} * ((${total_xp} / ${base_xp})^${grown_rate} - 1)) = ${xp_needed_next_level}`
+        `Next Level XP Needed = ((${base_xp} * (${current_level})^ "${grown_rate}") - 1) - ${total_xp} = ${xp_needed_next_level}`
     );
 
     return xp_needed_next_level;
