@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 import { usersApi } from '../services/api/index';
 
 function Registration() {
+    const { user } = useUser();
+    const history = useHistory();
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -19,11 +24,27 @@ function Registration() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await usersApi.createNewUser(formData);
+            if (user) {
+                // Redirect to the home page
+                history.push('/');
+            } else {
+                const response = await usersApi.createNewUser(formData);
+                if (response.status === 200) {
+                    // Registration successful, redirect to the home page
+                    history.push('/');
+                }
+            }
         } catch (error) {
             console.error('Error:', error);
         }
     };
+
+    useEffect(() => {
+        // If the user is already logged in, redirect to the home page
+        if (user) {
+            history.push('/');
+        }
+    }, [user, history]);
 
     return (
         <div>
@@ -52,6 +73,12 @@ function Registration() {
                 />
                 <button type="submit">Register</button>
             </form>
+            <p>
+                Already have an account?{' '}
+                <button onClick={() => history.push('/login')}>
+                    Login here
+                </button>
+            </p>
         </div>
     );
 }
