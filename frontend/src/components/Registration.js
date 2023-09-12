@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import { useUser } from '../context/UserContext';
 import { usersApi } from '../services/api/index';
 
 function Registration() {
     const { user } = useUser();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         username: '',
@@ -26,13 +27,17 @@ function Registration() {
         try {
             if (user) {
                 // Redirect to the home page
-                history.push('/');
+                navigate('/');
             } else {
-                const response = await usersApi.createNewUser(formData);
-                if (response.status === 200) {
-                    // Registration successful, redirect to the home page
-                    history.push('/');
-                }
+                const registrationData = {
+                    username: formData.username,
+                    email: formData.email,
+                    password: formData.password
+                  };
+
+                await usersApi.createNewUser(registrationData).then(() => {
+                    navigate('/login');
+                })
             }
         } catch (error) {
             console.error('Error:', error);
@@ -42,9 +47,9 @@ function Registration() {
     useEffect(() => {
         // If the user is already logged in, redirect to the home page
         if (user) {
-            history.push('/');
+            navigate('/');
         }
-    }, [user, history]);
+    }, [user, navigate]);
 
     return (
         <div>
@@ -75,7 +80,7 @@ function Registration() {
             </form>
             <p>
                 Already have an account?{' '}
-                <button onClick={() => history.push('/login')}>
+                <button onClick={() => navigate('/login')}>
                     Login here
                 </button>
             </p>

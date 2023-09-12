@@ -4,7 +4,7 @@ import CommentPopup from './CommentPopup';
 import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
 import { convertDate, calculateBitXP } from '../utils/Utils';
 
-const ActionCard = ({ action }) => {
+const ActionCard = ({ action, token }) => {
     const [showCommentPopup, setShowCommentPopup] = useState(false);
     const [showFinishDuration, setShowFinishDuration] = useState(false);
     const [realDuration, setRealDuration] = useState(0);
@@ -13,7 +13,7 @@ const ActionCard = ({ action }) => {
     // Handler for deleting an action
     const handleDeleteAction = async (actionId) => {
         try {
-            await actionsApi.deleteAction(actionId).then(() => {
+            await actionsApi.deleteAction(actionId, token).then(() => {
                 window.location.reload();
             });
         } catch (error) {
@@ -28,8 +28,8 @@ const ActionCard = ({ action }) => {
         var xp = calculateBitXP(action) * (-1);
 
         try {
-            await actionsApi.resetAction(actionId).then(async () => {
-                await usersApi.updateUserXP(username, xp).then(() => {
+            await actionsApi.resetAction(actionId, token).then(async () => {
+                await usersApi.updateUserXP(username, xp, token).then(() => {
                     window.location.reload();
                 });
             });
@@ -44,9 +44,9 @@ const ActionCard = ({ action }) => {
         const username = action.author;
 
         try {
-            await actionsApi.finishAction(actionId, realDuration).then(async (result) => {
+            await actionsApi.finishAction(actionId, realDuration, token).then(async (result) => {
                 var xp = calculateBitXP(result);
-                await usersApi.updateUserXP(username, xp).then(() => {
+                await usersApi.updateUserXP(username, xp, token).then(() => {
                     setRealDuration(realDuration);
                     setShowFinishDuration(false);
                     window.location.reload();
@@ -60,7 +60,7 @@ const ActionCard = ({ action }) => {
     // Saves a comment for an action
     const handleSaveActionComment = async (actionId, comment) => {
         try {
-            await actionsApi.addCommentToAction(actionId, comment).then(() => {
+            await actionsApi.addCommentToAction(actionId, comment, token).then(() => {
                 setShowCommentPopup(false);
                 window.location.reload();
             });
@@ -103,7 +103,7 @@ const ActionCard = ({ action }) => {
         if (action.objectiveId) {
             const fetchObjectiveActions = async () => {
                 try {
-                    const result = await objectivesApi.getObjectiveById(action.objectiveId);
+                    const result = await objectivesApi.getObjectiveById(action.objectiveId, token);
                     setLinkedObjective(result);
                 } catch (error) {
                     console.error('Error fetching linked objective:', error);
@@ -112,7 +112,7 @@ const ActionCard = ({ action }) => {
             // Fetch the linked objective information
             fetchObjectiveActions();
         }
-    }, [action.objectiveId]);
+    }, [action.objectiveId, token]);
 
     return (
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>

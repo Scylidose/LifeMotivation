@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { actionsApi, objectivesApi } from '../services/api/index';
 import { convertDate } from '../utils/Utils';
 
+import jwt from 'jwt-decode';
+
 import DotSlider from './DotSlider';
 
 class ActionForm extends Component {
@@ -29,11 +31,18 @@ class ActionForm extends Component {
             existingObjectives: props.existingObjectives || [],
             publishedDateTime: props.publishedDateTime || new Date().getTime()
         };
+        this.token = props.token || null;
     }
 
     componentDidMount() {
+        if (!this.token) {
+            // Token is not available, handle accordingly (e.g., redirect to login)
+            return;
+        }
+
+        const decodedToken = jwt(this.token);
         // Fetch existing objectives when the component mounts
-        objectivesApi.getObjectivesForUser('root')
+        objectivesApi.getObjectivesForUser(decodedToken.username, this.token)
             .then((data) => {
                 this.setState({ existingObjectives: data });
             })
@@ -100,11 +109,13 @@ class ActionForm extends Component {
             publishedDateTime
         } = this.state;
 
+        const decodedToken = jwt(this.token.token);
+
         // Create a new action object using the input values
         const newAction = {
             title,
             description,
-            author: 'root', // To change
+            author: decodedToken.username,
             isGood: isGood,
             importance: parseInt(importance),
             daysOfWeek: JSON.stringify(daysOfWeek),
@@ -118,9 +129,7 @@ class ActionForm extends Component {
 
         try {
             // Create the action using the API
-            console.log(newAction);
-            const createdAction = await actionsApi.createNewAction(newAction);
-            console.log('Action created:', createdAction);
+            await actionsApi.createNewAction(newAction, this.token);
             window.location.reload();
         } catch (error) {
             console.error('Error creating action:', error);

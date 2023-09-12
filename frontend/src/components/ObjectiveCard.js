@@ -4,14 +4,14 @@ import Collapsible from 'react-collapsible';
 import { convertDate, calculateObjectiveXP } from '../utils/Utils';
 import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
 
-const ObjectiveCard = ({ objective }) => {
+const ObjectiveCard = ({ objective, token }) => {
     const [linkedActions, setLinkedActions] = useState(null);
 
     // Effect to fetch linked actions when the objective ID changes
     useEffect(() => {
         const fetchObjectiveActions = async () => {
             try {
-                const result = await actionsApi.getObjectiveActions(objective.id);
+                const result = await actionsApi.getObjectiveActions(objective.id, token);
                 setLinkedActions(result);
             } catch (error) {
                 console.error('Error fetching linked actions:', error);
@@ -19,12 +19,12 @@ const ObjectiveCard = ({ objective }) => {
         };
         // Call the fetchObjectiveActions function when the objective ID changes
         fetchObjectiveActions();
-    }, [objective.id]);
+    }, [objective.id, token]);
 
     // Function to handle deleting the objective
     const handleDeleteObjective = async (objectiveId) => {
         try {
-            await objectivesApi.deleteObjective(objectiveId).then(() => {
+            await objectivesApi.deleteObjective(objectiveId, token).then(() => {
                 window.location.reload();
             });
         } catch (error) {
@@ -39,8 +39,8 @@ const ObjectiveCard = ({ objective }) => {
         var xp = calculateObjectiveXP(objective) * (-1);
 
         try {
-            await objectivesApi.resetObjective(objectiveId).then(async () => {
-                await usersApi.updateUserXP(username, xp).then(() => {
+            await objectivesApi.resetObjective(objectiveId, token).then(async () => {
+                await usersApi.updateUserXP(username, xp, token).then(() => {
                     window.location.reload();
                 });
             });
@@ -56,9 +56,9 @@ const ObjectiveCard = ({ objective }) => {
         const realDuration = objective.realFinishDateTime;
 
         try {
-            await objectivesApi.finishObjective(objectiveId, realDuration).then(async (result) => {
+            await objectivesApi.finishObjective(objectiveId, realDuration, token).then(async (result) => {
                 var xp = calculateObjectiveXP(result);
-                await usersApi.updateUserXP(username, xp).then(() => {
+                await usersApi.updateUserXP(username, xp, token).then(() => {
                     window.location.reload();
                 });
             });
