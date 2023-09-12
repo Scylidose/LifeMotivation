@@ -4,20 +4,30 @@ import './App.css';
 import ProfilePage from './pages/ProfilePage';
 import CalendarPage from './pages/CalendarPage';
 import Layout from './pages/Layout';
+import { useUser } from './context/UserContext';
+import ProtectedRoute from './context/ProtectedRoute';
+import Login from './components/Login';
 
-class App extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />} >
-            <Route index element={<CalendarPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter >
-    );
-  }
+function App() {
+  const { user } = useUser();
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />} >
+          <Route path="/login" component={Login} />
+          <ProtectedRoute
+            index
+            component={CalendarPage}
+          />
+          <ProtectedRoute
+            path="/profile"
+            component={ProfilePage}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter >
+  );
 }
 
 export default App;
