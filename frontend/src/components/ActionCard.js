@@ -45,11 +45,8 @@ const ActionCard = ({ action }) => {
         var xp = calculateBitXP(action);
 
         try {
-            console.log("te3t");
             await actionsApi.finishAction(actionId, realDuration).then(async () => {
-                console.log("test2");
                 await usersApi.updateUserXP(username, xp).then(() => {
-                    console.log("test");
                     setRealDuration(realDuration);
                     setShowFinishDuration(false);
                     window.location.reload();
