@@ -42,10 +42,10 @@ const ActionCard = ({ action }) => {
     const handleFinishAction = async () => {
         const actionId = action.id;
         const username = action.author;
-        var xp = calculateBitXP(action);
 
         try {
-            await actionsApi.finishAction(actionId, realDuration).then(async () => {
+            await actionsApi.finishAction(actionId, realDuration).then(async (result) => {
+                var xp = calculateBitXP(result);
                 await usersApi.updateUserXP(username, xp).then(() => {
                     setRealDuration(realDuration);
                     setShowFinishDuration(false);
@@ -116,7 +116,15 @@ const ActionCard = ({ action }) => {
 
     return (
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
-            <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
+            {action.isGood ? (
+                <div>
+                    <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
+                </div>
+            ) : (
+                <div>
+                    <p className="card-duration"><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
+                </div>
+            )}
             <div className="card-header">
                 <h2 className="card-title">{action.title}</h2>
                 <div>
