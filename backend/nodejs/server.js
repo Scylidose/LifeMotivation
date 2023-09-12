@@ -11,7 +11,6 @@ const { closeDatabase } = require('./config/dbconfig');
 const actionRoutes = require('./routes/actionRoutes');
 const userRoutes = require('./routes/userRoutes');
 const objectiveRoutes = require('./routes/objectiveRoutes');
-const User = require('./models/User');
 
 app.use(cors());
 app.use(express.json());
@@ -29,8 +28,6 @@ app.get('/', (req, res) => {
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-
-  User.findOrCreate("root");
 });
 
 process.on('SIGINT', () => {
