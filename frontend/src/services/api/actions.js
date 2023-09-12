@@ -9,9 +9,15 @@ const apiUrl = 'http://localhost:5000';
  * @param {string} username - The username of the user.
  * @returns {Promise} A Promise that resolves to the retrieved data.
  */
-async function getActionsForUser(username) {
+async function getActionsForUser(username, token) {
     try {
-        const response = await fetch(`${apiUrl}/api/actions/${username}`);
+        const response = await fetch(`${apiUrl}/api/actions/${username}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
         const data = await response.json();
         return data;
     } catch (error) {
@@ -25,9 +31,15 @@ async function getActionsForUser(username) {
  * @param {string} objectiveId - The ID of the objective.
  * @returns {Promise} A Promise that resolves to the retrieved actions data.
  */
-async function getObjectiveActions(objectiveId) {
+async function getObjectiveActions(objectiveId, token) {
     try {
-        const response = await fetch(`${apiUrl}/api/actions/objective/${objectiveId}`);
+        const response = await fetch(`${apiUrl}/api/actions/objective/${objectiveId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
         const data = await response.json();
         return data;
     } catch (error) {
@@ -41,12 +53,13 @@ async function getObjectiveActions(objectiveId) {
  * @param {Object} actionData - The data for the new action.
  * @returns {Promise} A Promise that resolves to the created action data.
  */
-async function createNewAction(actionData) {
+async function createNewAction(actionData, token) {
     try {
         const response = await fetch(`${apiUrl}/api/actions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(actionData),
         });
@@ -64,10 +77,14 @@ async function createNewAction(actionData) {
  * @param {string} actionId - The ID of the action to delete.
  * @returns {Promise} A Promise that resolves to the deleted action data.
  */
-async function deleteAction(actionId) {
+async function deleteAction(actionId, token) {
     try {
         const response = await fetch(`${apiUrl}/api/actions/${actionId}`, {
             method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
         });
         const data = await response.json();
         return data;
@@ -83,13 +100,14 @@ async function deleteAction(actionId) {
  * @param {number} realDuration - The real duration of the action.
  * @returns {Promise} A Promise that resolves to the finished action data.
  */
-async function finishAction(actionId, realDuration) {
+async function finishAction(actionId, realDuration, token) {
 
     try {
         const response = await fetch(`${apiUrl}/api/actions/${actionId}/finish`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ realDuration }),
         });
@@ -106,14 +124,15 @@ async function finishAction(actionId, realDuration) {
  * @param {string} actionId - The ID of the action to reset.
  * @returns {Promise} A Promise that resolves to the reset action data.
  */
-async function resetAction(actionId) {
+async function resetAction(actionId, token) {
 
     try {
         const response = await fetch(`${apiUrl}/api/actions/${actionId}/reset`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            }
+                'Authorization': `Bearer ${token}`,
+            },
         });
         const data = await response.json();
         return data;
@@ -129,12 +148,13 @@ async function resetAction(actionId) {
  * @param {string} comment - The comment text.
  * @returns {Promise} A Promise that resolves to the updated action data.
  */
-async function addCommentToAction(id, comment) {
+async function addCommentToAction(id, comment, token) {
     try {
         const response = await fetch(`${apiUrl}/api/actions/${id}/comments`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ comment }),
         });
