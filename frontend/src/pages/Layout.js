@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import jwt from 'jwt-decode';
 
 import { Outlet, Link } from "react-router-dom";
 import { usersApi } from '../services/api/index';
 
 import { calculateXPLevel, calculateLevelXP, calculateNextLevelXP } from '../utils/Utils';
 
-const Layout = () => {
+const Layout = ({ token, onLogout }) => {
     const [userXp, setUserXp] = useState(null);
 
     useEffect(() => {
         async function fetchUserXP() {
             try {
-                const user = await usersApi.getUser("root");
+                const decodedToken = jwt(token);
+                const user = await usersApi.getUser(decodedToken.username, token);
                 const xp = user.xp;
                 setUserXp(xp);
             } catch (error) {
@@ -19,8 +21,10 @@ const Layout = () => {
             }
         }
 
-        fetchUserXP();
-    }, []);
+        if (token) {
+            fetchUserXP();
+        }
+    }, [token]);
 
     const currentLevel = calculateXPLevel(userXp);
     const xpNeededForCurrentLevel = calculateLevelXP(userXp);
@@ -38,19 +42,40 @@ const Layout = () => {
                     <li>
                         <Link to="/profile">Profile</Link>
                     </li>
+                    {token ? (
+                        <li>
+                            <button onClick={onLogout}>Log Out</button>
+                        </li>
+                    ) : (
+                        <div>
+                            <li>
+                                <Link to="/register">Register</Link>
+                            </li>
+                            <li>
+                                <Link to="/login">Log In</Link>
+                            </li>
+                        </div>
+                    )
+                    }
                 </ul>
             </nav>
-            <h1>Your Level Progress</h1>
-            <p>Current Level: {currentLevel}</p>
-            <p>XP Needed for Next Level: {xpNeededForNextLevel}</p>
-            <p>Your XP: {userXp}</p>
-            <div className="level-progress-bar">
-                <div
-                    className="progress"
-                    style={{ width: `${progressPercentage}%` }}
-                ></div>
-                <div className="progress-label">{`${progressPercentage.toFixed(2)}%`}</div>
-            </div>
+            {token ? (
+                <div>
+                    <h1>Your Level Progress</h1>
+                    <p>Current Level: {currentLevel}</p>
+                    <p>XP Needed for Next Level: {xpNeededForNextLevel}</p>
+                    <p>Your XP: {userXp}</p>
+                    <div className="level-progress-bar">
+                        <div
+                            className="progress"
+                            style={{ width: `${progressPercentage}%` }}
+                        ></div>
+                        <div className="progress-label">{`${progressPercentage.toFixed(2)}%`}</div>
+                    </div>
+                </div>
+            ) : (
+                <div></div>
+            )}
             <Outlet />
         </>
     )
