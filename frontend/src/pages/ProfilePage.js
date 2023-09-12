@@ -38,73 +38,6 @@ const ProfilePage = () => {
     }
   };
 
-  /* Functions for handling objective operations */
-
-  const handleDeleteObjective = async (objectiveId) => {
-    try {
-      await objectivesApi.deleteObjective(objectiveId);
-      setObjectives(objectives.filter((objective) => objective.id !== objectiveId));
-    } catch (error) {
-      console.error('Error deleting objective:', error);
-    }
-  };
-
-  const handleResetObjective = async (objectiveId) => {
-    try {
-      await objectivesApi.resetObjective(objectiveId);
-      fetchData();
-    } catch (error) {
-      console.error('Error resetting objective:', error);
-    }
-  };
-
-  const handleFinishObjective = async (objectiveId, realDuration) => {
-    try {
-      await objectivesApi.finishObjective(objectiveId, realDuration);
-      fetchData();
-    } catch (error) {
-      console.error('Error finishing objective:', error);
-    }
-  };
-
-  /* Functions for handling action operations */
-
-  const handleDeleteAction = async (actionId) => {
-    try {
-      await actionsApi.deleteAction(actionId);
-      setActions(actions.filter((action) => action.id !== actionId));
-    } catch (error) {
-      console.error('Error deleting action:', error);
-    }
-  };
-
-  const handleResetAction = async (actionId) => {
-    try {
-      await actionsApi.resetAction(actionId);
-      fetchData();
-    } catch (error) {
-      console.error('Error resetting action:', error);
-    }
-  };
-
-  const handleFinishAction = async (actionId, realDuration) => {
-    try {
-      await actionsApi.finishAction(actionId, realDuration);
-      fetchData();
-    } catch (error) {
-      console.error('Error finishing action:', error);
-    }
-  };
-
-  const handleSaveActionComment = async (id, comment) => {
-    try {
-      await actionsApi.addCommentToAction(id, comment);
-      fetchData();
-    } catch (error) {
-      console.error('Error saving comment:', error);
-    }
-  };
-
   return (
     <div>
       <div>
@@ -120,10 +53,6 @@ const ProfilePage = () => {
               <ActionCard
                 key={action.id}
                 action={action}
-                onDelete={handleDeleteAction}
-                onFinish={handleFinishAction}
-                resetAction={handleResetAction}
-                onSaveComment={handleSaveActionComment}
               />
             ))}
           </div>
@@ -156,9 +85,6 @@ const ProfilePage = () => {
                 <ObjectiveCard
                   key={objective.id}
                   objective={objective}
-                  onDelete={handleDeleteObjective}
-                  onFinish={handleFinishObjective}
-                  resetObjective={handleResetObjective}
                 />
               ))}
           </div>

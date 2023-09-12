@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Modify config.js for GitHub Actions
+        run: |
+          node config/modify-config.js
+        working-directory: backend/nodejs
+
       - name: Install Dependencies
         run: npm install
         working-directory: backend/nodejs

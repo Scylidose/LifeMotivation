@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Collapsible from 'react-collapsible';
 
-import { actionsApi } from '../services/api/index';
-import { convertDate } from '../utils/Utils';
+import { convertDate, calculateObjectiveXP } from '../utils/Utils';
+import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
 
-const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
+const ObjectiveCard = ({ objective }) => {
     const [linkedActions, setLinkedActions] = useState(null);
 
     // Effect to fetch linked actions when the objective ID changes
@@ -17,19 +17,54 @@ const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
                 console.error('Error fetching linked actions:', error);
             }
         };
-
         // Call the fetchObjectiveActions function when the objective ID changes
         fetchObjectiveActions();
     }, [objective.id]);
 
-    // Function to handle finishing the objective
-    const handleFinishObjective = () => {
-        onFinish(objective.id);
+    // Function to handle deleting the objective
+    const handleDeleteObjective = async (objectiveId) => {
+        try {
+            await objectivesApi.deleteObjective(objectiveId).then(() => {
+                window.location.reload();
+            });
+        } catch (error) {
+            console.error('Error deleting objective:', error);
+        }
     };
 
     // Function to handle resetting the objective
-    const handleResetObjective = () => {
-        resetObjective(objective.id);
+    const handleResetObjective = async () => {
+        const objectiveId = objective.id;
+        const username = objective.author;
+        var xp = calculateObjectiveXP(objective) * (-1);
+
+        try {
+            await objectivesApi.resetObjective(objectiveId).then(async () => {
+                await usersApi.updateUserXP(username, xp).then(() => {
+                    window.location.reload();
+                });
+            });
+        } catch (error) {
+            console.error('Error resetting objective:', error);
+        }
+    };
+
+    // Function to handle finishing the objective
+    const handleFinishObjective = async () => {
+        const objectiveId = objective.id;
+        const username = objective.author;
+        const realDuration = objective.realFinishDateTime;
+
+        try {
+            await objectivesApi.finishObjective(objectiveId, realDuration).then(async (result) => {
+                var xp = calculateObjectiveXP(result);
+                await usersApi.updateUserXP(username, xp).then(() => {
+                    window.location.reload();
+                });
+            });
+        } catch (error) {
+            console.error('Error finishing objective:', error);
+        }
     };
 
     return (
@@ -74,7 +109,7 @@ const ObjectiveCard = ({ objective, onDelete, onFinish, resetObjective }) => {
                         <i className="fa fa-check" aria-hidden="true"></i>
                     </button>
                 )}
-                <button className="card-header-button delete-button" onClick={() => onDelete(objective.id)}>
+                <button className="card-header-button delete-button" onClick={() => handleDeleteObjective(objective.id)}>
                     <i className="fa fa-trash" aria-hidden="true"></i>
                 </button>
             </div>
