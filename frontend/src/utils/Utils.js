@@ -1,5 +1,6 @@
 const base_xp = 500;
 const grown_rate = 1.3;
+const reward_constant = 50;
 
 // Function to convert a timestamp to a formatted date
 export function convertDate(timestamp) {
@@ -24,11 +25,30 @@ export function calculateBitXP(action) {
     }
 
     const intended_duration = action.intendedDuration;
-    let duration_ratio = Math.max(actual_duration / intended_duration, 2);
+    let duration_ratio = Math.min(actual_duration / intended_duration, 2);
 
     let gained_xp = (importance * frequency * (1 / difficulty)) * duration_ratio;
     console.log(
         `XP = (${importance} * ${frequency} * (1 / ${difficulty})) * ${duration_ratio} = ${gained_xp}`
+    );
+
+    if (!action.isGood) {
+        gained_xp = (-1) * gained_xp;
+    }
+
+    return gained_xp;
+}
+
+// Function to calculate XP from an action based on :
+// Objective XP = ((5 / Priority) * (5 / Complexity) * C)
+// C (reward constant) = 50 (Modify this value to change the progression difficulty) 
+export function calculateObjectiveXP(objective) {
+    const priority = 5 / objective.priority;
+    const complexity = 5 / objective.complexity;
+
+    let gained_xp = (priority * complexity * reward_constant);
+    console.log(
+        `XP = (${priority} * ${complexity} * ${reward_constant}) = ${gained_xp}`
     );
 
     return gained_xp;

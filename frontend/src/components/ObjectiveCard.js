@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Collapsible from 'react-collapsible';
 
-import { convertDate } from '../utils/Utils';
-import { actionsApi, objectivesApi } from '../services/api/index';
+import { convertDate, calculateObjectiveXP } from '../utils/Utils';
+import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
 
 const ObjectiveCard = ({ objective }) => {
     const [linkedActions, setLinkedActions] = useState(null);
@@ -35,10 +35,14 @@ const ObjectiveCard = ({ objective }) => {
     // Function to handle resetting the objective
     const handleResetObjective = async () => {
         const objectiveId = objective.id;
+        const username = objective.author;
+        var xp = calculateObjectiveXP(objective) * (-1);
 
         try {
-            await objectivesApi.resetObjective(objectiveId).then(() => {
-                window.location.reload();
+            await objectivesApi.resetObjective(objectiveId).then(async () => {
+                await usersApi.updateUserXP(username, xp).then(() => {
+                    window.location.reload();
+                });
             });
         } catch (error) {
             console.error('Error resetting objective:', error);
@@ -48,11 +52,15 @@ const ObjectiveCard = ({ objective }) => {
     // Function to handle finishing the objective
     const handleFinishObjective = async () => {
         const objectiveId = objective.id;
+        const username = objective.author;
         const realDuration = objective.realFinishDateTime;
 
         try {
-            await objectivesApi.finishObjective(objectiveId, realDuration).then(() => {
-                window.location.reload();
+            await objectivesApi.finishObjective(objectiveId, realDuration).then(async (result) => {
+                var xp = calculateObjectiveXP(result);
+                await usersApi.updateUserXP(username, xp).then(() => {
+                    window.location.reload();
+                });
             });
         } catch (error) {
             console.error('Error finishing objective:', error);
