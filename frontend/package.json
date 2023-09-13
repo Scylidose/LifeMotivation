@@ -19,7 +19,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-frontend": "npm start",
+    "start-backend-nodejs": "cd ../backend/nodejs && npm start",
+    "start-backend-python": "cd ../backend/python && python3 app.py",
+    "start-app": "npm run start-frontend & npm run start-backend-nodejs & npm run start-backend-python"
+
   },
   "eslintConfig": {
     "extends": "react-app"
