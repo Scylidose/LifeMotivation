@@ -3,7 +3,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.css';
 
+import jwt from 'jwt-decode';
+
 import ProfilePage from './pages/ProfilePage';
+import BitsPage from './pages/BitsPage';
+import BitDetailPage from './pages/BitDetailPage';
+import ObjectivesPage from './pages/ObjectivesPage';
+import ObjectiveDetailPage from './pages/ObjectiveDetailPage';
 import CalendarPage from './pages/CalendarPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -27,6 +33,8 @@ function App() {
 
     setToken(null);
     setAuthenticated(false);
+
+    return <Navigate to="/login" />;
   };
 
   // Effect to check if a token exists in localStorage on component mount
@@ -34,31 +42,28 @@ function App() {
     const storedToken = localStorage.getItem('token');
 
     if (storedToken) {
-      setToken(storedToken);
-      setAuthenticated(true);
+      const decodedToken = jwt(storedToken);
+      if (Date.now() >= decodedToken.exp * 1000) {
+        handleLogout();
+      } else {
+        setToken(storedToken);
+        setAuthenticated(true);
+      }
     }
   }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout token={token}  onLogout={handleLogout}/>}>
-          <Route path="/" element={authenticated ? (
-            <CalendarPage token={token} />
-          ) : (
-            <Navigate to="/login" />
-          )}>
-          </Route>
-          <Route path="/profile" element={authenticated ? (
-            <ProfilePage token={token} />
-          ) : (
-            <Navigate to="/login" />
-          )}>
-          </Route>
-          <Route path="/login" element={authenticated ? <Navigate to="/" /> : <LoginPage onLogin={handleLogin} />}>
-          </Route>
-          <Route path="/register" element={authenticated ? <Navigate to="/" /> : <RegisterPage />}>
-          </Route>
+        <Route element={<Layout token={token} onLogout={handleLogout} />}>
+          <Route path="/" element={<CalendarPage token={token} />} />
+          <Route path="/profile" element={<ProfilePage token={token} />} />
+          <Route path="/objectives" element={<ObjectivesPage token={token} />} />
+          <Route path="/objective/:id" element={<ObjectiveDetailPage token={token} />} />
+          <Route path="/bits" element={<BitsPage token={token} />} />
+          <Route path="/bit/:id" element={<BitDetailPage token={token} />} />
+          <Route path="/login" element={authenticated ? <Navigate to="/" /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/register" element={authenticated ? <Navigate to="/" /> : <RegisterPage />} />
         </Route>
       </Routes>
     </BrowserRouter >
