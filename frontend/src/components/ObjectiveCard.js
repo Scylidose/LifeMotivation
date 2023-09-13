@@ -66,7 +66,7 @@ const ObjectiveCard = ({ objective, token }) => {
             console.error('Error finishing objective:', error);
         }
     };
-
+    console.log(linkedActions);
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
             <div className="card-header">
@@ -78,11 +78,11 @@ const ObjectiveCard = ({ objective, token }) => {
                 <p className="card-info"><strong>Complexity:</strong> {objective.complexity}</p>
                 {linkedActions && (
                     <div>
-                        <Collapsible trigger="Related Bits" className="collapsible-actions">
-                            <ul className="linked-actions">
+                        <p>Linked Bits :</p>
+                        <ul className="linked-actions">
                                 {linkedActions.map(action => (
                                     <li key={action.id}>
-                                        {action.title} - Created {convertDate(action.publishedDateTime)}
+                                        <a href={`/bit/${action.id}`}>{action.title}</a> - Created {convertDate(action.publishedDateTime)}
                                         {action.finishedDateTime ? (
                                             ` - Finished the ${convertDate(action.finishedDateTime)}`
                                         ) : (
@@ -91,7 +91,6 @@ const ObjectiveCard = ({ objective, token }) => {
                                     </li>
                                 ))}
                             </ul>
-                        </Collapsible>
                     </div>
                 )}
             </div>
