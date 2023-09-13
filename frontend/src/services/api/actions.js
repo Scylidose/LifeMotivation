@@ -5,6 +5,28 @@ const apiUrl = 'http://localhost:5000';
  */
 
 /**
+ * Fetches an action by its ID.
+ * @param {string} id - The ID of the action to fetch.
+ * @returns {Promise} A Promise that resolves to the retrieved action data.
+ */
+async function getActionById(id, token) {
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/id/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching objectives:', error);
+        throw error;
+    }
+}
+
+/**
  * Fetches all actions for a user.
  * @param {string} username - The username of the user.
  * @returns {Promise} A Promise that resolves to the retrieved data.
@@ -167,6 +189,7 @@ async function addCommentToAction(id, comment, token) {
 }
 
 export {
+    getActionById,
     getActionsForUser,
     getObjectiveActions,
     createNewAction,
