@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
 import ObjectiveForm from '../components/ObjectiveForm';
@@ -50,6 +51,8 @@ const ProfilePage = ({ token }) => {
     fetchData();
   }, [token]);
 
+  const displayedActions = actions.slice(0, 5);
+
   return (
     <div>
       <div>
@@ -69,13 +72,16 @@ const ProfilePage = ({ token }) => {
             <p>Error: {error.message}</p>
           ) : (
             <div className="action-list">
-              {actions.map(action => (
+              {displayedActions.map(action => (
                 <ActionCard
                   key={action.id}
                   action={action}
                   token={token}
                 />
               ))}
+              {actions.length > 5 && (
+                <Navigate to="/bits" />
+              )}
             </div>
           )}
         </div>
@@ -101,7 +107,7 @@ const ProfilePage = ({ token }) => {
                   const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
 
                   return aTimeDifference - bTimeDifference;
-                })
+                }).slice(0, 3)
                 .map(objective => (
                   <ObjectiveCard
                     key={objective.id}
@@ -109,6 +115,9 @@ const ProfilePage = ({ token }) => {
                     token={token}
                   />
                 ))}
+                {objectives.length > 3 && (
+                  <Navigate to="/objectives" />
+                )}
             </div>
           )}
         </div>
