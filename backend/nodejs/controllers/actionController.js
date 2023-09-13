@@ -12,6 +12,26 @@ exports.getActionsByAuthor = async (req, res) => {
     }
 }
 
+// Get action by ID
+exports.getActionById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        await Action.findById(id).then((result) => {
+            if (result) {
+                if (req.user.username !== result.author) {
+                    result = [];
+                }
+            } else {
+                result = [];
+            }
+            res.json(result);
+        })
+    } catch (error) {
+        console.error('Error fetching action:', error);
+        res.status(500).json({ error: 'Error fetching action' });
+    }
+}
+
 // Get actions linked to an objective
 exports.getActionsByObjectiveId = async (req, res) => {
     const id = req.params.id;
