@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
 
 import ActionCard from '../components/ActionCard';
+import ActionForm from '../components/ActionForm';
 
 import { actionsApi, usersApi } from '../services/api/index';
 
-const BitDetailsPage = ({ token }) => {
+const BitsPage = ({ token }) => {
   // State variables for decoded token, actions, loading state, and error handling
   const [decodedToken, setDecodedToken] = useState(null);
   const [actions, setActions] = useState([]);
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -61,14 +62,24 @@ const BitDetailsPage = ({ token }) => {
           ) : error ? (
             <p>Error: {error.message}</p>
           ) : (
-            <div className="action-list">
-              {actions.map(action => (
-                <ActionCard
-                  key={action.id}
-                  action={action}
-                  token={token}
-                />
-              ))}
+            <div>
+              <ActionForm token={token} />
+              <h1>Your Bits</h1>
+              {loading ? (
+                <p>Loading...</p>
+              ) : error ? (
+                <p>Error: {error.message}</p>
+              ) : (
+                <div className="action-list">
+                  {actions.map(action => (
+                    <ActionCard
+                      key={action.id}
+                      action={action}
+                      token={token}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -78,4 +89,4 @@ const BitDetailsPage = ({ token }) => {
   );
 };
 
-export default BitDetailsPage;
+export default BitsPage;
