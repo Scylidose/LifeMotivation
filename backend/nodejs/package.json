@@ -6,11 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
-    "lint": "eslint .",
-    "start-frontend": "cd ../../frontend && npm start",
-    "start-backend-nodejs": "npm start",
-    "start-backend-python": "cd ../python && python3 app.py",
-    "start-app": "npm run start-frontend & npm run start-backend-nodejs & npm run start-backend-python"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
