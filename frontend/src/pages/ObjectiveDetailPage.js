@@ -3,14 +3,16 @@ import { useParams } from 'react-router-dom';
 
 import jwt from 'jwt-decode';
 
-import ObjectiveForm from '../components/ObjectiveForm';
 import ObjectiveCard from '../components/ObjectiveCard';
-import { objectivesApi, usersApi } from '../services/api/index';
+import ActionCard from '../components/ActionCard';
+
+import { objectivesApi, actionsApi, usersApi } from '../services/api/index';
 
 const ObjectiveDetailPage = ({ token }) => {
     // State variables for decoded token, loading state, and error handling
     const [decodedToken, setDecodedToken] = useState(null);
     const [objective, setObjective] = useState([]);
+    const [actions, setActions] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,11 +33,13 @@ const ObjectiveDetailPage = ({ token }) => {
             await usersApi.getUser(decodedToken.username, token).then(async (result) => {
                 try {
                     // Fetch objectives data in parallel
-                    const [objectivesData] = await Promise.all([
+                    const [objectivesData, actionsData] = await Promise.all([
                         objectivesApi.getObjectiveById(id, token),
+                        actionsApi.getObjectiveActions(id, token)
                     ]);
 
                     setObjective(objectivesData);
+                    setActions(actionsData);
                     setLoading(false);
                 } catch (error) {
                     console.error('Error fetching data:', error);
@@ -76,13 +80,24 @@ const ObjectiveDetailPage = ({ token }) => {
                                             Objective not found.
                                         </div>
                                     ) : (
-                                        <ObjectiveCard
-                                            key={objective.id}
-                                            objective={objective}
-                                            token={token}
-                                        />
+                                        <div>
+                                            <ObjectiveCard
+                                                key={objective.id}
+                                                objective={objective}
+                                                token={token}
+                                            />
+                                            <h3>Linked Bits with this objective:</h3>
+                                            <div className="action-list">
+                                                {actions.map(action => (
+                                                    <ActionCard
+                                                        key={action.id}
+                                                        action={action}
+                                                        token={token}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
                                     )}
-
                                 </div>
                             )}
                         </div>
