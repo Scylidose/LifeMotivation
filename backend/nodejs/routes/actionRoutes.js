@@ -4,6 +4,7 @@ const actionController = require('../controllers/actionController');
 const authenticateToken = require('../middleware/authenticateToken');
 
 router.get('/:author', authenticateToken, actionController.getActionsByAuthor);
+router.get('/id/:id', authenticateToken, actionController.getActionById);
 router.get('/objective/:id', authenticateToken, actionController.getActionsByObjectiveId);
 
 router.post('/', authenticateToken, actionController.createAction);

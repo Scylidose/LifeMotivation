@@ -16,8 +16,16 @@ exports.getObjectivesByAuthor = async (req, res) => {
 exports.getObjectiveById = async (req, res) => {
     const id = req.params.id;
     try {
-        const objective = await Objective.findById(id);
-        res.json(objective);
+        await Objective.findById(id).then((result) => {
+            if (result) {
+                if (req.user.username !== result.author) {
+                    result = [];
+                }
+            } else {
+                result = [];
+            }
+            res.json(result);
+        })
     } catch (error) {
         console.error('Error fetching objective:', error);
         res.status(500).json({ error: 'Error fetching objective' });

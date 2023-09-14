@@ -57,7 +57,7 @@ async function getObjectivesForUser(username, token) {
  */
 async function getObjectiveById(id, token) {
     try {
-        const response = await fetch(`${apiUrl}/api/objectives/${id}`, {
+        const response = await fetch(`${apiUrl}/api/objectives/id/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

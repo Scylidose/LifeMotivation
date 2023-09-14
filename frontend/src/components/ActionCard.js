@@ -153,7 +153,7 @@ const ActionCard = ({ action, token }) => {
                 )}
                 {linkedObjective && (
                     <div className="linked-objective">
-                        <strong>Linked with objective:</strong> {linkedObjective.title}
+                        <strong>Linked with objective:</strong> <a href={`/objective/${linkedObjective.id}`}>{linkedObjective.title}</a>
                     </div>
                 )}
             </div>

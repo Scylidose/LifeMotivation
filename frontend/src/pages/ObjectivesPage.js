@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
 import ObjectiveForm from '../components/ObjectiveForm';
 import ObjectiveCard from '../components/ObjectiveCard';
-import ActionForm from '../components/ActionForm';
-import ActionCard from '../components/ActionCard';
+import { objectivesApi, usersApi } from '../services/api/index';
 
-import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
-
-const ProfilePage = ({ token }) => {
-  // State variables for decoded token, actions, objectives, loading state, and error handling
+const ObjectivesPage = ({ token }) => {
+  // State variables for decoded token, loading state, and error handling
   const [decodedToken, setDecodedToken] = useState(null);
-  const [actions, setActions] = useState([]);
   const [objectives, setObjectives] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -30,14 +26,10 @@ const ProfilePage = ({ token }) => {
 
       await usersApi.getUser(decodedToken.username, token).then(async (result) => {
         try {
-          // Fetch actions and objectives data in parallel
-          const [actionsData, objectivesData] = await Promise.all([
-            actionsApi.getActionsForUser(result.username, token),
-            objectivesApi.getObjectivesForUser(result.username, token)
+          // Fetch objectives data in parallel
+          const [objectivesData] = await Promise.all([
+            objectivesApi.getObjectivesForUser(result.username, token),
           ]);
-          const sortedActionsData = [...actionsData].sort((a, b) => a.publishedDateTime - b.publishedDateTime);
-
-          setActions(sortedActionsData);
           setObjectives(objectivesData);
           setLoading(false);
         } catch (error) {
@@ -51,8 +43,6 @@ const ProfilePage = ({ token }) => {
     fetchData();
   }, [token]);
 
-  const displayedActions = actions.slice(0, 5);
-
   return (
     <div>
       <div>
@@ -64,28 +54,12 @@ const ProfilePage = ({ token }) => {
       </div>
       <div>
         <div>
-          <ActionForm token={token} />
-          <h1>Your Bits</h1>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
             <p>Error: {error.message}</p>
           ) : (
-            <div className="action-list">
-              {displayedActions.map(action => (
-                <ActionCard
-                  key={action.id}
-                  action={action}
-                  token={token}
-                />
-              ))}
-              {actions.length > 5 && (
-                <Navigate to="/bits" />
-              )}
-            </div>
-          )}
-        </div>
-        <div>
+            <div>
           <ObjectiveForm />
           <h1>Your Objectives</h1>
           {loading ? (
@@ -107,7 +81,7 @@ const ProfilePage = ({ token }) => {
                   const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
 
                   return aTimeDifference - bTimeDifference;
-                }).slice(0, 3)
+                })
                 .map(objective => (
                   <ObjectiveCard
                     key={objective.id}
@@ -115,10 +89,9 @@ const ProfilePage = ({ token }) => {
                     token={token}
                   />
                 ))}
-                {objectives.length > 3 && (
-                  <Navigate to="/objectives" />
-                )}
             </div>
+          )}
+        </div>
           )}
         </div>
       </div>
@@ -127,4 +100,4 @@ const ProfilePage = ({ token }) => {
   );
 };
 
-export default ProfilePage;
+export default ObjectivesPage;
