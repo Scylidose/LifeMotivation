@@ -13,8 +13,8 @@ const DotSlider = ({ labelValues, type, baseValue, onChange }) => {
 
     const handleSliderChange = (event) => {
         const newValue = parseInt(event.target.value, 10);
-        onChange(type, newValue); 
-      };
+        onChange(type, newValue);
+    };
 
     return (
         <div className="dot-slider">

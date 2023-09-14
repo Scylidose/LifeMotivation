@@ -5,7 +5,7 @@ const LoginPage = ({ onLogin }) => {
 
     return (
         <div>
-            <Login onLogin={onLogin}/>
+            <Login onLogin={onLogin} />
         </div>
     );
 };

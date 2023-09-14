@@ -16,7 +16,7 @@ const Recommendation = ({ actions, currentDate, token }) => {
                         return (
                             <li key={action.id}>
                                 {action.title}
-                                <ActionForm 
+                                <ActionForm
                                     token={token}
                                     title={action.title}
                                     description={action.description}
@@ -25,7 +25,7 @@ const Recommendation = ({ actions, currentDate, token }) => {
                                     frequency={action.frequency}
                                     difficulty={action.difficulty}
                                     intendedDuration={action.intendedDuration}
-                                    selectedObjective={action.objectiveId} 
+                                    selectedObjective={action.objectiveId}
                                     publishedDateTime={currentDate.getTime()} />
                             </li>
                         );

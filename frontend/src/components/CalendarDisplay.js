@@ -27,7 +27,7 @@ const CalendarDisplay = ({ actions, token }) => {
 
             </div>
             <div className="actions-list">
-                <Recommendation actions={actions} token={token} currentDate={currentDate}/>
+                <Recommendation actions={actions} token={token} currentDate={currentDate} />
                 {todayActions.length === 0 ? (
                     <p>No actions for today.</p>
                 ) : (
@@ -40,7 +40,7 @@ const CalendarDisplay = ({ actions, token }) => {
                         </ul>
                     </div>
                 )}
-                <ActionForm token={token} publishedDateTime={currentDate.getTime()}/>
+                <ActionForm token={token} publishedDateTime={currentDate.getTime()} />
             </div>
         </div>
     );

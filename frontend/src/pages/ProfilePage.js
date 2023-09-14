@@ -115,9 +115,9 @@ const ProfilePage = ({ token }) => {
                     token={token}
                   />
                 ))}
-                {objectives.length > 3 && (
-                  <Navigate to="/objectives" />
-                )}
+              {objectives.length > 3 && (
+                <Navigate to="/objectives" />
+              )}
             </div>
           )}
         </div>

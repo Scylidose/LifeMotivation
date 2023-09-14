@@ -80,17 +80,17 @@ const ObjectiveCard = ({ objective, token }) => {
                     <div>
                         <p>Linked Bits :</p>
                         <ul className="linked-actions">
-                                {linkedActions.map(action => (
-                                    <li key={action.id}>
-                                        <a href={`/bit/${action.id}`}>{action.title}</a> - Created {convertDate(action.publishedDateTime)}
-                                        {action.finishedDateTime ? (
-                                            ` - Finished the ${convertDate(action.finishedDateTime)}`
-                                        ) : (
-                                            ''
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
+                            {linkedActions.map(action => (
+                                <li key={action.id}>
+                                    <a href={`/bit/${action.id}`}>{action.title}</a> - Created {convertDate(action.publishedDateTime)}
+                                    {action.finishedDateTime ? (
+                                        ` - Finished the ${convertDate(action.finishedDateTime)}`
+                                    ) : (
+                                        ''
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
             </div>

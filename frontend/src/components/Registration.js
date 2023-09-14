@@ -33,7 +33,7 @@ function Registration() {
                     username: formData.username,
                     email: formData.email,
                     password: formData.password
-                  };
+                };
 
                 await usersApi.createNewUser(registrationData).then(() => {
                     navigate('/login');
