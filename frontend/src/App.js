@@ -33,8 +33,6 @@ function App() {
 
     setToken(null);
     setAuthenticated(false);
-
-    return <Navigate to="/login" />;
   };
 
   // Effect to check if a token exists in localStorage on component mount
@@ -49,6 +47,8 @@ function App() {
         setToken(storedToken);
         setAuthenticated(true);
       }
+    } else {
+      handleLogout();
     }
   }, []);
 
