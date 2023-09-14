@@ -36,7 +36,7 @@ export function calculateBitXP(action) {
         gained_xp = (-1) * gained_xp;
     }
 
-    return gained_xp;
+    return gained_xp.toFixed(2);
 }
 
 // Function to calculate XP from an action based on :
@@ -51,7 +51,7 @@ export function calculateObjectiveXP(objective) {
         `XP = (${priority} * ${complexity} * ${reward_constant}) = ${gained_xp}`
     );
 
-    return gained_xp;
+    return gained_xp.toFixed(2);
 }
 
 // Function to calculate level based of total XP from user
