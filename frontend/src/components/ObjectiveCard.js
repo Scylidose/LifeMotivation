@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Collapsible from 'react-collapsible';
 
 import { convertDate, calculateObjectiveXP } from '../utils/Utils';
 import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
