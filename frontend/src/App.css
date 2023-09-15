@@ -1,34 +1,8 @@
+@import './styles/layout.css';
+
 @import './styles/form.css';
 @import './styles/action.css';
 @import './styles/comment.css';
 @import './styles/objective.css';
 
-.level-progress-bar {
-    width: 100%;
-    height: 20px;
-    background-color: #f0f0f0;
-    /* Background color for the progress bar container */
-    border-radius: 10px;
-    margin: 10px 0;
-    position: relative;
-}
-
-.progress {
-    height: 100%;
-    background-color: #007bff;
-    /* Color for the filled progress */
-    border-radius: 10px;
-    transition: width 0.3s ease-in-out;
-    /* Smooth transition for progress fill */
-}
-
-.progress-label {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    /* Text color for the progress label */
-    font-weight: bold;
-    padding: 5px;
-}
+@import 'bootstrap/dist/css/bootstrap.min.css';
