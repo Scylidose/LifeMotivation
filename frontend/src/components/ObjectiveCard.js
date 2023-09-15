@@ -65,7 +65,7 @@ const ObjectiveCard = ({ objective, token }) => {
             console.error('Error finishing objective:', error);
         }
     };
-    console.log(linkedActions);
+
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
             <div className="card-header">
