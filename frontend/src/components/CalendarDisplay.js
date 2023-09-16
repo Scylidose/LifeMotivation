@@ -19,12 +19,9 @@ const CalendarDisplay = ({ actions, token }) => {
 
     return (
         <div className="page">
-            <div className="calendar">
-                <Calendar value={currentDate} onChange={setCurrentDate} />
-            </div>
-            <div className="current-day">
-                <h2>Actions for {format(currentDate, 'MMMM d, yyyy')}</h2>
-
+            <div className="calendar-container">
+                <h5>Bits for {format(currentDate, 'MMMM d, yyyy')}</h5>
+                <Calendar className="calendar" value={currentDate} onChange={setCurrentDate} />
             </div>
             <div className="actions-list">
                 <Recommendation actions={actions} token={token} currentDate={currentDate} />
