@@ -123,3 +123,21 @@
 .nav-menu span {
     margin-left: 16px;
 }
+
+.page {    
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+  
+  .calendar-container {
+    width: 300px;
+    text-align: center;
+  }
+  
+  .calendar {
+    max-width: 100%;
+  }
