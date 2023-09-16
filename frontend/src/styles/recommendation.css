@@ -1,0 +1,26 @@
+.recommendation-container {
+    text-align: center;
+}
+
+.show-actions-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.show-actions-button:hover {
+    background-color: #0056b3;
+}
+
+.action-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.action-list li {
+    margin-bottom: 10px;
+}
