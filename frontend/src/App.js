@@ -32,7 +32,7 @@ function Logout() {
 function App() {
   const [token, setToken] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
-  console.log(token);
+
   // Function to handle user login and set the token
   const handleLogin = (authToken) => {
     localStorage.setItem('token', authToken);
