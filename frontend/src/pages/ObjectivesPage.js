@@ -3,15 +3,22 @@ import jwt from 'jwt-decode';
 
 import ObjectiveForm from '../components/ObjectiveForm';
 import ObjectiveCard from '../components/ObjectiveCard';
+import ActionModal from '../components/ActionModal';
+
 import { objectivesApi, usersApi } from '../services/api/index';
 
 const ObjectivesPage = ({ token }) => {
   // State variables for decoded token, loading state, and error handling
   const [decodedToken, setDecodedToken] = useState(null);
   const [objectives, setObjectives] = useState([]);
+  const [showActionFormModal, setShowActionFormModal] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const toggleActionFormModal = () => {
+    setShowActionFormModal(!showActionFormModal);
+  };
 
   useEffect(() => {
     // Fetch data when the component mounts
@@ -22,7 +29,6 @@ const ObjectivesPage = ({ token }) => {
       }
 
       const decodedToken = jwt(token);
-      setDecodedToken(decodedToken);
 
       await usersApi.getUser(decodedToken.username, token).then(async (result) => {
         try {
@@ -44,30 +50,40 @@ const ObjectivesPage = ({ token }) => {
   }, [token]);
 
   return (
-    <div>
+    <>
       <div>
-        {decodedToken ? (
-          <h1>{decodedToken.username}'s Profile</h1>
-        ) : (
+        {loading ? (
           <p>Loading...</p>
-        )}
-      </div>
-      <div>
-        <div>
-          {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p>Error: {error.message}</p>
-          ) : (
-            <div>
-              <ObjectiveForm />
-              <h1>Your Objectives</h1>
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <>
+            <div className='create-new-action-container'>
+              <div className="create-new-action">
+                <span> Create new objective </span>
+                <button onClick={() => toggleActionFormModal()} className="add-action-button">
+                  <i className="fa fa-plus" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+            {showActionFormModal && (
+              <div style={{ 'textAlign': 'center' }}>
+                <ActionModal onClose={toggleActionFormModal}>
+                  <ObjectiveForm
+                    token={token}
+                    isFormVisible={true}
+                  />
+                </ActionModal>
+              </div>
+            )}
+            <div className="objective-list">
+              <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Objectives</h1>
               {loading ? (
                 <p>Loading...</p>
               ) : error ? (
                 <p>Error: {error.message}</p>
               ) : (
-                <div className="objective-list">
+                <div className="objective-card-container">
                   {objectives
                     .sort((a, b) => {
                       // Sort by priority first
@@ -92,10 +108,10 @@ const ObjectivesPage = ({ token }) => {
                 </div>
               )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
-    </div>
+    </>
 
   );
 };
