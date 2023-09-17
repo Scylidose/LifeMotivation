@@ -4,13 +4,11 @@ import { useParams } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
 import ActionCard from '../components/ActionCard';
-import ActionForm from '../components/ActionForm';
 
 import { actionsApi, usersApi } from '../services/api/index';
 
 const BitDetailPage = ({ token }) => {
-    // State variables for decoded token, actions, loading state, and error handling
-    const [decodedToken, setDecodedToken] = useState(null);
+    // State variables for actions, loading state, and error handling
     const [action, setAction] = useState([]);
 
     const [loading, setLoading] = useState(true);
@@ -27,7 +25,6 @@ const BitDetailPage = ({ token }) => {
             }
 
             const decodedToken = jwt(token);
-            setDecodedToken(decodedToken);
 
             await usersApi.getUser(decodedToken.username, token).then(async (result) => {
                 try {

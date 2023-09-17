@@ -8,8 +8,7 @@ import ActionModal from '../components/ActionModal';
 import { objectivesApi, usersApi } from '../services/api/index';
 
 const ObjectivesPage = ({ token }) => {
-  // State variables for decoded token, loading state, and error handling
-  const [decodedToken, setDecodedToken] = useState(null);
+  // State variables for loading state, and error handling
   const [objectives, setObjectives] = useState([]);
   const [showActionFormModal, setShowActionFormModal] = useState(false);
 

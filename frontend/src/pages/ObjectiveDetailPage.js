@@ -9,8 +9,7 @@ import ActionCard from '../components/ActionCard';
 import { objectivesApi, actionsApi, usersApi } from '../services/api/index';
 
 const ObjectiveDetailPage = ({ token }) => {
-    // State variables for decoded token, loading state, and error handling
-    const [decodedToken, setDecodedToken] = useState(null);
+    // State variables for loading state, and error handling
     const [objective, setObjective] = useState([]);
     const [actions, setActions] = useState([]);
 
@@ -28,7 +27,6 @@ const ObjectiveDetailPage = ({ token }) => {
             }
 
             const decodedToken = jwt(token);
-            setDecodedToken(decodedToken);
 
             await usersApi.getUser(decodedToken.username, token).then(async (result) => {
                 try {
