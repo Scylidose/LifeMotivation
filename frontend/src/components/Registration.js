@@ -52,7 +52,7 @@ function Registration() {
     }, [user, navigate]);
 
     return (
-        <div>
+        <div className="registration-container">
             <h2>Registration</h2>
             <form onSubmit={handleSubmit}>
                 <input
@@ -61,6 +61,7 @@ function Registration() {
                     placeholder="Username"
                     value={formData.username}
                     onChange={handleChange}
+                    className="input-field"
                 />
                 <input
                     type="email"
@@ -68,6 +69,7 @@ function Registration() {
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
+                    className="input-field"
                 />
                 <input
                     type="password"
@@ -75,12 +77,13 @@ function Registration() {
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
+                    className="input-field"
                 />
-                <button type="submit">Register</button>
+                <button type="submit" className="register-button">Register</button>
             </form>
             <p>
                 Already have an account?{' '}
-                <button onClick={() => navigate('/login')}>
+                <button onClick={() => navigate('/login')} className="login-button">
                     Login here
                 </button>
             </p>

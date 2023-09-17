@@ -4,9 +4,9 @@ import Registration from '../components/Registration';
 const RegisterPage = () => {
 
     return (
-        <div>
+        <>
             <Registration />
-        </div>
+        </>
     );
 };
 
