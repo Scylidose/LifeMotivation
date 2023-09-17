@@ -10,7 +10,7 @@ class ActionForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isFormVisible: false,
+            isFormVisible: props.isFormVisible || false,
             title: props.title || '',
             description: props.description || '',
             isGood: props.isGood !== undefined ? props.isGood : true,
@@ -109,7 +109,7 @@ class ActionForm extends Component {
             publishedDateTime
         } = this.state;
 
-        const decodedToken = jwt(this.token.token);
+        const decodedToken = jwt(this.token);
 
         // Create a new action object using the input values
         const newAction = {
@@ -171,11 +171,7 @@ class ActionForm extends Component {
         const difficultyBreakLabelValues = ['Easy to Break', '', 'Moderately Challenging', '', 'Extremely Difficult'];
 
         return (
-            <div>
-                <button id="create-form-button" onClick={this.toggleForm}>
-                    Create New Action
-                </button>
-
+            <>
                 {isFormVisible && (
                     <form id="form-card">
                         <div className="slider-container">
@@ -194,6 +190,7 @@ class ActionForm extends Component {
                             value={this.state.title}
                             onChange={this.handleInputChange}
                             required
+                            maxLength="23"
                         /><br />
 
                         <label htmlFor="description">Description:</label>
@@ -230,7 +227,7 @@ class ActionForm extends Component {
                                                         checked={this.state.daysOfWeek[day]}
                                                         onChange={this.handleDayOfWeekChange}
                                                     />
-                                                    <span className="day-label-span">{day.charAt(0).toUpperCase() + day.charAt(1)}</span>
+                                                    <span className="day-label-span">{day.charAt(0).toUpperCase() + day.charAt(1) + day.charAt(2)}</span>
                                                 </label>
                                             </div>
                                         ))}
@@ -314,7 +311,7 @@ class ActionForm extends Component {
                         <button type="button" onClick={this.handleSubmit}>Create {this.state.isGood ? 'Good' : 'Bad'} Action</button>
                     </form>
                 )}
-            </div>
+            </>
         );
     }
 }
