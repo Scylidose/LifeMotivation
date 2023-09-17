@@ -21,6 +21,14 @@ const ActionCard = ({ action, token }) => {
         }
     };
 
+    // Handler for editing an action
+    const handleEditAction = async (actionId) => {
+        try {
+            console.log("editing");
+        } catch (error) {
+            console.error('Error deleting action:', error);
+        }
+    };
     // Handler for resetting an action
     const handleResetAction = async () => {
         const actionId = action.id
@@ -116,15 +124,20 @@ const ActionCard = ({ action, token }) => {
 
     return (
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
-            {action.isGood ? (
-                <div>
-                    <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
-                </div>
-            ) : (
-                <div>
-                    <p className="card-duration"><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
-                </div>
-            )}
+            <div className="edit-container">
+                {action.isGood ? (
+                    <div>
+                        <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
+                    </div>
+                ) : (
+                    <div>
+                        <p className="card-duration"><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
+                    </div>
+                )}
+                <button className="card-header-button edit-button" onClick={() => handleEditAction(action.id)}>
+                    <i className="fa fa-wrench" aria-hidden="true"></i>
+                </button>
+            </div>
             <div className="action-card-header">
                 <h2 className="card-title">{action.title}</h2>
                 <div>
