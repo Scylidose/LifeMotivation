@@ -38,7 +38,7 @@ class User {
                 userId: this.lastID,
                 username: username,
               };
-              const token = jwt.sign(payload, secretKey, { expiresIn: '1h', algorithm: 'HS256' });
+              const token = jwt.sign(payload, secretKey, { expiresIn: '12h', algorithm: 'HS256' });
               resolve(token);
             }
           });

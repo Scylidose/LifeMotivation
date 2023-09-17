@@ -4,9 +4,9 @@ import Login from '../components/Login';
 const LoginPage = ({ onLogin }) => {
 
     return (
-        <div>
-            <Login onLogin={onLogin}/>
-        </div>
+        <>
+            <Login onLogin={onLogin} />
+        </>
     );
 };
 

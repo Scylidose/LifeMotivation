@@ -4,13 +4,11 @@ import { useParams } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
 import ActionCard from '../components/ActionCard';
-import ActionForm from '../components/ActionForm';
 
 import { actionsApi, usersApi } from '../services/api/index';
 
 const BitDetailPage = ({ token }) => {
-    // State variables for decoded token, actions, loading state, and error handling
-    const [decodedToken, setDecodedToken] = useState(null);
+    // State variables for actions, loading state, and error handling
     const [action, setAction] = useState([]);
 
     const [loading, setLoading] = useState(true);
@@ -27,7 +25,6 @@ const BitDetailPage = ({ token }) => {
             }
 
             const decodedToken = jwt(token);
-            setDecodedToken(decodedToken);
 
             await usersApi.getUser(decodedToken.username, token).then(async (result) => {
                 try {
@@ -49,49 +46,37 @@ const BitDetailPage = ({ token }) => {
     }, [token, id]);
 
     return (
-        <div>
-            <div>
-                {decodedToken ? (
-                    <h1>{decodedToken.username}'s Profile</h1>
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </div>
-            <div>
+        <>
+            {loading ? (
+                <p>Loading...</p>
+            ) : error ? (
+                <p>Error: {error.message}</p>
+            ) : (
                 <div>
+                    <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Bit</h1>
                     {loading ? (
                         <p>Loading...</p>
                     ) : error ? (
                         <p>Error: {error.message}</p>
                     ) : (
-                        <div>
-                            <ActionForm token={token} />
-                            <h1>Your Bits</h1>
-                            {loading ? (
-                                <p>Loading...</p>
-                            ) : error ? (
-                                <p>Error: {error.message}</p>
-                            ) : (
-                                <div className="objective-list">
-                                    {Array.isArray(action) && action.length === 0 ? (
-                                        <div>
-                                            Action not found.
-                                        </div>
-                                    ) : (
-                                        <ActionCard
-                                            key={action.id}
-                                            action={action}
-                                            token={token}
-                                        />
-                                    )}
-
+                        <div className="objective-list">
+                            {Array.isArray(action) && action.length === 0 ? (
+                                <div>
+                                    Action not found.
                                 </div>
+                            ) : (
+                                <ActionCard
+                                    key={action.id}
+                                    action={action}
+                                    token={token}
+                                />
                             )}
+
                         </div>
                     )}
                 </div>
-            </div>
-        </div>
+            )}
+        </>
 
     );
 };

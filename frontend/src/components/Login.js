@@ -53,7 +53,7 @@ function Login({ onLogin }) {
     }, [user, navigate]);
 
     return (
-        <div>
+        <div className="login-container">
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <input
@@ -62,6 +62,7 @@ function Login({ onLogin }) {
                     placeholder="Username or Email"
                     value={formData.usernameOrEmail}
                     onChange={handleChange}
+                    className="input-field"
                 />
                 <input
                     type="password"
@@ -69,12 +70,13 @@ function Login({ onLogin }) {
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
+                    className="input-field"
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className="login-button">Login</button>
             </form>
             <p>
                 Don't have an account?{' '}
-                <button onClick={() => navigate('/register')}>
+                <button onClick={() => navigate('/register')} className="register-button">
                     Register here
                 </button>
             </p>

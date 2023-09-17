@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import jwt from 'jwt-decode';
 
 import ObjectiveForm from '../components/ObjectiveForm';
@@ -16,6 +16,7 @@ const ProfilePage = ({ token }) => {
   const [objectives, setObjectives] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch data when the component mounts
@@ -54,10 +55,10 @@ const ProfilePage = ({ token }) => {
   const displayedActions = actions.slice(0, 5);
 
   return (
-    <div>
+    <>
       <div>
         {decodedToken ? (
-          <h1>{decodedToken.username}'s Profile</h1>
+          <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>{decodedToken.username}'s Profile</h1>
         ) : (
           <p>Loading...</p>
         )}
@@ -65,65 +66,86 @@ const ProfilePage = ({ token }) => {
       <div>
         <div>
           <ActionForm token={token} />
-          <h1>Your Bits</h1>
+          <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Bits</h1>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
             <p>Error: {error.message}</p>
           ) : (
             <div className="action-list">
-              {displayedActions.map(action => (
-                <ActionCard
-                  key={action.id}
-                  action={action}
-                  token={token}
-                />
-              ))}
-              {actions.length > 5 && (
-                <Navigate to="/bits" />
+              <div className="action-card-container">
+
+                {displayedActions.map(action => (
+                  <ActionCard
+                    key={action.id}
+                    action={action}
+                    token={token}
+                  />
+                ))}
+              </div>
+
+              {actions.length > 6 && (
+                <div className='create-new-action-container'>
+                  <div className="create-new-action">
+                    <span> See more actions </span>
+                    <button onClick={() => navigate('/bits')} className="add-action-button">
+                      here
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           )}
         </div>
+        <hr/>
         <div>
-          <ObjectiveForm />
-          <h1>Your Objectives</h1>
+          <ObjectiveForm token={token} />
+          <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Objectives</h1>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
             <p>Error: {error.message}</p>
           ) : (
             <div className="objective-list">
-              {objectives
-                .sort((a, b) => {
-                  // Sort by priority first
-                  if (a.priority !== b.priority) {
-                    return a.priority - b.priority;
-                  }
 
-                  // If priorities are equal, compare intended finish dates
-                  const todayTimestamp = Date.now();
-                  const aTimeDifference = Math.abs(a.intendedFinishDateTime - todayTimestamp);
-                  const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
+              <div className="objective-card-container">
+                {objectives
+                  .sort((a, b) => {
+                    // Sort by priority first
+                    if (a.priority !== b.priority) {
+                      return a.priority - b.priority;
+                    }
 
-                  return aTimeDifference - bTimeDifference;
-                }).slice(0, 3)
-                .map(objective => (
-                  <ObjectiveCard
-                    key={objective.id}
-                    objective={objective}
-                    token={token}
-                  />
-                ))}
-                {objectives.length > 3 && (
-                  <Navigate to="/objectives" />
-                )}
+                    // If priorities are equal, compare intended finish dates
+                    const todayTimestamp = Date.now();
+                    const aTimeDifference = Math.abs(a.intendedFinishDateTime - todayTimestamp);
+                    const bTimeDifference = Math.abs(b.intendedFinishDateTime - todayTimestamp);
+
+                    return aTimeDifference - bTimeDifference;
+                  }).slice(0, 3)
+                  .map(objective => (
+                    <ObjectiveCard
+                      key={objective.id}
+                      objective={objective}
+                      token={token}
+                    />
+                  ))}
+              </div>
+              {objectives.length > 3 && (
+                <div className='create-new-action-container'>
+                  <div className="create-new-action">
+                    <span> See more objectives </span>
+                    <button onClick={() => navigate('/objectives')} className="add-action-button">
+                      here
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
       </div>
-    </div>
-
+    </>
   );
 };
 

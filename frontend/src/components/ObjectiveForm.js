@@ -10,7 +10,7 @@ class ObjectiveForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isFormVisible: false,
+            isFormVisible: props.isFormVisible || false,
             title: '',
             description: '',
             complexity: 1,
@@ -31,6 +31,11 @@ class ObjectiveForm extends Component {
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({ [name]: value });
+    };
+
+    // Handle slider input changes
+    handleSliderChange = (type, value) => {
+        this.setState({ [type]: value });
     };
 
     // Convert a selected date into a timestamp and log it
@@ -98,11 +103,7 @@ class ObjectiveForm extends Component {
         tomorrow.setDate(tomorrow.getDate() + 1); // Set the date to tomorrow
 
         return (
-            <div>
-                <button id="create-form-button" onClick={this.toggleForm}>
-                    Create New Objective
-                </button>
-
+            <>
                 {isFormVisible && (
                     <form id="form-card">
                         <label htmlFor="title">Title:</label>
@@ -125,7 +126,7 @@ class ObjectiveForm extends Component {
                             required
                         /><br />
                         <label htmlFor="complexity">Complexity:</label>
-                        <DotSlider name="complexity" type="complexity" onChange={this.handleInputChange} labelValues={complexityLabelValues} /><br />
+                        <DotSlider name="complexity" type="complexity" baseValue={this.state.complexity} onChange={this.handleSliderChange} labelValues={complexityLabelValues} /><br />
 
                         <label htmlFor="difficulty">Priority:</label>
                         <input
@@ -151,7 +152,7 @@ class ObjectiveForm extends Component {
                         <button type="button" onClick={this.handleSubmit}>Create</button>
                     </form>
                 )}
-            </div>
+            </>
         );
     }
 }

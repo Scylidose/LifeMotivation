@@ -15,6 +15,20 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Layout from './pages/Layout';
 
+function Logout() {
+  // Function to handle user logout and clear the token
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+  };
+
+  useEffect(() => {
+    handleLogout();
+    window.location.reload();
+  }, []);
+
+  return <Navigate to="/login" />;
+}
+
 function App() {
   const [token, setToken] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
@@ -55,13 +69,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout token={token} onLogout={handleLogout} />}>
+        <Route element={<Layout token={token} />}>
           <Route path="/" element={<CalendarPage token={token} />} />
           <Route path="/profile" element={<ProfilePage token={token} />} />
           <Route path="/objectives" element={<ObjectivesPage token={token} />} />
           <Route path="/objective/:id" element={<ObjectiveDetailPage token={token} />} />
           <Route path="/bits" element={<BitsPage token={token} />} />
           <Route path="/bit/:id" element={<BitDetailPage token={token} />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/login" element={authenticated ? <Navigate to="/" /> : <LoginPage onLogin={handleLogin} />} />
           <Route path="/register" element={authenticated ? <Navigate to="/" /> : <RegisterPage />} />
         </Route>

@@ -5,6 +5,7 @@ import { format, isSameDay } from 'date-fns';
 
 import Recommendation from './Recommendation';
 import ActionForm from './ActionForm';
+import ActionCard from './ActionCard';
 
 const CalendarDisplay = ({ actions, token }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -19,28 +20,32 @@ const CalendarDisplay = ({ actions, token }) => {
 
     return (
         <div className="page">
-            <div className="calendar">
-                <Calendar value={currentDate} onChange={setCurrentDate} />
+            <div className="calendar-recommendation-container">
+                <div className="calendar-container">
+                    <h5>Bits for {format(currentDate, 'MMMM d, yyyy')}</h5>
+                    <Calendar className="calendar" value={currentDate} onChange={setCurrentDate} />
+                </div>
+                <Recommendation actions={actions} token={token} currentDate={currentDate} />
             </div>
-            <div className="current-day">
-                <h2>Actions for {format(currentDate, 'MMMM d, yyyy')}</h2>
-
-            </div>
-            <div className="actions-list">
-                <Recommendation actions={actions} token={token} currentDate={currentDate}/>
+            <div className="action-list">
                 {todayActions.length === 0 ? (
-                    <p>No actions for today.</p>
+                    <h3 style={{ 'text-align': 'center', 'margin': '15px' }}>No actions for today.</h3>
                 ) : (
-                    <div>
-                        <p>Today actions :</p>
-                        <ul>
-                            {todayActions.map((action) => (
-                                <li key={action.id}>{action.title}</li>
+                    <>
+                        <h3 style={{ 'text-align': 'center', 'margin': '15px' }}>Today's Bits :</h3>
+                        <div className="action-card-container">
+
+                            {todayActions.map(action => (
+                                <ActionCard
+                                    key={action.id}
+                                    action={action}
+                                    token={token}
+                                />
                             ))}
-                        </ul>
-                    </div>
+                        </div>
+                    </>
                 )}
-                <ActionForm token={token} publishedDateTime={currentDate.getTime()}/>
+                <ActionForm token={token} publishedDateTime={currentDate.getTime()} />
             </div>
         </div>
     );

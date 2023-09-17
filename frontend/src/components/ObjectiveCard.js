@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Collapsible from 'react-collapsible';
 
 import { convertDate, calculateObjectiveXP } from '../utils/Utils';
 import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
 
 const ObjectiveCard = ({ objective, token }) => {
-    const [linkedActions, setLinkedActions] = useState(null);
+    const [linkedActions, setLinkedActions] = useState([]);
 
     // Effect to fetch linked actions when the objective ID changes
     useEffect(() => {
@@ -66,31 +65,31 @@ const ObjectiveCard = ({ objective, token }) => {
             console.error('Error finishing objective:', error);
         }
     };
-    console.log(linkedActions);
+
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
-            <div className="card-header">
+            <div className="action-card-header">
                 <h2 className="card-title">{objective.title}</h2>
             </div>
             <p className="card-description">{objective.description}</p>
             <div className="card-details">
                 <p className="card-info"><strong>Priority:</strong> {objective.priority}</p>
                 <p className="card-info"><strong>Complexity:</strong> {objective.complexity}</p>
-                {linkedActions && (
+                {linkedActions.length > 0 && (
                     <div>
                         <p>Linked Bits :</p>
                         <ul className="linked-actions">
-                                {linkedActions.map(action => (
-                                    <li key={action.id}>
-                                        <a href={`/bit/${action.id}`}>{action.title}</a> - Created {convertDate(action.publishedDateTime)}
-                                        {action.finishedDateTime ? (
-                                            ` - Finished the ${convertDate(action.finishedDateTime)}`
-                                        ) : (
-                                            ''
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
+                            {linkedActions.map(action => (
+                                <li key={action.id}>
+                                    <a href={`/bit/${action.id}`}>{action.title}</a> - Created {convertDate(action.publishedDateTime)}
+                                    {action.finishedDateTime ? (
+                                        ` - Finished the ${convertDate(action.finishedDateTime)}`
+                                    ) : (
+                                        ''
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
             </div>

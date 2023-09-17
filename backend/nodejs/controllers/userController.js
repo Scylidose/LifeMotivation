@@ -57,7 +57,7 @@ exports.logUser = async (req, res) => {
                 userId: user.id,
                 username: user.username,
             };
-            const token = jwt.sign(payload, secretKey, { expiresIn: '1h', algorithm: 'HS256' });
+            const token = jwt.sign(payload, secretKey, { expiresIn: '12h', algorithm: 'HS256' });
 
             res.status(200).json({ token });
         } else {
