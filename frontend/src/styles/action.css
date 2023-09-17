@@ -1,6 +1,27 @@
  .action-list {
      display: grid;
      gap: 16px;
+     width: 80%;
+     margin: auto;
+ }
+
+ .action-card-container {
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+     gap: 20px;
+     justify-content: center;
+ }
+
+ .create-new-action-container {
+     text-align: center;
+     margin: 15px;
+ }
+
+ .create-new-action {
+    border: 1px solid #333;
+    display: inline-block;
+    border-radius: 5px;
+    padding-left: 10px
  }
 
  .action-card {
@@ -24,7 +45,7 @@
      border: 2px solid #28a745;
  }
 
- .card-header {
+ .action-card-header {
      display: flex;
      justify-content: space-between;
      align-items: center;

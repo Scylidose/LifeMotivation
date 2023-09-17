@@ -1,6 +1,15 @@
-.ojective-list {
+.objective-list {
     display: grid;
     gap: 16px;
+    width: 80%;
+    margin: auto;
+}
+
+.objective-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    justify-content: center;
 }
 
 .objective-card {
@@ -32,6 +41,7 @@
     position: relative;
 }
 
-.collapsible-actions, .Collapsible__trigger {
+.collapsible-actions,
+.Collapsible__trigger {
     cursor: pointer;
 }
