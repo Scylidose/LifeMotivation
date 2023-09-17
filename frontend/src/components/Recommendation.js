@@ -15,7 +15,6 @@ const Recommendation = ({ actions, currentDate, token }) => {
 
     const toggleActionFormModal = (actionToCreate) => {
         setActionToCreate(actionToCreate);
-        console.log(actionToCreate);
         setShowActionFormModal(!showActionFormModal);
     };
 
