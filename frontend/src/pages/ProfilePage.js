@@ -86,7 +86,7 @@ const ProfilePage = ({ token }) => {
           )}
         </div>
         <div>
-          <ObjectiveForm />
+          <ObjectiveForm token={token} />
           <h1>Your Objectives</h1>
           {loading ? (
             <p>Loading...</p>
