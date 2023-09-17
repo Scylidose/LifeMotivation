@@ -49,49 +49,37 @@ const BitDetailPage = ({ token }) => {
     }, [token, id]);
 
     return (
-        <div>
-            <div>
-                {decodedToken ? (
-                    <h1>{decodedToken.username}'s Profile</h1>
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </div>
-            <div>
+        <>
+            {loading ? (
+                <p>Loading...</p>
+            ) : error ? (
+                <p>Error: {error.message}</p>
+            ) : (
                 <div>
+                    <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Bit</h1>
                     {loading ? (
                         <p>Loading...</p>
                     ) : error ? (
                         <p>Error: {error.message}</p>
                     ) : (
-                        <div>
-                            <ActionForm token={token} />
-                            <h1>Your Bits</h1>
-                            {loading ? (
-                                <p>Loading...</p>
-                            ) : error ? (
-                                <p>Error: {error.message}</p>
-                            ) : (
-                                <div className="objective-list">
-                                    {Array.isArray(action) && action.length === 0 ? (
-                                        <div>
-                                            Action not found.
-                                        </div>
-                                    ) : (
-                                        <ActionCard
-                                            key={action.id}
-                                            action={action}
-                                            token={token}
-                                        />
-                                    )}
-
+                        <div className="objective-list">
+                            {Array.isArray(action) && action.length === 0 ? (
+                                <div>
+                                    Action not found.
                                 </div>
+                            ) : (
+                                <ActionCard
+                                    key={action.id}
+                                    action={action}
+                                    token={token}
+                                />
                             )}
+
                         </div>
                     )}
                 </div>
-            </div>
-        </div>
+            )}
+        </>
 
     );
 };
