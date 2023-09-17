@@ -52,59 +52,56 @@ const ObjectiveDetailPage = ({ token }) => {
     }, [token, id]);
 
     return (
-        <div>
-            <div>
-                {decodedToken ? (
-                    <h1>{decodedToken.username}'s Profile</h1>
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </div>
-            <div>
+        <>
+            {loading ? (
+                <p>Loading...</p>
+            ) : error ? (
+                <p>Error: {error.message}</p>
+            ) : (
                 <div>
+                    <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Objective</h1>
                     {loading ? (
                         <p>Loading...</p>
                     ) : error ? (
                         <p>Error: {error.message}</p>
                     ) : (
-                        <div>
-                            <h1>Your Objective</h1>
-                            {loading ? (
-                                <p>Loading...</p>
-                            ) : error ? (
-                                <p>Error: {error.message}</p>
+                        <div className="objective-list">
+                            {Array.isArray(objective) && objective.length === 0 ? (
+                                <div>
+                                    Objective not found.
+                                </div>
                             ) : (
-                                <div className="objective-list">
-                                    {Array.isArray(objective) && objective.length === 0 ? (
-                                        <div>
-                                            Objective not found.
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            <ObjectiveCard
-                                                key={objective.id}
-                                                objective={objective}
-                                                token={token}
-                                            />
-                                            <h3>Linked Bits with this objective:</h3>
-                                            <div className="action-list">
-                                                {actions.map(action => (
-                                                    <ActionCard
-                                                        key={action.id}
-                                                        action={action}
-                                                        token={token}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
+                                <div>
+                                    <ObjectiveCard
+                                        key={objective.id}
+                                        objective={objective}
+                                        token={token}
+                                    />
+
+                                    <div className="action-list">
+                                        {actions.length > 0 && (
+                                            <>
+                                                <h3>Linked Bits with this objective:</h3>
+                                                <div className="action-card-container">
+                                                    {actions.map(action => (
+                                                        <ActionCard
+                                                            key={action.id}
+                                                            action={action}
+                                                            token={token}
+                                                        />
+                                                    )
+                                                    )}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
                     )}
                 </div>
-            </div>
-        </div>
+            )}
+        </>
 
     );
 };
