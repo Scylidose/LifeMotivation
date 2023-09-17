@@ -1,9 +1,28 @@
 #form-card {
     padding-top: 10px !important;
     padding: 20px;
-    width: 250px;
+    height: 100%;
+    overflow-y: auto;
     border: 1px solid #ccc;
 }
+
+#form-card::-webkit-scrollbar {
+    width: 5px;
+}
+
+#form-card::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 6px;
+}
+
+#form-card::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+#form-card::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
 
 #form-card label:not(.day-checkboxes *) {
     margin-bottom: 5px;
@@ -31,6 +50,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
 .day-checkboxes label {
@@ -39,10 +60,17 @@
     align-items: center;
     margin-right: 5px;
     margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
+
+.day-checkboxes label:hover {
+    transform: scale(1.05);
+  }
 
 .selected-day {
     font-weight: bold;
+    padding: 0 10px 0 10px;
 }
 
 .day-label-span {
@@ -59,6 +87,7 @@
     padding: 0 5px;
     margin: 10px 0px;
     user-select: none;
+    justify-content: center;
 }
 
 .dot-slider::before {
