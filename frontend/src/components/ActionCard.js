@@ -125,7 +125,7 @@ const ActionCard = ({ action, token }) => {
                     <p className="card-duration"><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
                 </div>
             )}
-            <div className="card-header">
+            <div className="action-card-header">
                 <h2 className="card-title">{action.title}</h2>
                 <div>
                     <p className="card-duration"><strong>Created:</strong> {convertDate(action.publishedDateTime)}</p>
