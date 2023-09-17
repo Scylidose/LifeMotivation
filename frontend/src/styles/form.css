@@ -37,7 +37,7 @@
     border: 1px solid #ccc;
 }
 
-#form-card button {
+#form-card > button {
     margin-top: 10px;
     background-color: blue;
     color: white;
