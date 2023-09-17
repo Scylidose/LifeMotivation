@@ -17,19 +17,19 @@ export function convertDate(timestamp) {
 export function calculateBitXP(action) {
     const importance = 5 / action.importance;
     const frequency = 5 / action.frequency;
-    const difficulty = 1 / action.difficulty;
+    const difficulty = action.difficulty;
     var actual_duration = action.realDuration;
 
     if (isNaN(actual_duration) || actual_duration === null || !isFinite(actual_duration)) {
-        actual_duration = 1;
+        actual_duration = action.intendedDuration;
     }
 
     const intended_duration = action.intendedDuration;
-    let duration_ratio = Math.min(actual_duration / intended_duration, 2);
+    let duration_ratio = Math.max(actual_duration / intended_duration, 2);
 
-    let gained_xp = (importance * frequency * (1 / difficulty)) * duration_ratio;
+    let gained_xp = (importance * frequency * (1 / difficulty)) * (duration_ratio * (actual_duration / 5));
     console.log(
-        `XP = (${importance} * ${frequency} * (1 / ${difficulty})) * ${duration_ratio} = ${gained_xp}`
+        `XP = (${importance} * ${frequency} * (1 / ${difficulty})) * (${duration_ratio} * (${actual_duration}/5)) = ${gained_xp}`
     );
 
     if (!action.isGood) {
