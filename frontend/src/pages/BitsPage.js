@@ -3,16 +3,21 @@ import jwt from 'jwt-decode';
 
 import ActionCard from '../components/ActionCard';
 import ActionForm from '../components/ActionForm';
+import ActionModal from '../components/ActionModal';
 
 import { actionsApi, usersApi } from '../services/api/index';
 
 const BitsPage = ({ token }) => {
   // State variables for decoded token, actions, loading state, and error handling
-  const [decodedToken, setDecodedToken] = useState(null);
   const [actions, setActions] = useState([]);
+  const [showActionFormModal, setShowActionFormModal] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const toggleActionFormModal = () => {
+    setShowActionFormModal(!showActionFormModal);
+  };
 
   useEffect(() => {
     // Fetch data when the component mounts
@@ -21,9 +26,7 @@ const BitsPage = ({ token }) => {
         // Token is not available, handle accordingly (e.g., redirect to login)
         return;
       }
-
       const decodedToken = jwt(token);
-      setDecodedToken(decodedToken);
 
       await usersApi.getUser(decodedToken.username, token).then(async (result) => {
         try {
@@ -47,44 +50,59 @@ const BitsPage = ({ token }) => {
   }, [token]);
 
   return (
-    <div>
-      <div>
-        {decodedToken ? (
-          <h1>{decodedToken.username}'s Profile</h1>
-        ) : (
+    <>
+      <>
+        {loading ? (
           <p>Loading...</p>
-        )}
-      </div>
-      <div>
-        <div>
-          {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p>Error: {error.message}</p>
-          ) : (
-            <div>
-              <ActionForm token={token} />
-              <h1>Your Bits</h1>
-              {loading ? (
-                <p>Loading...</p>
-              ) : error ? (
-                <p>Error: {error.message}</p>
-              ) : (
-                <div className="action-list">
-                  {actions.map(action => (
-                    <ActionCard
-                      key={action.id}
-                      action={action}
-                      token={token}
-                    />
-                  ))}
-                </div>
-              )}
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <div>
+            <div className='create-new-action-container'>
+              <div className="create-new-action">
+                <span> Create new action </span>
+                <button onClick={() => toggleActionFormModal()} className="add-action-button">
+                  <i className="fa fa-plus" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
-          )}
-        </div>
-      </div>
-    </div>
+            {showActionFormModal && (
+              <div style={{ 'textAlign': 'center' }}>
+              <ActionModal onClose={toggleActionFormModal}>
+                <ActionForm
+                  token={token}
+                  isFormVisible={true}
+                />
+              </ActionModal>
+              </div>
+            )}
+            <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Bits</h1>
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p>Error: {error.message}</p>
+            ) : (
+
+              <div className="action-list">
+                {actions.length === 0 ? (
+                  <h3 style={{ 'text-align': 'center', 'margin': '15px' }}>No actions defined.</h3>
+                ) : (
+                  <div className="action-card-container">
+                    {actions.map(action => (
+                      <ActionCard
+                        key={action.id}
+                        action={action}
+                        token={token}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </>
+    </>
 
   );
 };
