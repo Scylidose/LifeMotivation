@@ -52,6 +52,27 @@ exports.createObjective = async (req, res) => {
     }
 }
 
+// Edit objective
+exports.editObjective = async (req, res) => {
+    const { id, title, description, author, priority, complexity, intendedFinishDateTime } = req.body;
+    try {
+        const newObjective = await Objective.edit(
+            id,
+            title,
+            description,
+            author,
+            priority,
+            complexity,
+            intendedFinishDateTime
+        );
+
+        res.status(201).json({ message: 'Objective edited successfully', objective: newObjective });
+    } catch (error) {
+        console.error('Error editing objective:', error);
+        res.status(500).json({ error: 'Failed to edit objective' });
+    }
+}
+
 exports.deleteObjectiveById = async (req, res) => {
     const objectiveId = req.params.id;
     try {
