@@ -7,6 +7,7 @@ router.get('/:author', authenticateToken, objectiveController.getObjectivesByAut
 router.get('/id/:id', authenticateToken, objectiveController.getObjectiveById);
 
 router.post('/', authenticateToken, objectiveController.createObjective);
+router.post('/edit', authenticateToken, objectiveController.editObjective);
 router.post('/:id/finish', authenticateToken, objectiveController.finishObjectiveById);
 router.post('/:id/reset', authenticateToken, objectiveController.resetObjectiveById);
 

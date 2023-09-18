@@ -136,3 +136,40 @@ exports.createAction = async (req, res) => {
         res.status(500).json({ error: 'Failed to create action' });
     }
 };
+
+// Edit a new action
+exports.editAction = async (req, res) => {
+    const {
+        id,
+        title,
+        description,
+        author,
+        isGood,
+        importance,
+        daysOfWeek,
+        frequency,
+        difficulty,
+        intendedDuration,
+        linkedObjective
+    } = req.body;
+    try {
+        const newAction = await Action.edit(
+            id,
+            title,
+            description,
+            author,
+            isGood,
+            importance,
+            daysOfWeek,
+            frequency,
+            difficulty,
+            intendedDuration,
+            linkedObjective
+        );
+
+        res.status(201).json({ message: 'Action edited successfully', action: newAction });
+    } catch (error) {
+        console.error('Error editing action:', error);
+        res.status(500).json({ error: 'Failed to edit action' });
+    }
+};

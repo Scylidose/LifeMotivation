@@ -8,6 +8,7 @@ router.get('/id/:id', authenticateToken, actionController.getActionById);
 router.get('/objective/:id', authenticateToken, actionController.getActionsByObjectiveId);
 
 router.post('/', authenticateToken, actionController.createAction);
+router.post('/edit', authenticateToken, actionController.editAction);
 router.post('/:id/finish', authenticateToken, actionController.finishAction);
 router.post('/:id/reset', authenticateToken, actionController.resetAction);
 router.post('/:id/comments', authenticateToken, actionController.addActionComment);

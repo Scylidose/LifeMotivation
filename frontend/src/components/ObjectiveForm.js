@@ -11,11 +11,13 @@ class ObjectiveForm extends Component {
         super(props);
         this.state = {
             isFormVisible: props.isFormVisible || false,
-            title: '',
-            description: '',
-            complexity: 1,
-            priority: 1,
-            intendedFinishDateTime: null
+            editMode: props.editMode || false,
+            id: props.id || null,
+            title: props.title || '',
+            description: props.description || '',
+            complexity: props.complexity || 1,
+            priority: props.priority || 1,
+            intendedFinishDateTime: props.intendedFinishDateTime || null
         };
         this.token = props.token || null;
     }
@@ -54,6 +56,49 @@ class ObjectiveForm extends Component {
         this.setState({ intendedFinishDateTime: this.saveTimestamp(date) });
     };
 
+    handleEdit = async event => {
+        event.preventDefault();
+        const {
+            id,
+            title,
+            description,
+            complexity,
+            priority,
+            intendedFinishDateTime
+        } = this.state;
+
+        const decodedToken = jwt(this.token);
+
+        // Create a new objective object using the input values
+        const newObjective = {
+            id,
+            title,
+            description,
+            author: decodedToken.username,
+            complexity: parseInt(complexity),
+            priority: parseInt(priority),
+            intendedFinishDateTime: intendedFinishDateTime
+        };
+
+        try {
+            await objectivesApi.editObjective(newObjective, this.token);
+            window.location.reload(); // Reload the page after creating the objective
+        } catch (error) {
+            console.error('Error editing objective:', error);
+        }
+
+        // Reset form values and hide the form
+        this.setState({
+            isFormVisible: false,
+            title: '',
+            editMode: false,
+            description: '',
+            complexity: 1,
+            priority: 1,
+            intendedFinishDateTime: null
+        });
+    };
+
     // Handle form submission
     handleSubmit = async event => {
         event.preventDefault();
@@ -89,6 +134,7 @@ class ObjectiveForm extends Component {
         this.setState({
             isFormVisible: false,
             title: '',
+            editMode: false,
             description: '',
             complexity: 1,
             priority: 1,
@@ -97,7 +143,7 @@ class ObjectiveForm extends Component {
     };
 
     render() {
-        const { isFormVisible } = this.state;
+        const { isFormVisible, editMode } = this.state;
         const complexityLabelValues = ['A Breeze', '', 'Moderate', '', 'Quite a Challenge'];
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1); // Set the date to tomorrow
@@ -148,8 +194,11 @@ class ObjectiveForm extends Component {
                                 inline
                             />
                         </div>
-
-                        <button type="button" onClick={this.handleSubmit}>Create</button>
+                        {editMode ? (
+                            <button type="button" onClick={this.handleEdit}>Edit Objective</button>
+                        ) : (
+                            <button type="button" onClick={this.handleSubmit}>Create Objective</button>
+                            )}
                     </form>
                 )}
             </>

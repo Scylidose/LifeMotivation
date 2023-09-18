@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import CommentPopup from './CommentPopup';
 
+import ActionModal from './ActionModal';
+import ActionForm from './ActionForm';
+
 import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
 import { convertDate, calculateBitXP } from '../utils/Utils';
 
@@ -9,6 +12,11 @@ const ActionCard = ({ action, token }) => {
     const [showFinishDuration, setShowFinishDuration] = useState(false);
     const [realDuration, setRealDuration] = useState(0);
     const [linkedObjective, setLinkedObjective] = useState(null);
+    const [showActionFormModal, setShowActionFormModal] = useState(false);
+
+    const toggleActionFormModal = () => {
+        setShowActionFormModal(!showActionFormModal);
+    };
 
     // Handler for deleting an action
     const handleDeleteAction = async (actionId) => {
@@ -116,15 +124,41 @@ const ActionCard = ({ action, token }) => {
 
     return (
         <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
-            {action.isGood ? (
-                <div>
-                    <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
-                </div>
-            ) : (
-                <div>
-                    <p className="card-duration"><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
+            {showActionFormModal && (
+                <div style={{ 'textAlign': 'center' }}>
+                    <ActionModal onClose={toggleActionFormModal}>
+                        <ActionForm
+                            token={token}
+                            id={action.id}
+                            title={action.title}
+                            description={action.description}
+                            isGood={action.isGood}
+                            daysOfWeek={JSON.parse(action.daysOfWeek)}
+                            importance={action.importance}
+                            frequency={action.frequency}
+                            difficulty={action.difficulty}
+                            intendedDuration={action.intendedDuration}
+                            selectedObjective={action.objectiveId}
+                            isFormVisible={true}
+                            editMode={true}
+                        />
+                    </ActionModal>
                 </div>
             )}
+            <div className="edit-container">
+                {action.isGood ? (
+                    <div>
+                        <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
+                    </div>
+                ) : (
+                    <div>
+                        <p className="card-duration"><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
+                    </div>
+                )}
+                <button className="card-header-button edit-button" onClick={() => toggleActionFormModal()}>
+                    <i className="fa fa-wrench" aria-hidden="true"></i>
+                </button>
+            </div>
             <div className="action-card-header">
                 <h2 className="card-title">{action.title}</h2>
                 <div>

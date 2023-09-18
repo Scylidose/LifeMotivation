@@ -44,6 +44,26 @@ class Objective {
         });
     }
 
+    static edit(id, title, description, author, priority, complexity, intendedFinishDateTime) {
+        console.log("UPDATING OBJECTIVE : ", id, title, description, author, priority, complexity, intendedFinishDateTime);
+        return new Promise((resolve, reject) => {
+            db.run(
+                'UPDATE objectives SET title = ?, description = ?, author = ?, priority = ?, complexity = ?, intendedFinishDateTime = ? WHERE id = ?',
+                [title, description, author, priority, complexity, intendedFinishDateTime, id],
+                function (err) {
+                    if (err) {
+                        console.log("ROLLBACK");
+                        db.run('ROLLBACK'); // Roll back the transaction if there's an error
+                        reject(err);
+                    } else {
+                        console.log(`Row updated: ${this.changes}`);
+                        resolve(this.changes);
+                    }
+                }
+            );
+        });
+    }
+
     static findById(id) {
         console.log("FETCHING OBJECTIVE BY ID: ", id);
         return new Promise((resolve, reject) => {

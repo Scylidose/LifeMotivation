@@ -29,6 +29,30 @@ async function createNewObjective(objectiveData, token) {
 }
 
 /**
+ * Creates an objective.
+ * @param {Object} objectiveData - The data for the objective to edit.
+ * @returns {Promise} A Promise that resolves to the edited objective data.
+ */
+async function editObjective(objectiveData, token) {
+    try {
+        const response = await fetch(`${apiUrl}/api/objectives/edit`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(objectiveData),
+        });
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error creating objective:', error);
+        throw error;
+    }
+}
+
+/**
  * Fetches objectives for a user.
  * @param {string} username - The username of the user.
  * @returns {Promise} A Promise that resolves to the retrieved objectives data.
@@ -144,6 +168,7 @@ async function resetObjective(objectiveId, token) {
 
 export {
     createNewObjective,
+    editObjective,
     getObjectivesForUser,
     getObjectiveById,
     deleteObjective,

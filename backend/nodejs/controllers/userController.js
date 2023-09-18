@@ -44,13 +44,13 @@ exports.logUser = async (req, res) => {
         const { usernameOrEmail, password } = req.body;
 
         const user = await User.fetchOne(usernameOrEmail);
-
+        console.log(user);
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password_hash);
-
+        console.log(passwordMatch);
         if (passwordMatch) {
 
             const payload = {
@@ -58,7 +58,7 @@ exports.logUser = async (req, res) => {
                 username: user.username,
             };
             const token = jwt.sign(payload, secretKey, { expiresIn: '12h', algorithm: 'HS256' });
-
+            console.log(token);
             res.status(200).json({ token });
         } else {
             return res.status(401).json({ message: 'Authentication failed.' });

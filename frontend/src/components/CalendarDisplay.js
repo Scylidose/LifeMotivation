@@ -29,10 +29,10 @@ const CalendarDisplay = ({ actions, token }) => {
             </div>
             <div className="action-list">
                 {todayActions.length === 0 ? (
-                    <h3 style={{ 'text-align': 'center', 'margin': '15px' }}>No actions for today.</h3>
+                    <h3 style={{ 'textAlign': 'center', 'margin': '15px' }}>No actions for today.</h3>
                 ) : (
                     <>
-                        <h3 style={{ 'text-align': 'center', 'margin': '15px' }}>Today's Bits :</h3>
+                        <h3 style={{ 'textAlign': 'center', 'margin': '15px' }}>Today's Bits :</h3>
                         <div className="action-card-container">
 
                             {todayActions.map(action => (

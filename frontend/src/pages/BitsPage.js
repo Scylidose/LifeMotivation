@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+
+import loadingGif from '../assets/images/loading.gif';
 import jwt from 'jwt-decode';
 
 import ActionCard from '../components/ActionCard';
@@ -53,7 +56,13 @@ const BitsPage = ({ token }) => {
     <>
       <>
         {loading ? (
-          <p>Loading...</p>
+          <>
+            {token ? (
+              <img src={loadingGif} className="loadingImg" alt="Loading..." />
+            ) : (
+              <Navigate to="/login" />
+            )}
+          </>
         ) : error ? (
           <p>Error: {error.message}</p>
         ) : (
@@ -68,24 +77,24 @@ const BitsPage = ({ token }) => {
             </div>
             {showActionFormModal && (
               <div style={{ 'textAlign': 'center' }}>
-              <ActionModal onClose={toggleActionFormModal}>
-                <ActionForm
-                  token={token}
-                  isFormVisible={true}
-                />
-              </ActionModal>
+                <ActionModal onClose={toggleActionFormModal}>
+                  <ActionForm
+                    token={token}
+                    isFormVisible={true}
+                  />
+                </ActionModal>
               </div>
             )}
             <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Bits</h1>
             {loading ? (
-              <p>Loading...</p>
+              <img src={loadingGif} className="loadingImg" alt="Loading..." />
             ) : error ? (
               <p>Error: {error.message}</p>
             ) : (
 
               <div className="action-list">
                 {actions.length === 0 ? (
-                  <h3 style={{ 'text-align': 'center', 'margin': '15px' }}>No actions defined.</h3>
+                  <h3 style={{ 'textAlign': 'center', 'margin': '15px' }}>No actions defined.</h3>
                 ) : (
                   <div className="action-card-container">
                     {actions.map(action => (

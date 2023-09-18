@@ -11,6 +11,8 @@ class ActionForm extends Component {
         super(props);
         this.state = {
             isFormVisible: props.isFormVisible || false,
+            editMode: props.editMode || false,
+            id: props.id || null,
             title: props.title || '',
             description: props.description || '',
             isGood: props.isGood !== undefined ? props.isGood : true,
@@ -93,6 +95,73 @@ class ActionForm extends Component {
         this.setState({ selectedObjective: selectedObjectiveID });
     };
 
+    // Handle form submission to edit an action
+    handleEdit = async event => {
+        event.preventDefault();
+        const {
+            id,
+            title,
+            description,
+            importance,
+            isGood,
+            daysOfWeek,
+            frequency,
+            difficulty,
+            intendedDuration,
+            selectedObjective
+        } = this.state;
+
+        const decodedToken = jwt(this.token);
+
+        // Create a new action object using the input values
+        const newAction = {
+            id,
+            title,
+            description,
+            author: decodedToken.username,
+            isGood: isGood,
+            importance: parseInt(importance),
+            daysOfWeek: JSON.stringify(daysOfWeek),
+            frequency: parseInt(frequency),
+            difficulty: parseInt(difficulty),
+            consistencyStreak: 0,
+            intendedDuration: parseInt(intendedDuration),
+            linkedObjective: selectedObjective
+        };
+
+        try {
+            // Create the action using the API
+            await actionsApi.editAction(newAction, this.token);
+            window.location.reload();
+        } catch (error) {
+            console.error('Error editing action:', error);
+        }
+
+        // Reset form values and hide the form
+        this.setState({
+            title: '',
+            description: '',
+            isGood: true,
+            importance: 1,
+            daysOfWeek: {
+                sunday: false,
+                monday: false,
+                tuesday: false,
+                wednesday: false,
+                thursday: false,
+                friday: false,
+                saturday: false,
+            },
+            frequency: 1,
+            difficulty: 1,
+            intendedDuration: 1,
+            isFormVisible: false,
+            editMode: false,
+            selectedObjective: '',
+            publishedDateTime: new Date().getTime()
+        });
+    };
+
     // Handle form submission for a good action
     handleSubmit = async event => {
         event.preventDefault();
@@ -154,13 +223,13 @@ class ActionForm extends Component {
             difficulty: 1,
             intendedDuration: 1,
             isFormVisible: false,
+            editMode: false,
             selectedObjective: '',
             publishedDateTime: new Date().getTime()
         });
     };
-
     render() {
-        const { isFormVisible, existingObjectives, isGood } = this.state;
+        const { isFormVisible, existingObjectives, isGood, editMode } = this.state;
 
         // Label values for importance, frequency and difficulty sliders
         const importanceLabelValues = ['Meh, No Big Deal', '', 'Moderately Important', '', 'Seriously Crucial'];
@@ -308,7 +377,11 @@ class ActionForm extends Component {
 
                             </div>
                         )}
-                        <button type="button" onClick={this.handleSubmit}>Create {this.state.isGood ? 'Good' : 'Bad'} Action</button>
+                        {editMode ? (
+                            <button type="button" onClick={this.handleEdit}>Edit {this.state.isGood ? 'Good' : 'Bad'} Action</button>
+                        ) : (
+                            <button type="button" onClick={this.handleSubmit}>Create {this.state.isGood ? 'Good' : 'Bad'} Action</button>
+                        )}
                     </form>
                 )}
             </>

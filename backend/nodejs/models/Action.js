@@ -57,6 +57,26 @@ class Action {
     });
   }
 
+  static edit(id, title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, intendedDuration, objectiveId) {
+    console.log("UPDATING ACTION: ", id, title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, intendedDuration, objectiveId);
+    return new Promise((resolve, reject) => {
+      db.run(
+        'UPDATE actions SET title = ?, description = ?, author = ?, isGood = ?, importance = ?, daysOfWeek = ?, frequency = ?, difficulty = ?, intendedDuration = ?, objectiveId = ? WHERE id = ?',
+        [title, description, author, isGood, importance, daysOfWeek, frequency, difficulty, intendedDuration, objectiveId, id],
+        function (err) {
+          if (err) {
+            console.log("ROLLBACK");
+            db.run('ROLLBACK'); // Roll back the transaction if there's an error
+            reject(err);
+          } else {
+            console.log(`Row updated: ${this.changes}`);
+            resolve(this.changes);
+          }
+        }
+      );
+    });
+  }
+
   static findAllByAuthor(author) {
     console.log("FETCHING ACTIONS BY AUTHOR: ", author);
     return new Promise((resolve, reject) => {

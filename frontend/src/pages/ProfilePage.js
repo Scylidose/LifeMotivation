@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+
+import loadingGif from '../assets/images/loading.gif';
 import jwt from 'jwt-decode';
 
 import ObjectiveForm from '../components/ObjectiveForm';
@@ -57,10 +59,8 @@ const ProfilePage = ({ token }) => {
   return (
     <>
       <div>
-        {decodedToken ? (
+        {decodedToken && (
           <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>{decodedToken.username}'s Profile</h1>
-        ) : (
-          <p>Loading...</p>
         )}
       </div>
       <div>
@@ -68,11 +68,20 @@ const ProfilePage = ({ token }) => {
           <ActionForm token={token} />
           <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Bits</h1>
           {loading ? (
-            <p>Loading...</p>
+            <>
+              {token ? (
+                <img src={loadingGif} className="loadingImg" alt="Loading..." />
+              ) : (
+                <Navigate to="/login" />
+              )}
+            </>
           ) : error ? (
             <p>Error: {error.message}</p>
           ) : (
             <div className="action-list">
+              {actions.length === 0 && (
+                <p style={{ 'textAlign': 'center'}}>No bits defined</p>
+              )}
               <div className="action-card-container">
 
                 {displayedActions.map(action => (
@@ -97,17 +106,19 @@ const ProfilePage = ({ token }) => {
             </div>
           )}
         </div>
-        <hr/>
+        <hr />
         <div>
           <ObjectiveForm token={token} />
           <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Objectives</h1>
           {loading ? (
-            <p>Loading...</p>
+            <img src={loadingGif} className="loadingImg" alt="Loading..." />
           ) : error ? (
             <p>Error: {error.message}</p>
           ) : (
             <div className="objective-list">
-
+              {objectives.length === 0 && (
+                <p style={{ 'textAlign': 'center'}}>No objectives defined</p>
+              )}
               <div className="objective-card-container">
                 {objectives
                   .sort((a, b) => {

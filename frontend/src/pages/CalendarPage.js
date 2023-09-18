@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+
+import loadingGif from '../assets/images/loading.gif';
+
 import CalendarDisplay from '../components/CalendarDisplay';
 import { actionsApi } from '../services/api/index';
 
@@ -34,11 +38,19 @@ const CalendarPage = ({ token }) => {
         fetchData();
     }, [token]);
 
+    console.log(token);
+
     return (
 
         <div>
             {loading ? (
-                <p>Loading...</p>
+                <>
+                    {token ? (
+                        <img src={loadingGif} className="loadingImg" alt="Loading..." />
+                    ) : (
+                        <Navigate to="/login" />
+                    )}
+                </>
             ) : error ? (
                 <p>Error: {error.message}</p>
             ) : (
@@ -46,7 +58,7 @@ const CalendarPage = ({ token }) => {
                     <CalendarDisplay token={token} actions={actions} />
                 </div>
             )}
-        </div>
+        </div >
     );
 };
 
