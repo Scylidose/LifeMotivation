@@ -32,6 +32,7 @@ const Recommendation = ({ actions, currentDate, token }) => {
                         description={actionToCreate.description}
                         isGood={actionToCreate.isGood}
                         daysOfWeek={JSON.parse(actionToCreate.daysOfWeek)}
+                        importance={actionToCreate.importance}
                         frequency={actionToCreate.frequency}
                         difficulty={actionToCreate.difficulty}
                         intendedDuration={actionToCreate.intendedDuration}
@@ -49,10 +50,14 @@ const Recommendation = ({ actions, currentDate, token }) => {
                         if (JSON.parse(action.daysOfWeek)[currentDayName.toLowerCase()] || action.frequency === 1 || action.frequency === 2) {
                             return (
                                 <li key={action.id}>
-                                    <span>{action.title}</span>
-                                    <button onClick={() => toggleActionFormModal(action)} className="add-action-button">
-                                        <i className="fa fa-plus" aria-hidden="true"></i>
-                                    </button>
+                                    <div className='create-new-action-container'>
+                                        <div className="create-new-action">
+                                            <span>{action.title}</span>
+                                            <button onClick={() => toggleActionFormModal(action)} className="add-action-button">
+                                                <i className="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </li>
                             );
                         }
