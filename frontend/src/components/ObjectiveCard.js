@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import ActionModal from './ActionModal';
+import ObjectiveForm from './ObjectiveForm';
 
 import { convertDate, calculateObjectiveXP } from '../utils/Utils';
 import { actionsApi, objectivesApi, usersApi } from '../services/api/index';
 
 const ObjectiveCard = ({ objective, token }) => {
     const [linkedActions, setLinkedActions] = useState([]);
+    const [showActionFormModal, setShowActionFormModal] = useState(false);
+
+    const toggleActionFormModal = () => {
+        setShowActionFormModal(!showActionFormModal);
+    };
 
     // Effect to fetch linked actions when the objective ID changes
     useEffect(() => {
@@ -68,6 +75,28 @@ const ObjectiveCard = ({ objective, token }) => {
 
     return (
         <div className={`objective-card ${objective.realFinishDateTime ? 'completed' : ''}`}>
+            {showActionFormModal && (
+                <div style={{ 'textAlign': 'center' }}>
+                    <ActionModal onClose={toggleActionFormModal}>
+                        <ObjectiveForm
+                            token={token}
+                            id={objective.id}
+                            title={objective.title}
+                            description={objective.description}
+                            complexity={objective.complexity}
+                            priority={objective.priority}
+                            intendedFinishDateTime={objective.intendedFinishDateTime}
+                            isFormVisible={true}
+                            editMode={true}
+                        />
+                    </ActionModal>
+                </div>
+            )}
+            <div className="edit-container" style={{"justifyContent": 'flex-end'}}>
+                <button className="card-header-button edit-button" onClick={() => toggleActionFormModal()}>
+                    <i className="fa fa-wrench" aria-hidden="true"></i>
+                </button>
+            </div>
             <div className="action-card-header">
                 <h2 className="card-title">{objective.title}</h2>
             </div>
