@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
+
+import loadingGif from '../assets/images/loading.gif';
 
 import jwt from 'jwt-decode';
 
@@ -52,14 +54,20 @@ const ObjectiveDetailPage = ({ token }) => {
     return (
         <>
             {loading ? (
-                <p>Loading...</p>
+                <>
+                    {token ? (
+                        <img src={loadingGif} className="loadingImg" alt="Loading..." />
+                    ) : (
+                        <Navigate to="/login" />
+                    )}
+                </>
             ) : error ? (
                 <p>Error: {error.message}</p>
             ) : (
                 <div>
                     <h1 style={{ 'textAlign': 'center', 'margin': '15px' }}>Your Objective</h1>
                     {loading ? (
-                        <p>Loading...</p>
+                        <img src={loadingGif} className="loadingImg" alt="Loading..." />
                     ) : error ? (
                         <p>Error: {error.message}</p>
                     ) : (
