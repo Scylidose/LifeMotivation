@@ -47,7 +47,7 @@ const Recommendation = ({ actions, currentDate, token }) => {
                     {actions.map((action) => {
                         const currentDayName = daysOfWeek[currentDate.getDay()];
 
-                        if (JSON.parse(action.daysOfWeek)[currentDayName.toLowerCase()] || action.frequency === 1 || action.frequency === 2) {
+                        if (JSON.parse(action.daysOfWeek)[currentDayName.toLowerCase()]) {
                             return (
                                 <li key={action.id}>
                                     <div className='create-new-action-container'>
