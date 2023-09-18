@@ -79,7 +79,7 @@ const ProfilePage = ({ token }) => {
             <p>Error: {error.message}</p>
           ) : (
             <div className="action-list">
-              {actions.length == 0 && (
+              {actions.length === 0 && (
                 <p style={{ 'textAlign': 'center'}}>No bits defined</p>
               )}
               <div className="action-card-container">
@@ -116,7 +116,7 @@ const ProfilePage = ({ token }) => {
             <p>Error: {error.message}</p>
           ) : (
             <div className="objective-list">
-              {objectives.length == 0 && (
+              {objectives.length === 0 && (
                 <p style={{ 'textAlign': 'center'}}>No objectives defined</p>
               )}
               <div className="objective-card-container">
