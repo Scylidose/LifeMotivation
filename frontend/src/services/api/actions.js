@@ -95,6 +95,30 @@ async function createNewAction(actionData, token) {
 }
 
 /**
+ * Edits a new action.
+ * @param {Object} actionData - The data for the modified action.
+ * @returns {Promise} A Promise that resolves to the edited action data.
+ */
+async function editAction(actionData, token) {
+    try {
+        const response = await fetch(`${apiUrl}/api/actions/edit`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(actionData),
+        });
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error creating action:', error);
+        throw error;
+    }
+}
+
+/**
  * Deletes an action.
  * @param {string} actionId - The ID of the action to delete.
  * @returns {Promise} A Promise that resolves to the deleted action data.
@@ -193,6 +217,7 @@ export {
     getActionsForUser,
     getObjectiveActions,
     createNewAction,
+    editAction,
     deleteAction,
     finishAction,
     resetAction,
