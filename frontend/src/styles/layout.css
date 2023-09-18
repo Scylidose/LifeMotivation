@@ -1,3 +1,9 @@
+.loadingImg {
+    margin: auto;
+    display: block;
+    width: 100px;
+}
+
 .progress-content {
     position: absolute;
     top: 50%;
@@ -140,6 +146,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     height: 310px;
+    margin-bottom: 30px;
 }
 
 .calendar-container {
