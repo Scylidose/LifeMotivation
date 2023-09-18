@@ -1,7 +1,7 @@
 INSERT INTO users (username, password_hash, salt, email, xp) VALUES
 ('john_doe', '$2y$10$NP4Uh8X2RmjhQIe9lGE3WeK3hnmDRYUtNQhsaf7Gkru4vMkn9ThFq', '$2y$10$', 'john.doe@example.com', 100),
 ('jane_smith', '$2y$10$vvuV.D/Nxc73riV9U10nUOp4xo5kHoTcFdHETHQblLSKy94i/xnc6', '$2y$10$', 'jane.smith@example.com', 75),
-('user3', '$2y$10$uDwlfgsXldbQDnQkn0I3V.o04fHbTWsYRf/TMR2MWi0Dn9G/269U6', '$2y$10$', 'user3@example.com', 50);
+('user3', '$2b$10$.KZ8PGhgdGvrEnTU905W/ufRNNGDU/ckf4mFcC/zZPa1UtTUuh7tS', '$2b$10$.KZ8PGhgdGvrEnTU905W/u', 'user3@example.com', 50);
 
 INSERT INTO objectives (title, description, priority, complexity, publishedDateTime, intendedFinishDateTime, realFinishDateTime, author) VALUES
 ('Learn SQL', 'Master the basics of SQL', 2, 3, strftime('%s','now'), strftime('%s','now'), strftime('%s','now'), 'john_doe'),
