@@ -38,8 +38,6 @@ const CalendarPage = ({ token }) => {
         fetchData();
     }, [token]);
 
-    console.log(token);
-
     return (
 
         <div>
