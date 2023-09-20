@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import loadingGif from '../assets/images/loading.gif';
 import jwt from 'jwt-decode';
@@ -72,7 +72,9 @@ const ProfilePage = ({ token }) => {
               {token ? (
                 <img src={loadingGif} className="loadingImg" alt="Loading..." />
               ) : (
-                <Navigate to="/login" />
+                <button onClick={() => navigate('/login')} className="login-button">
+                  You need to login
+                </button>
               )}
             </>
           ) : error ? (
@@ -80,7 +82,7 @@ const ProfilePage = ({ token }) => {
           ) : (
             <div className="action-list">
               {actions.length === 0 && (
-                <p style={{ 'textAlign': 'center'}}>No bits defined</p>
+                <p style={{ 'textAlign': 'center' }}>No bits defined</p>
               )}
               <div className="action-card-container">
 
@@ -117,7 +119,7 @@ const ProfilePage = ({ token }) => {
           ) : (
             <div className="objective-list">
               {objectives.length === 0 && (
-                <p style={{ 'textAlign': 'center'}}>No objectives defined</p>
+                <p style={{ 'textAlign': 'center' }}>No objectives defined</p>
               )}
               <div className="objective-card-container">
                 {objectives

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import loadingGif from '../assets/images/loading.gif';
 import jwt from 'jwt-decode';
@@ -17,6 +17,7 @@ const BitsPage = ({ token }) => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const toggleActionFormModal = () => {
     setShowActionFormModal(!showActionFormModal);
@@ -60,7 +61,9 @@ const BitsPage = ({ token }) => {
             {token ? (
               <img src={loadingGif} className="loadingImg" alt="Loading..." />
             ) : (
-              <Navigate to="/login" />
+              <button onClick={() => navigate('/login')} className="login-button">
+                You need to login
+              </button>
             )}
           </>
         ) : error ? (
