@@ -23,8 +23,8 @@
 }
 
 .show-actions-button {
-    background-color: #007bff;
-    color: #fff;
+    background-color: rgb(194, 226, 132);
+    color: #3B3C4F;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
@@ -33,7 +33,7 @@
 }
 
 .show-actions-button:hover {
-    background-color: #0056b3;
+    background-color: rgb(154, 180, 104);
 }
 
 .action-list {
@@ -52,8 +52,8 @@
 }
 
 .add-action-button {
-    background-color: #007bff;
-    color: #fff;
+    background-color: rgb(194, 226, 132);
+    color: #3B3C4F;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -62,7 +62,7 @@
 }
 
 .add-action-button:hover {
-    background-color: #0056b3;
+    background-color: rgb(154, 180, 104);
 }
 
 .modal-overlay {
