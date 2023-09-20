@@ -20,22 +20,30 @@ Web app for tracking positive habits, leveling up through experience points, and
 </p>
 
 <h1 align="center">
-
+<img width="1272" alt="home_page" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/f3b9f714-1f39-4961-b139-23b6b76d2028">
 </h1>
 
 ## Key Features
 
 <ul>
   <li><h3>Create an account to save your progression.</h3></li>
-  
+<img width="1272" alt="register" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/d64fde2d-a716-45b4-aa63-82b38d6551f6">
+  <img width="1272" alt="login" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/77b5a0d2-5eb2-46c2-8ef0-199d52372be5">
 
   <li><h3>Navigate between multiple Bits and Objectives</h3></li>
-  
+  <img width="1272" alt="layout" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/3e21e232-b191-4cd3-bc4e-3bfc00af5532">
+<img width="1272" alt="objectives" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/3793a8ea-72dc-426d-b4ca-4e366b5f4f5b">
+<img width="1272" alt="objective" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/0353ac3b-3525-43fa-899b-a7c6edf6e9ae">
+
+<img width="1272" alt="bits" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/e119817f-0d17-4bd7-ba02-944db4085dbc">
+<img width="1272" alt="bit" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/8f67a6cd-8686-4440-a64f-fe81637eed31">
 
   <li><h3>Create, edit or delete Bits and Objectives to manage attainable goals</h3></li>
-
+<img width="1272" alt="edit_bit" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/f829b70c-3482-49e5-9654-6e345cf28ff0">
+<img width="1272" alt="edit_objective" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/e29c69d2-052a-4ab0-a372-a3bae0003daa">
 
   <li><h3>Get experience points to gain levels and keep you motivated.</h3></li>  
+<img width="702" alt="Capture d’écran, le 2023-09-20 à 12 00 55" src="https://github.com/Scylidose/aBitMotivation/assets/28122432/14856698-2488-4b9a-9f10-754a4540eb72">
 
 </ul>
 
