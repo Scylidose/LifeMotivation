@@ -12,6 +12,33 @@
 
 Web app for tracking positive habits, leveling up through experience points, and achieving personal growth milestones. Built to promote well-being and habit-building.
 
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="#license">License</a>
+</p>
+
+<h1 align="center">
+
+</h1>
+
+## Key Features
+
+<ul>
+  <li><h3>Create an account to save your progression.</h3></li>
+  
+
+  <li><h3>Navigate between multiple Bits and Objectives</h3></li>
+  
+
+  <li><h3>Create, edit or delete Bits and Objectives to manage attainable goals</h3></li>
+
+
+  <li><h3>Get experience points to gain levels and keep you motivated.</h3></li>  
+
+</ul>
+
 ## Getting Started
 
 ### Prerequisites
@@ -20,6 +47,7 @@ To run this project, you will need:
 
 * NodeJS (version 14.20.0 or more)
 * NPM (version 6.14 or more)
+* Python (version 3.7 or more)
 
 ### Installation and Setup
 
@@ -29,47 +57,25 @@ To run this project, you will need:
 git clone https://github.com/Scylidose/aBitMotivation.git
 ```
 
-2. Navigate to the Backend directory :
+2. In a first teminal, run the Makefile :
 
 ```
-cd backend/nodejs
+make run-frontend
 ```
 
-3. Install the required NPM packages:
+3. In a second teminal, run the Makefile :
 
 ```
-npm install
+make run-backend-nodejs
 ```
 
-This will install all the necessary dependencies.
-
-4. Run Backend server:
+4. In a third teminal, run the Makefile :
 
 ```
-npm start
+make run-backend-python
 ```
 
-5. Navigate to the Frontend directory :
-
-```
-cd ../../frontend
-```
-
-3. Install the required NPM packages:
-
-```
-npm install
-```
-
-This will install all the necessary dependencies.
-
-4. Run Frontend server:
-
-```
-npm start
-```
-
-## References
+This will install all the necessary dependencies and run the Front-end and Back-end (NodeJS and Python) server.
 
 ## Contributing
 
