@@ -22,6 +22,8 @@ export function calculateBitXP(action) {
 
     if (isNaN(actual_duration) || actual_duration === null || !isFinite(actual_duration)) {
         actual_duration = action.intendedDuration;
+    } else if(actual_duration === 0) {
+        actual_duration = 5;
     }
 
     const intended_duration = action.intendedDuration;

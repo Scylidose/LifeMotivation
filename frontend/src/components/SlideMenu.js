@@ -65,13 +65,12 @@ function SlideMenu({ token }) {
               <div className="progress">
                 <div className="level-progress-bar">
                   {lines}
-
                   <div
                     className="progress-bar"
                     role="progressbar"
                     style={{
                       width: `${progressPercentage}%`,
-                      background: 'linear-gradient(to right, #007BFF, #00A5FF)',
+                      background: '#c2e284',
                       height: '100%'
                     }}
                     aria-valuenow={progressPercentage}

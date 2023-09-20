@@ -46,8 +46,8 @@ async function getRecommendedActions(token) {
         
           return actions;
     } catch (error) {
-        console.error('Error fetching objectives:', error);
-        throw error;
+        console.error('Error fetching recommended actions:', error);
+        return [];
     }
 }
 

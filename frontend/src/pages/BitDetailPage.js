@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import loadingGif from '../assets/images/loading.gif';
 
@@ -14,6 +14,7 @@ const BitDetailPage = ({ token }) => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
@@ -53,7 +54,9 @@ const BitDetailPage = ({ token }) => {
                     {token ? (
                         <img src={loadingGif} className="loadingImg" alt="Loading..." />
                     ) : (
-                        <Navigate to="/login" />
+                        <button onClick={() => navigate('/login')} className="login-button">
+                            You need to login
+                        </button>
                     )}
                 </>
             ) : error ? (

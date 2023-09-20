@@ -24,7 +24,6 @@
     "start-backend-nodejs": "cd ../backend/nodejs && npm start",
     "start-backend-python": "cd ../backend/python && python3 app.py",
     "start-app": "npm run start-frontend & npm run start-backend-nodejs & npm run start-backend-python"
-
   },
   "eslintConfig": {
     "extends": "react-app"

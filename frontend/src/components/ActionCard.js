@@ -123,7 +123,7 @@ const ActionCard = ({ action, token }) => {
     }, [action.objectiveId, token]);
 
     return (
-        <div className={`action-card ${action.finishedDateTime ? 'completed' : ''}`}>
+        <div className={`action-card ${action.finishedDateTime && action.isGood ? 'completed-good' : ''} ${action.finishedDateTime && !action.isGood ? 'completed-bad' : ''}`}>
             {showActionFormModal && (
                 <div style={{ 'textAlign': 'center' }}>
                     <ActionModal onClose={toggleActionFormModal}>
@@ -148,11 +148,11 @@ const ActionCard = ({ action, token }) => {
             <div className="edit-container">
                 {action.isGood ? (
                     <div>
-                        <p className="card-duration"><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
+                        <p className="card-duration" style={{'color':'#28a745'}}><strong>Experience gain:</strong> {calculateBitXP(action)}</p>
                     </div>
                 ) : (
                     <div>
-                        <p className="card-duration"><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
+                        <p className="card-duration" style={{'color':'#dc3545'}}><strong>Experience loss:</strong> {Math.abs(calculateBitXP(action))}</p>
                     </div>
                 )}
                 <button className="card-header-button edit-button" onClick={() => toggleActionFormModal()}>

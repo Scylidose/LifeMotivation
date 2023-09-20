@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import ActionForm from './ActionForm';
 import ActionModal from './ActionModal';
@@ -14,6 +14,7 @@ const Recommendation = ({ actions, currentDate, token }) => {
     const [showActionFormModal, setShowActionFormModal] = useState(false);
     const [actionToCreate, setActionToCreate] = useState(null);
     const [recommendation, setRecommendation] = useState([]);
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -80,7 +81,9 @@ const Recommendation = ({ actions, currentDate, token }) => {
                             {token ? (
                                 <img src={loadingGif} className="loadingImg" alt="Loading..." />
                             ) : (
-                                <Navigate to="/login" />
+                                <button onClick={() => navigate('/login')} className="login-button">
+                                    You need to login
+                                </button>
                             )}
                         </>
                     ) : error ? (
@@ -106,7 +109,9 @@ const Recommendation = ({ actions, currentDate, token }) => {
                                 }
                                 return null;
                             })}
-                            <p>You may also consider :</p>
+                            {recommendation.length > 0 && (
+                                <p>You may also consider :</p>
+                            )}
                             {recommendation.map((action) => {
                                 if (action.length !== 0) {
                                     return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import loadingGif from '../assets/images/loading.gif';
 
@@ -19,6 +19,7 @@ const ObjectiveDetailPage = ({ token }) => {
     const [error, setError] = useState(null);
 
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch data when the component mounts
@@ -58,7 +59,9 @@ const ObjectiveDetailPage = ({ token }) => {
                     {token ? (
                         <img src={loadingGif} className="loadingImg" alt="Loading..." />
                     ) : (
-                        <Navigate to="/login" />
+                        <button onClick={() => navigate('/login')} className="login-button">
+                            You need to login
+                        </button>
                     )}
                 </>
             ) : error ? (
