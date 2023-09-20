@@ -1,4 +1,5 @@
 const apiUrl = 'http://localhost:5000';
+const recommendationUrl = 'http://localhost:8000';
 
 /**
  * Actions API Functions
@@ -20,6 +21,30 @@ async function getActionById(id, token) {
         });
         const data = await response.json();
         return data;
+    } catch (error) {
+        console.error('Error fetching objectives:', error);
+        throw error;
+    }
+}
+
+/**
+ * Fetches a list of recommended actions by their ID.
+ * @returns {Promise} A Promise that resolves to the retrieved action data.
+ */
+async function getRecommendedActions(token) {
+    var actions = []
+
+    try {
+        const response = await fetch(`${recommendationUrl}/recommendation`, {
+            method: 'GET'
+        });
+        const data = await response.json();
+        for (let i = 0; i < data.length; i++) {
+            var action = await getActionById(data[i], token);
+            actions.push(action);
+          }
+        
+          return actions;
     } catch (error) {
         console.error('Error fetching objectives:', error);
         throw error;
@@ -214,6 +239,7 @@ async function addCommentToAction(id, comment, token) {
 
 export {
     getActionById,
+    getRecommendedActions,
     getActionsForUser,
     getObjectiveActions,
     createNewAction,
